@@ -1,0 +1,945 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>JavaScript Mastery — Full Documentation</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;600&family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root {
+  --gold: #f59e0b;
+  --gold2: #f97316;
+  --purple: #7c3aed;
+  --blue: #3b82f6;
+  --green: #22c55e;
+  --red: #ef4444;
+  --bg: #07090f;
+  --bg2: #0d1117;
+  --bg3: #111827;
+  --border: #1e2a3a;
+  --text: #e2e8f0;
+  --muted: #64748b;
+}
+
+*{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{background:var(--bg);color:var(--text);font-family:'Inter',sans-serif;overflow-x:hidden;line-height:1.6}
+code,pre,.mono{font-family:'JetBrains Mono',monospace!important}
+h1,h2,h3,h4,h5{font-family:'Syne',sans-serif}
+
+/* ─── PARTICLES ─── */
+#canvas{position:fixed;inset:0;z-index:0;pointer-events:none;opacity:.5}
+.orb{position:fixed;border-radius:50%;filter:blur(120px);pointer-events:none;z-index:0}
+.orb1{width:700px;height:700px;background:radial-gradient(circle,rgba(124,58,237,.1),transparent 70%);top:-300px;left:-200px;animation:drift 22s ease-in-out infinite}
+.orb2{width:500px;height:500px;background:radial-gradient(circle,rgba(245,158,11,.07),transparent 70%);bottom:-150px;right:-100px;animation:drift 28s ease-in-out infinite reverse}
+@keyframes drift{0%,100%{transform:translate(0,0)}33%{transform:translate(50px,-40px)}66%{transform:translate(-30px,50px)}}
+
+/* ─── LAYOUT ─── */
+.z1{position:relative;z-index:1}
+.container{max-width:1100px;margin:0 auto;padding:0 1.5rem}
+
+/* ─── NAV ─── */
+nav{
+  position:sticky;top:0;z-index:100;
+  background:rgba(7,9,15,.9);backdrop-filter:blur(20px);
+  border-bottom:1px solid rgba(30,42,58,.8);
+}
+.nav-inner{display:flex;align-items:center;justify-content:space-between;padding:.9rem 1.5rem;max-width:1100px;margin:0 auto;gap:1rem;flex-wrap:wrap}
+.nav-logo{display:flex;align-items:center;gap:.7rem}
+.js-badge{background:#f7df1e;color:#000;font-family:'JetBrains Mono',monospace;font-weight:700;border-radius:6px;padding:3px 9px;font-size:.85rem;box-shadow:0 0 20px rgba(247,223,30,.25)}
+.nav-title{font-family:'Syne',sans-serif;font-weight:800;font-size:1.1rem;color:#fff}
+.nav-links{display:flex;gap:.2rem;flex-wrap:wrap}
+.nav-link{color:#64748b;font-size:.8rem;padding:.4rem .8rem;border-radius:8px;text-decoration:none;transition:all .2s;font-weight:500}
+.nav-link:hover{color:#f5f5f5;background:rgba(255,255,255,.05)}
+.nav-cta{background:linear-gradient(135deg,#f59e0b,#f97316);color:#000;border-radius:99px;padding:.45rem 1.1rem;font-size:.8rem;font-weight:700;text-decoration:none;transition:all .2s}
+.nav-cta:hover{transform:scale(1.04);box-shadow:0 4px 20px rgba(245,158,11,.35)}
+
+/* ─── HERO ─── */
+.hero{padding:5rem 0 4rem;text-align:center;border-bottom:1px solid rgba(30,42,58,.6)}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:rgba(245,158,11,.08);border:1px solid rgba(245,158,11,.2);
+  border-radius:99px;padding:.4rem 1.1rem;font-size:.8rem;color:#fbbf24;
+  margin-bottom:1.5rem;animation:fadeUp .6s ease both;
+}
+.pulse{width:7px;height:7px;border-radius:50%;background:#22c55e;animation:pulse 2s infinite;box-shadow:0 0 0 0 rgba(34,197,94,.4)}
+@keyframes pulse{0%{box-shadow:0 0 0 0 rgba(34,197,94,.4)}70%{box-shadow:0 0 0 8px rgba(34,197,94,0)}100%{box-shadow:0 0 0 0 rgba(34,197,94,0)}}
+.hero-title{
+  font-size:clamp(2.8rem,8vw,5.5rem);font-weight:800;line-height:1.05;
+  background:linear-gradient(135deg,#f7df1e 0%,#f59e0b 30%,#f97316 65%,#ef4444 100%);
+  -webkit-background-clip:text;-webkit-text-fill-color:transparent;background-clip:text;
+  background-size:300%;animation:shimmer 6s linear infinite,fadeUp .7s ease .1s both;
+}
+@keyframes shimmer{0%{background-position:0%}50%{background-position:100%}100%{background-position:0%}}
+.hero-sub{color:#64748b;font-size:1.15rem;max-width:580px;margin:1.2rem auto 2.5rem;animation:fadeUp .7s ease .2s both}
+@keyframes fadeUp{from{opacity:0;transform:translateY(20px)}to{opacity:1;transform:none}}
+.hero-stats{display:flex;justify-content:center;gap:2.5rem;flex-wrap:wrap;animation:fadeUp .7s ease .3s both}
+.hstat{text-align:center}
+.hstat-num{font-family:'Syne',sans-serif;font-size:2.2rem;font-weight:800;color:#f59e0b;line-height:1}
+.hstat-label{font-size:.78rem;color:#4b5563;margin-top:.3rem}
+
+/* ─── SECTION TITLE ─── */
+.section-label{
+  display:inline-flex;align-items:center;gap:.5rem;
+  font-size:.72rem;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;
+  color:#f59e0b;margin-bottom:.6rem;
+}
+.section-label::before{content:'';width:20px;height:2px;background:linear-gradient(90deg,#f59e0b,#f97316);border-radius:99px}
+.section-title{font-size:clamp(1.6rem,4vw,2.4rem);font-weight:800;color:#fff;margin-bottom:.7rem;line-height:1.15}
+.section-desc{color:#64748b;font-size:.975rem;max-width:560px}
+
+/* ─── CARDS ─── */
+.card{
+  background:rgba(13,17,23,.95);border:1px solid var(--border);
+  border-radius:18px;overflow:hidden;transition:all .25s;
+  animation:cardIn .5s ease both;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:none}}
+.card:hover{border-color:rgba(245,158,11,.25);box-shadow:0 8px 40px rgba(0,0,0,.4)}
+.card-head{background:rgba(17,24,39,.8);border-bottom:1px solid var(--border);padding:1.2rem 1.5rem}
+.card-body{padding:1.5rem}
+
+/* ─── GRID ─── */
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:1.25rem}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:1rem}
+.grid4{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:1rem}
+
+/* ─── FEATURE CARDS ─── */
+.feat-card{
+  background:rgba(13,17,23,.9);border:1px solid var(--border);border-radius:16px;
+  padding:1.4rem;transition:all .25s;cursor:default;
+}
+.feat-card:hover{border-color:rgba(245,158,11,.3);transform:translateY(-3px);box-shadow:0 12px 40px rgba(0,0,0,.3)}
+.feat-icon{font-size:2rem;margin-bottom:.8rem;display:block}
+.feat-title{font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:1rem;margin-bottom:.4rem}
+.feat-desc{color:#64748b;font-size:.85rem;line-height:1.55}
+
+/* ─── STEP CARDS ─── */
+.step-card{
+  display:flex;gap:1.2rem;align-items:flex-start;
+  background:rgba(13,17,23,.9);border:1px solid var(--border);
+  border-radius:16px;padding:1.3rem 1.5rem;transition:border-color .2s;
+}
+.step-card:hover{border-color:rgba(245,158,11,.2)}
+.step-num{
+  min-width:38px;height:38px;border-radius:50%;
+  background:linear-gradient(135deg,#f59e0b,#f97316);
+  color:#000;font-family:'Syne',sans-serif;font-weight:800;font-size:1rem;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+}
+.step-content{}
+.step-title{font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:.975rem;margin-bottom:.3rem}
+.step-desc{color:#64748b;font-size:.85rem;line-height:1.5}
+
+/* ─── TABS ─── */
+.tab-nav{display:flex;gap:.4rem;flex-wrap:wrap;background:rgba(13,17,23,.9);border:1px solid var(--border);border-radius:12px;padding:.4rem;margin-bottom:1.2rem}
+.tab-btn{border:none;background:transparent;border-radius:8px;padding:.45rem 1rem;color:#64748b;font-size:.83rem;font-weight:600;cursor:pointer;transition:all .15s;font-family:'Inter',sans-serif}
+.tab-btn:hover{color:#94a3b8}
+.tab-btn.active{background:rgba(245,158,11,.12);color:#fbbf24;border:1px solid rgba(245,158,11,.2)}
+.tab-pane{display:none}
+.tab-pane.active{display:block}
+
+/* ─── CODE BLOCK ─── */
+.code-block{
+  background:#04060b;border:1px solid rgba(30,42,58,.8);
+  border-radius:12px;padding:1.1rem 1.3rem;overflow-x:auto;position:relative;
+  font-size:.83rem;line-height:1.7;color:#86efac;margin:.8rem 0;
+}
+.code-label{font-size:.7rem;color:#4b5563;font-weight:700;letter-spacing:.5px;text-transform:uppercase;margin-bottom:.4rem}
+
+/* ─── BADGE ─── */
+.badge{display:inline-block;border-radius:99px;padding:.2rem .7rem;font-size:.72rem;font-weight:700}
+.badge-gold{background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.3);color:#fbbf24}
+.badge-purple{background:rgba(124,58,237,.12);border:1px solid rgba(124,58,237,.3);color:#c4b5fd}
+.badge-green{background:rgba(34,197,94,.1);border:1px solid rgba(34,197,94,.25);color:#86efac}
+.badge-blue{background:rgba(59,130,246,.1);border:1px solid rgba(59,130,246,.25);color:#93c5fd}
+.badge-red{background:rgba(239,68,68,.1);border:1px solid rgba(239,68,68,.2);color:#fca5a5}
+
+/* ─── TABLE ─── */
+.doc-table{width:100%;border-collapse:collapse;font-size:.875rem}
+.doc-table th{text-align:left;padding:.7rem 1rem;background:rgba(17,24,39,.9);color:#94a3b8;font-weight:600;font-size:.78rem;letter-spacing:.5px;text-transform:uppercase;border-bottom:1px solid var(--border)}
+.doc-table td{padding:.65rem 1rem;border-bottom:1px solid rgba(30,42,58,.5);color:#94a3b8;vertical-align:top}
+.doc-table tr:last-child td{border-bottom:none}
+.doc-table tr:hover td{background:rgba(17,24,39,.5)}
+
+/* ─── TIMELINE ─── */
+.timeline{position:relative;padding-left:2rem}
+.timeline::before{content:'';position:absolute;left:.45rem;top:.5rem;bottom:.5rem;width:2px;background:linear-gradient(180deg,#f59e0b,#7c3aed,#3b82f6);border-radius:99px}
+.tl-item{position:relative;margin-bottom:1.5rem}
+.tl-dot{position:absolute;left:-1.67rem;top:.3rem;width:12px;height:12px;border-radius:50%;background:#f59e0b;box-shadow:0 0 10px rgba(245,158,11,.5);flex-shrink:0}
+.tl-title{font-family:'Syne',sans-serif;font-weight:700;color:#fff;margin-bottom:.3rem;font-size:.975rem}
+.tl-desc{color:#64748b;font-size:.875rem;line-height:1.55}
+
+/* ─── COMPARISON ─── */
+.compare-row{display:grid;grid-template-columns:1fr 1fr;gap:1rem}
+.compare-col{border-radius:14px;padding:1.2rem}
+.compare-yes{background:rgba(34,197,94,.06);border:1px solid rgba(34,197,94,.2)}
+.compare-no{background:rgba(239,68,68,.05);border:1px solid rgba(239,68,68,.15)}
+.compare-head{font-weight:700;font-size:.875rem;margin-bottom:.7rem;display:flex;align-items:center;gap:.4rem}
+.compare-item{font-size:.83rem;color:#94a3b8;padding:.2rem 0;display:flex;align-items:flex-start;gap:.5rem;line-height:1.45}
+
+/* ─── SECTIONS ─── */
+section{padding:5rem 0;border-bottom:1px solid rgba(30,42,58,.4)}
+section:last-child{border-bottom:none}
+
+/* ─── QUOTE ─── */
+.blockquote{
+  background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(59,130,246,.05));
+  border:1px solid rgba(124,58,237,.2);border-left:4px solid #7c3aed;
+  border-radius:0 14px 14px 0;padding:1.2rem 1.5rem;
+  font-size:.975rem;color:#c4b5fd;line-height:1.6;font-style:italic;
+  margin:1.2rem 0;
+}
+
+/* ─── FAQ ─── */
+.faq-item{border:1px solid var(--border);border-radius:14px;overflow:hidden;margin-bottom:.7rem}
+.faq-q{padding:1rem 1.3rem;cursor:pointer;user-select:none;display:flex;align-items:center;justify-content:space-between;background:rgba(13,17,23,.9);color:#fff;font-weight:600;font-size:.9rem;transition:background .2s}
+.faq-q:hover{background:rgba(17,24,39,.9)}
+.faq-a{max-height:0;overflow:hidden;transition:max-height .35s cubic-bezier(.4,0,.2,1);background:rgba(7,9,15,.8)}
+.faq-a.open{max-height:300px}
+.faq-a-inner{padding:1rem 1.3rem;color:#64748b;font-size:.875rem;line-height:1.6}
+.faq-chev{transition:transform .3s;color:#4b5563;font-size:1.1rem}
+.faq-chev.open{transform:rotate(180deg)}
+
+/* ─── CHECKLIST ─── */
+.checklist{list-style:none;display:flex;flex-direction:column;gap:.5rem}
+.checklist li{display:flex;align-items:flex-start;gap:.6rem;font-size:.875rem;color:#94a3b8;line-height:1.5}
+.checklist li::before{content:'✓';color:#22c55e;font-weight:800;flex-shrink:0;margin-top:.05rem}
+
+/* ─── ROADMAP VISUAL ─── */
+.roadmap-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:.75rem}
+.rm-card{
+  background:rgba(13,17,23,.9);border:1px solid var(--border);border-radius:12px;
+  padding:.9rem 1rem;transition:all .2s;
+}
+.rm-card:hover{border-color:rgba(245,158,11,.25);transform:translateY(-2px)}
+.rm-icon{font-size:1.5rem;margin-bottom:.4rem}
+.rm-name{font-weight:600;color:#fff;font-size:.85rem;margin-bottom:.2rem}
+.rm-count{font-size:.73rem;color:#4b5563}
+
+/* ─── HIGHLIGHT BOX ─── */
+.highlight-box{
+  background:linear-gradient(135deg,rgba(245,158,11,.08),rgba(249,115,22,.05));
+  border:1px solid rgba(245,158,11,.2);border-radius:16px;padding:1.4rem 1.6rem;
+}
+.highlight-box.purple{background:linear-gradient(135deg,rgba(124,58,237,.08),rgba(99,102,241,.05));border-color:rgba(124,58,237,.2)}
+.highlight-box.green{background:linear-gradient(135deg,rgba(34,197,94,.07),rgba(16,185,129,.04));border-color:rgba(34,197,94,.2)}
+.highlight-box.blue{background:linear-gradient(135deg,rgba(59,130,246,.08),rgba(99,102,241,.05));border-color:rgba(59,130,246,.2)}
+
+/* ─── PILL TAGS ─── */
+.pill{background:rgba(17,24,39,.9);border:1px solid rgba(30,42,58,.9);border-radius:99px;padding:.25rem .75rem;font-size:.775rem;color:#64748b;display:inline-block}
+
+/* ─── FOOTER ─── */
+footer{padding:3rem 0;border-top:1px solid rgba(30,42,58,.6);text-align:center}
+.footer-logo{font-family:'Syne',sans-serif;font-size:1.5rem;font-weight:800;color:#fff;margin-bottom:.5rem}
+.footer-sub{color:#4b5563;font-size:.85rem}
+
+/* ─── SCROLL PROGRESS ─── */
+#scrollBar{position:fixed;top:0;left:0;height:3px;background:linear-gradient(90deg,#f59e0b,#f97316,#7c3aed);z-index:9999;width:0%;transition:width .1s}
+
+/* ─── DIVIDER ─── */
+.divider{height:1px;background:linear-gradient(90deg,transparent,rgba(30,42,58,.8),transparent);margin:2rem 0}
+
+/* ─── LIST ITEMS ─── */
+.list-item{display:flex;gap:.6rem;align-items:flex-start;padding:.5rem 0;font-size:.875rem;color:#94a3b8;border-bottom:1px solid rgba(30,42,58,.4)}
+.list-item:last-child{border-bottom:none}
+.list-dot{width:6px;height:6px;border-radius:50%;background:#f59e0b;flex-shrink:0;margin-top:.45rem}
+
+@media(max-width:640px){
+  .hero{padding:3rem 0 2.5rem}
+  .compare-row{grid-template-columns:1fr}
+  section{padding:3rem 0}
+  .nav-links{display:none}
+}
+</style>
+</head>
+<body>
+
+<div id="scrollBar"></div>
+<canvas id="canvas"></canvas>
+<div class="orb orb1"></div>
+<div class="orb orb2"></div>
+
+<!-- ═══════ NAV ═══════ -->
+<nav>
+  <div class="nav-inner">
+    <div class="nav-logo">
+      <span class="js-badge">JS</span>
+      <span class="nav-title">Mastery Roadmap</span>
+    </div>
+    <div class="nav-links">
+      <a href="#overview" class="nav-link">Overview</a>
+      <a href="#features" class="nav-link">Features</a>
+      <a href="#howto" class="nav-link">How to Use</a>
+      <a href="#curriculum" class="nav-link">Curriculum</a>
+      <a href="#roadmap" class="nav-link">Roadmap</a>
+      <a href="#faq" class="nav-link">FAQ</a>
+    </div>
+    <a href="#howto" class="nav-cta">Get Started →</a>
+  </div>
+</nav>
+
+<!-- ═══════ HERO ═══════ -->
+<div class="z1">
+<section class="hero" id="top">
+  <div class="container">
+    <div class="hero-eyebrow"><span class="pulse"></span> Free · Open · Interactive · No Sign-up Needed</div>
+    <h1 class="hero-title">JavaScript Mastery<br>Roadmap</h1>
+    <p class="hero-sub">The most interactive way to learn all of JavaScript — from zero to advanced — with built-in quizzes, real-world challenges, an AI tutor, and a live code editor. All in one file.</p>
+    <div class="hero-stats">
+      <div class="hstat"><div class="hstat-num">159</div><div class="hstat-label">Topics</div></div>
+      <div class="hstat"><div class="hstat-num">21</div><div class="hstat-label">Sections</div></div>
+      <div class="hstat"><div class="hstat-num">8</div><div class="hstat-label">Learning Modes</div></div>
+      <div class="hstat"><div class="hstat-num">100%</div><div class="hstat-label">Free & Offline</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ OVERVIEW ═══════ -->
+<section id="overview">
+  <div class="container">
+    <div class="section-label">What Is This?</div>
+    <h2 class="section-title">A Complete JavaScript Learning Platform<br><span style="color:#64748b;font-size:80%">in a Single HTML File</span></h2>
+    <p class="section-desc">JavaScript Mastery Roadmap is a self-contained interactive learning tool that covers every core JavaScript concept — structured as a visual progress roadmap with rich content for each topic.</p>
+
+    <div class="divider"></div>
+
+    <div class="grid2" style="margin-bottom:1.5rem">
+      <div class="highlight-box">
+        <div style="font-family:'Syne',sans-serif;font-weight:800;color:#fff;font-size:1.05rem;margin-bottom:.6rem">🎯 Who Is It For?</div>
+        <ul class="checklist">
+          <li>Complete beginners who want to learn JavaScript from scratch</li>
+          <li>Self-taught developers filling in knowledge gaps</li>
+          <li>Students preparing for job interviews and bootcamps</li>
+          <li>Developers who want a quick reference with real-world context</li>
+          <li>Teachers looking for a ready-made structured curriculum</li>
+          <li>Anyone who wants to practice coding interactively in the browser</li>
+        </ul>
+      </div>
+      <div class="highlight-box purple">
+        <div style="font-family:'Syne',sans-serif;font-weight:800;color:#fff;font-size:1.05rem;margin-bottom:.6rem">💡 Why This Exists</div>
+        <p style="color:#c4b5fd;font-size:.875rem;line-height:1.65;margin-bottom:.8rem">Most JavaScript resources are either too shallow (quick tutorials) or too deep (long courses you never finish). This roadmap hits the sweet spot — every concept explained clearly, practiced immediately, and tested with real-world problems.</p>
+        <p style="color:#8b92a5;font-size:.83rem">No videos, no subscriptions, no accounts. Just open the file and start learning.</p>
+      </div>
+    </div>
+
+    <div class="blockquote">
+      "The best way to learn JavaScript is to write JavaScript. Every topic in this roadmap ends with a live code editor so you can practice immediately — because typing code beats reading it every single time."
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FEATURES ═══════ -->
+<section id="features">
+  <div class="container">
+    <div class="section-label">Features</div>
+    <h2 class="section-title">Everything You Need to Learn JS</h2>
+    <p class="section-desc" style="margin-bottom:2.5rem">Every topic opens a full learning panel with 8 different modes — from simple explanations to live code challenges.</p>
+
+    <div class="grid3" style="margin-bottom:2rem">
+      <div class="feat-card"><span class="feat-icon">📖</span><div class="feat-title">Learn Tab</div><div class="feat-desc">Clear explanation of every concept with an animated ELI5 box (Explain Like I'm 5), numbered key points, and section tags.</div></div>
+      <div class="feat-card"><span class="feat-icon">🧒</span><div class="feat-title">ELI5 Explanations</div><div class="feat-desc">Every topic has a plain-English analogy. Closures explained as a college kid keeping a house key. Promises explained like a restaurant buzzer.</div></div>
+      <div class="feat-card"><span class="feat-icon">💻</span><div class="feat-title">Code Examples</div><div class="feat-desc">Syntax-highlighted code examples for every single topic, with step-by-step annotations explaining what each line does.</div></div>
+      <div class="feat-card"><span class="feat-icon">🌍</span><div class="feat-title">Real-World Context</div><div class="feat-desc">Each topic shows where it's used in real apps — React, Node.js, APIs, e-commerce, and more. Plus "Where you'll see this" tags.</div></div>
+      <div class="feat-card"><span class="feat-icon">🧠</span><div class="feat-title">Interactive Quizzes</div><div class="feat-desc">4-question multiple choice quiz per topic with animated options, instant feedback, wrong-answer explanations, and a score summary.</div></div>
+      <div class="feat-card"><span class="feat-icon">🚀</span><div class="feat-title">Real-Life Challenges</div><div class="feat-desc">Coding problems based on actual scenarios — fix a shopping cart bug, build a private counter, solve FizzBuzz. With hints and solutions.</div></div>
+      <div class="feat-card"><span class="feat-icon">🏋️</span><div class="feat-title">Live Code Editor</div><div class="feat-desc">Write and run JavaScript directly in the browser. Console output appears instantly. No setup, no environment needed.</div></div>
+      <div class="feat-card"><span class="feat-icon">🤖</span><div class="feat-title">Built-in AI Tutor</div><div class="feat-desc">Ask any question about the topic you're studying. Get interview prep, analogies, common mistakes, quizzes, pro tips, and more — all offline.</div></div>
+      <div class="feat-card"><span class="feat-icon">📝</span><div class="feat-title">Personal Notes</div><div class="feat-desc">Write and save private notes per topic, directly in the browser. Notes are saved locally so they're always there when you return.</div></div>
+    </div>
+
+    <div class="grid2">
+      <div class="card">
+        <div class="card-head">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff">🎮 Gamification & Motivation</div>
+        </div>
+        <div class="card-body">
+          <ul class="checklist">
+            <li>Visual progress bar tracks how many of the 159 topics you've completed</li>
+            <li>Confetti animation fires when you mark a topic as done</li>
+            <li>Milestone toasts at 10, 25, 50, 75, 100, 125, 150, and 159 topics</li>
+            <li>Daily streak counter to reward consistent learning habits</li>
+            <li>Section-by-section mini progress bars show mastery per category</li>
+            <li>Floating Quick Quiz button lets you test random topics anytime</li>
+          </ul>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head">
+          <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff">🔍 Navigation & Organization</div>
+        </div>
+        <div class="card-body">
+          <ul class="checklist">
+            <li>Search across all 159 topics instantly by name</li>
+            <li>Filter to show only "Done" or "To Do" topics</li>
+            <li>Expand / collapse all 21 sections at once</li>
+            <li>Arrow key navigation between topics inside a modal</li>
+            <li>Press / to focus the search bar from anywhere</li>
+            <li>Keyboard shortcut Escape to close any open modal</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ HOW TO USE ═══════ -->
+<section id="howto">
+  <div class="container">
+    <div class="section-label">How to Use</div>
+    <h2 class="section-title">Start Learning in 3 Steps</h2>
+    <p class="section-desc" style="margin-bottom:2.5rem">No installation, no account, no internet required after first load.</p>
+
+    <div style="display:flex;flex-direction:column;gap:.9rem;margin-bottom:3rem">
+      <div class="step-card"><div class="step-num">1</div><div class="step-content"><div class="step-title">Open the HTML file in any browser</div><div class="step-desc">Download the single <code>index.html</code> file. Double-click it to open in Chrome, Firefox, Safari, or Edge. No server needed — it runs completely offline.</div></div></div>
+      <div class="step-card"><div class="step-num">2</div><div class="step-content"><div class="step-title">Pick a topic from the roadmap</div><div class="step-desc">Scroll through the 21 sections. Click any topic chip to open its full learning panel. Start from the top (JavaScript Basics) or jump to any topic you want.</div></div></div>
+      <div class="step-card"><div class="step-num">3</div><div class="step-content"><div class="step-title">Go through all 8 learning tabs</div><div class="step-desc">For maximum learning: Read the explanation → Study the code → See the real-world use → Take the quiz → Solve the challenge → Practice in the editor → Ask the AI tutor.</div></div></div>
+      <div class="step-card"><div class="step-num">4</div><div class="step-content"><div class="step-title">Mark it done and move to the next</div><div class="step-desc">Click the "Done" checkbox in the top-right of each topic panel. Watch your progress bar grow. Confetti fires. Keep going until you hit 159/159!</div></div></div>
+    </div>
+
+    <!-- Tab breakdown -->
+    <div class="section-label">The 8 Learning Tabs — Explained</div>
+    <div class="tab-nav" id="tabNav">
+      <button class="tab-btn active" data-tab="learn">📖 Learn</button>
+      <button class="tab-btn" data-tab="code">💻 Code</button>
+      <button class="tab-btn" data-tab="realworld">🌍 Real World</button>
+      <button class="tab-btn" data-tab="quiz">🧠 Quiz</button>
+      <button class="tab-btn" data-tab="challenge">🚀 Challenge</button>
+      <button class="tab-btn" data-tab="practice">🏋️ Practice</button>
+      <button class="tab-btn" data-tab="notes">📝 Notes</button>
+      <button class="tab-btn" data-tab="ai">🤖 AI Tutor</button>
+    </div>
+
+    <div id="tab-learn" class="tab-pane active card" style="padding:1.5rem">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:1rem;margin-bottom:.8rem">📖 Learn Tab — The Foundation</div>
+      <p style="color:#94a3b8;font-size:.875rem;line-height:1.6;margin-bottom:1rem">This is where every topic starts. It contains three layers of explanation, from simple to detailed:</p>
+      <ul class="checklist" style="margin-bottom:1rem">
+        <li><strong style="color:#fff">Main explanation</strong> — A clear, accurate description of the concept with examples embedded</li>
+        <li><strong style="color:#fff">ELI5 box</strong> — A blue-highlighted plain-English analogy that makes abstract concepts click instantly</li>
+        <li><strong style="color:#fff">Key points</strong> — 3–4 numbered takeaways that summarize the most important things to remember</li>
+        <li><strong style="color:#fff">Tags</strong> — Category labels showing where this topic fits in the bigger picture</li>
+      </ul>
+      <p style="color:#64748b;font-size:.83rem">💡 Tip: Read the ELI5 first if you're stuck. A good analogy unlocks understanding faster than a technical definition.</p>
+    </div>
+
+    <div id="tab-code" class="tab-pane card" style="padding:1.5rem">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:1rem;margin-bottom:.8rem">💻 Code Tab — Learn by Reading</div>
+      <p style="color:#94a3b8;font-size:.875rem;line-height:1.6;margin-bottom:1rem">Every topic has a carefully written code example that shows the concept in action. The code is:</p>
+      <ul class="checklist" style="margin-bottom:1rem">
+        <li>Syntax-highlighted in green monospace for readability</li>
+        <li>Annotated with inline comments explaining key lines</li>
+        <li>Copyable with one click — paste it into the Practice tab to run it</li>
+        <li>Focused on the concept — no unnecessary complexity</li>
+      </ul>
+      <div class="code-block">// Example: closure in action
+function makeCounter() {
+  let count = 0; // private variable
+  return {
+    increment: () => ++count,
+    getCount: () => count
+  };
+}
+const counter = makeCounter();
+counter.increment();
+console.log(counter.getCount()); // 1</div>
+    </div>
+
+    <div id="tab-realworld" class="tab-pane card" style="padding:1.5rem">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:1rem;margin-bottom:.8rem">🌍 Real World Tab — Why It Matters</div>
+      <p style="color:#94a3b8;font-size:.875rem;line-height:1.6;margin-bottom:1rem">The biggest question learners have is "when would I actually use this?" This tab answers it directly:</p>
+      <ul class="checklist" style="margin-bottom:1rem">
+        <li><strong style="color:#fff">Scenario card</strong> — A real-world situation where this concept is used (e.g., "bank account privacy", "shopping cart bug")</li>
+        <li><strong style="color:#fff">Where you'll see it</strong> — Tags showing real technologies: React hooks, Node.js, jQuery, APIs, etc.</li>
+        <li><strong style="color:#fff">Production code example</strong> — Code you'd actually find in a real app, not just a textbook snippet</li>
+      </ul>
+      <p style="color:#64748b;font-size:.83rem">💡 Tip: If you understand the real-world scenario, you'll remember the concept much longer.</p>
+    </div>
+
+    <div id="tab-quiz" class="tab-pane card" style="padding:1.5rem">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:1rem;margin-bottom:.8rem">🧠 Quiz Tab — Test Yourself</div>
+      <p style="color:#94a3b8;font-size:.875rem;line-height:1.6;margin-bottom:1rem">A 4-question multiple-choice quiz for every topic. This is active recall — the most effective learning technique:</p>
+      <ul class="checklist" style="margin-bottom:1rem">
+        <li>4 answer options per question with instant visual feedback (green = correct, red = wrong)</li>
+        <li>Explanation shown after each answer explaining WHY it's correct or incorrect</li>
+        <li>Final score screen shows how many you got right and a review of each question</li>
+        <li>Retake button lets you quiz yourself again — try to beat your score</li>
+        <li>Custom questions per topic, or auto-generated ones for topics without custom content</li>
+      </ul>
+      <p style="color:#64748b;font-size:.83rem">💡 Strategy: Take the quiz BEFORE reading the explanation to identify your gaps first.</p>
+    </div>
+
+    <div id="tab-challenge" class="tab-pane card" style="padding:1.5rem">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:1rem;margin-bottom:.8rem">🚀 Challenge Tab — Solve Real Problems</div>
+      <p style="color:#94a3b8;font-size:.875rem;line-height:1.6;margin-bottom:1rem">This is where theory becomes skill. Each challenge is a real coding problem you'd encounter in actual development:</p>
+      <ul class="checklist" style="margin-bottom:1rem">
+        <li><strong style="color:#fff">Difficulty badge</strong> — Beginner / Intermediate / Advanced rating so you know what to expect</li>
+        <li><strong style="color:#fff">Scenario context</strong> — The business problem you're solving (e.g., "You're building an e-commerce site...")</li>
+        <li><strong style="color:#fff">Starter code</strong> — Pre-filled code you complete or fix — just like a real job task</li>
+        <li><strong style="color:#fff">Expected output</strong> — Exactly what your code should print so you can verify it</li>
+        <li><strong style="color:#fff">Hint button</strong> — Reveals a targeted hint without giving away the solution</li>
+        <li><strong style="color:#fff">Show Solution</strong> — View the full answer when you're ready to learn from it</li>
+      </ul>
+    </div>
+
+    <div id="tab-practice" class="tab-pane card" style="padding:1.5rem">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:1rem;margin-bottom:.8rem">🏋️ Practice Tab — Free-Form Coding</div>
+      <p style="color:#94a3b8;font-size:.875rem;line-height:1.6;margin-bottom:1rem">A blank code editor to write whatever you want — experiment, modify examples, and build your own tests:</p>
+      <ul class="checklist" style="margin-bottom:1rem">
+        <li>Full JavaScript code editor that runs in the browser using eval()</li>
+        <li>console.log() output appears in the OUTPUT panel below</li>
+        <li>Error messages displayed in red with the exact error text</li>
+        <li>Clear button resets to a fresh editor for the current topic</li>
+        <li>AI Hint button asks the AI tutor for guidance on your specific code</li>
+      </ul>
+      <p style="color:#64748b;font-size:.83rem">💡 Best practice: Don't copy-paste code examples. Type them out by hand. Muscle memory builds faster that way.</p>
+    </div>
+
+    <div id="tab-notes" class="tab-pane card" style="padding:1.5rem">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:1rem;margin-bottom:.8rem">📝 Notes Tab — Your Personal Study Journal</div>
+      <p style="color:#94a3b8;font-size:.875rem;line-height:1.6;margin-bottom:1rem">Write private notes for every topic and save them to your browser's local storage:</p>
+      <ul class="checklist" style="margin-bottom:1rem">
+        <li>One notepad per topic — your notes stay separate and organized</li>
+        <li>Notes are saved locally (localStorage) — they persist between sessions</li>
+        <li>Write summaries, questions, things that confused you, or important quotes</li>
+        <li>Use it as a personal cheat sheet you can review before interviews</li>
+      </ul>
+      <p style="color:#64748b;font-size:.83rem">💡 Tip: Write notes in your own words, not copy-pasted text. Paraphrasing is one of the best memory techniques.</p>
+    </div>
+
+    <div id="tab-ai" class="tab-pane card" style="padding:1.5rem">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:1rem;margin-bottom:.8rem">🤖 AI Tutor Tab — Ask Anything</div>
+      <p style="color:#94a3b8;font-size:.875rem;line-height:1.6;margin-bottom:1rem">A built-in AI assistant trained on the current topic. No API key needed — everything is generated locally:</p>
+      <div style="display:flex;flex-wrap:wrap;gap:.4rem;margin-bottom:1rem">
+        <span class="pill">💡 Simple explain</span>
+        <span class="pill">🎯 Interview prep</span>
+        <span class="pill">⚠️ Common mistakes</span>
+        <span class="pill">🧠 Quiz me</span>
+        <span class="pill">🏗️ Real project</span>
+        <span class="pill">🗺️ What's next</span>
+        <span class="pill">✨ Pro tips</span>
+        <span class="pill">🔮 Analogy</span>
+      </div>
+      <ul class="checklist">
+        <li>8 quick-action prompt buttons for common questions</li>
+        <li>Free-form text input — ask anything about the topic</li>
+        <li>Responses include formatted code blocks and markdown</li>
+        <li>Typing indicator shows when the AI is "thinking"</li>
+        <li>Works completely offline — no internet required after first load</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<!-- ═══════ CURRICULUM ═══════ -->
+<section id="curriculum">
+  <div class="container">
+    <div class="section-label">Curriculum</div>
+    <h2 class="section-title">159 Topics Across 21 Sections</h2>
+    <p class="section-desc" style="margin-bottom:2rem">Structured from absolute beginner to advanced — covering every core JavaScript concept you need to get hired or build real apps.</p>
+
+    <div class="roadmap-grid" style="margin-bottom:2.5rem">
+      <div class="rm-card"><div class="rm-icon">🟡</div><div class="rm-name">JavaScript Basics</div><div class="rm-count">10 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">📦</div><div class="rm-name">Variables & Scope</div><div class="rm-count">11 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">🔢</div><div class="rm-name">Data Types</div><div class="rm-count">12 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">🔄</div><div class="rm-name">Type Conversion</div><div class="rm-count">9 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">⚡</div><div class="rm-name">Operators</div><div class="rm-count">7 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">🔀</div><div class="rm-name">Control Flow</div><div class="rm-count">5 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">🔁</div><div class="rm-name">Loops</div><div class="rm-count">7 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">🧩</div><div class="rm-name">Functions</div><div class="rm-count">13 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">📋</div><div class="rm-name">Arrays</div><div class="rm-count">14 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">🗂️</div><div class="rm-name">Array Iteration</div><div class="rm-count">9 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">🏗️</div><div class="rm-name">Objects</div><div class="rm-count">8 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">🔧</div><div class="rm-name">Object Methods</div><div class="rm-count">5 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">🌐</div><div class="rm-name">DOM Basics</div><div class="rm-count">4 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">🎯</div><div class="rm-name">Selecting Elements</div><div class="rm-count">5 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">✏️</div><div class="rm-name">DOM Manipulation</div><div class="rm-count">8 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">➕</div><div class="rm-name">Creating Elements</div><div class="rm-count">7 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">🎪</div><div class="rm-name">Events</div><div class="rm-count">9 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">💡</div><div class="rm-name">Event Concepts</div><div class="rm-count">7 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">💾</div><div class="rm-name">Browser Storage</div><div class="rm-count">4 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">⏱️</div><div class="rm-name">Timers</div><div class="rm-count">4 topics</div></div>
+      <div class="rm-card"><div class="rm-icon">🛡️</div><div class="rm-name">Error Handling</div><div class="rm-count">1 topic</div></div>
+    </div>
+
+    <div class="highlight-box blue">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;margin-bottom:.6rem">📈 Learning Path Recommendation</div>
+      <p style="color:#93c5fd;font-size:.875rem;line-height:1.65">Start with <strong style="color:#fff">JavaScript Basics → Variables & Scope → Data Types</strong> if you're a complete beginner. If you know the basics, jump straight to <strong style="color:#fff">Functions</strong> (closures, callbacks, arrow functions) — these are the most important concepts for modern JS development. DOM and Events come after — these unlock interactive web pages. Aim to complete 2–3 sections per week.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ LEARNING ROADMAP ═══════ -->
+<section id="roadmap">
+  <div class="container">
+    <div class="section-label">Learning Roadmap</div>
+    <h2 class="section-title">Your Journey from Zero to Hired</h2>
+    <p class="section-desc" style="margin-bottom:2.5rem">A suggested timeline for working through the curriculum based on your starting level.</p>
+
+    <div class="grid2" style="margin-bottom:2.5rem">
+      <div>
+        <div class="section-label" style="margin-bottom:1rem">Beginner Path (0–3 months)</div>
+        <div class="timeline">
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-title">Week 1–2: Foundations</div><div class="tl-desc">JavaScript Basics, Variables & Scope, Data Types. Goal: understand variables, types, and how JS runs in the browser.</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-title">Week 3–4: Logic & Flow</div><div class="tl-desc">Type Conversion, Operators, Control Flow, Loops. Goal: write programs that make decisions and repeat actions.</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-title">Week 5–6: Functions (Critical!)</div><div class="tl-desc">All 13 function topics — especially callbacks, closures, and arrow functions. This section separates beginners from intermediate devs.</div></div>
+          <div class="tl-item"><div class="tl-dot"></div><div class="tl-title">Week 7–8: Data Structures</div><div class="tl-desc">Arrays, Array Iteration, Objects, Object Methods. Goal: manipulate data — filter, map, reduce, and reshape arrays and objects.</div></div>
+          <div class="tl-item"><div class="tl-dot" style="background:#22c55e"></div><div class="tl-title">Week 9–12: The Browser</div><div class="tl-desc">DOM, Events, Browser Storage, Timers. Goal: build interactive pages — respond to clicks, update content, store data locally.</div></div>
+        </div>
+      </div>
+      <div>
+        <div class="section-label" style="margin-bottom:1rem">Daily Study Routine</div>
+        <div style="display:flex;flex-direction:column;gap:.7rem">
+          <div class="step-card" style="padding:1rem 1.2rem">
+            <div class="step-num" style="font-size:.8rem;min-width:32px;height:32px">⏰</div>
+            <div><div class="step-title" style="font-size:.875rem">25 min — New topic</div><div class="step-desc" style="font-size:.8rem">Open one new topic. Read Learn tab, study the code, check Real World context.</div></div>
+          </div>
+          <div class="step-card" style="padding:1rem 1.2rem">
+            <div class="step-num" style="font-size:.8rem;min-width:32px;height:32px">📝</div>
+            <div><div class="step-title" style="font-size:.875rem">10 min — Test yourself</div><div class="step-desc" style="font-size:.8rem">Take the Quiz. Score under 3/4? Read the explanation again and retry.</div></div>
+          </div>
+          <div class="step-card" style="padding:1rem 1.2rem">
+            <div class="step-num" style="font-size:.8rem;min-width:32px;height:32px">💻</div>
+            <div><div class="step-title" style="font-size:.875rem">15 min — Build something</div><div class="step-desc" style="font-size:.8rem">Do the Challenge. If stuck, use the Hint. Type the solution manually if needed — never copy-paste.</div></div>
+          </div>
+          <div class="step-card" style="padding:1rem 1.2rem">
+            <div class="step-num" style="font-size:.8rem;min-width:32px;height:32px">✅</div>
+            <div><div class="step-title" style="font-size:.875rem">5 min — Review & mark done</div><div class="step-desc" style="font-size:.8rem">Write a 2-sentence note. Mark the topic complete. Check your streak!</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="compare-row">
+      <div class="compare-col compare-yes">
+        <div class="compare-head" style="color:#86efac">✅ What This Covers</div>
+        <div class="compare-item"><span>✓</span> All core JavaScript syntax and concepts</div>
+        <div class="compare-item"><span>✓</span> DOM manipulation and browser APIs</div>
+        <div class="compare-item"><span>✓</span> Functional programming patterns</div>
+        <div class="compare-item"><span>✓</span> Event handling and delegation</div>
+        <div class="compare-item"><span>✓</span> Local storage and timers</div>
+        <div class="compare-item"><span>✓</span> Interview-ready knowledge for JS fundamentals</div>
+        <div class="compare-item"><span>✓</span> Real-world coding patterns from production apps</div>
+      </div>
+      <div class="compare-col compare-no">
+        <div class="compare-head" style="color:#fca5a5">❌ What's NOT Covered</div>
+        <div class="compare-item"><span>→</span> Frameworks like React, Vue, or Angular</div>
+        <div class="compare-item"><span>→</span> Backend Node.js or server development</div>
+        <div class="compare-item"><span>→</span> TypeScript (typed JavaScript)</div>
+        <div class="compare-item"><span>→</span> Testing libraries (Jest, etc.)</div>
+        <div class="compare-item"><span>→</span> Build tools (Webpack, Vite)</div>
+        <div class="compare-item"><span>→</span> Async topics like Promises & async/await</div>
+        <div class="compare-item"><span>→</span> These are next steps after mastering this roadmap</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ TECHNICAL DETAILS ═══════ -->
+<section id="technical">
+  <div class="container">
+    <div class="section-label">Technical Details</div>
+    <h2 class="section-title">How It Works Under the Hood</h2>
+    <p class="section-desc" style="margin-bottom:2rem">For developers who want to understand, customize, or contribute to the project.</p>
+
+    <div class="grid2" style="margin-bottom:1.5rem">
+      <div class="card">
+        <div class="card-head"><div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff">🛠 Tech Stack</div></div>
+        <div class="card-body">
+          <table class="doc-table">
+            <tr><td><span class="badge badge-gold">HTML5</span></td><td>Single-file app, no build step</td></tr>
+            <tr><td><span class="badge badge-blue">Tailwind CSS</span></td><td>Utility classes via CDN</td></tr>
+            <tr><td><span class="badge badge-purple">DaisyUI</span></td><td>Component layer on Tailwind</td></tr>
+            <tr><td><span class="badge badge-green">Vanilla JS</span></td><td>Zero dependencies, no framework</td></tr>
+            <tr><td><span class="badge badge-gold">Canvas API</span></td><td>Animated particle background</td></tr>
+            <tr><td><span class="badge badge-blue">localStorage</span></td><td>Persists progress, notes, streaks</td></tr>
+            <tr><td><span class="badge badge-purple">eval()</span></td><td>Runs user code in Practice/Challenge tabs</td></tr>
+          </table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff">💾 Data Architecture</div></div>
+        <div class="card-body">
+          <div class="list-item"><div class="list-dot"></div><div><strong style="color:#fff">SECTIONS array</strong> — 21 section objects each with a name, icon, and topic list</div></div>
+          <div class="list-item"><div class="list-dot"></div><div><strong style="color:#fff">OVERRIDES object</strong> — Rich content per topic: explanation, code, real-world scenario, practice prompt</div></div>
+          <div class="list-item"><div class="list-dot"></div><div><strong style="color:#fff">QUIZ_MAP</strong> — Custom 4-question quiz arrays per topic key</div></div>
+          <div class="list-item"><div class="list-dot"></div><div><strong style="color:#fff">CHALLENGES_MAP</strong> — Real coding challenges with hints and solutions</div></div>
+          <div class="list-item"><div class="list-dot"></div><div><strong style="color:#fff">ELI5 / KEY_POINTS_MAP</strong> — Plain-English explanations and key bullet points per topic</div></div>
+          <div class="list-item"><div class="list-dot"></div><div><strong style="color:#fff">WHERE_SEEN</strong> — Real-world usage tags per concept</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="card" style="margin-bottom:1.5rem">
+      <div class="card-head"><div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff">📦 What's Stored in Your Browser (localStorage)</div></div>
+      <div class="card-body">
+        <table class="doc-table">
+          <thead><tr><th>Key</th><th>What It Stores</th><th>When It's Used</th></tr></thead>
+          <tbody>
+            <tr><td><code>jsrm_completed</code></td><td>Set of completed topic IDs</td><td>Every time you mark a topic done/undone</td></tr>
+            <tr><td><code>jsrm_notes</code></td><td>Object mapping topic ID → note text</td><td>When you save a note in the Notes tab</td></tr>
+            <tr><td><code>jsrm_streak</code></td><td>Number — current day streak count</td><td>Increments once per day on load</td></tr>
+            <tr><td><code>jsrm_lastday</code></td><td>Date string of last visit</td><td>Used to calculate streak continuity</td></tr>
+            <tr><td><code>jsrm_skipped</code></td><td>Boolean — skipped API key modal</td><td>Legacy from earlier version</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="highlight-box">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;margin-bottom:.6rem">🔒 Privacy Notice</div>
+      <p style="color:#fcd34d;font-size:.875rem;line-height:1.65">This tool stores your progress, notes, and streak <strong>only in your browser's localStorage</strong>. No data is ever sent to any server. No analytics, no tracking, no accounts. Your learning data stays 100% on your device.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ BENEFITS ═══════ -->
+<section id="benefits">
+  <div class="container">
+    <div class="section-label">Benefits</div>
+    <h2 class="section-title">Why Use This Over Other Resources?</h2>
+
+    <div class="grid3" style="margin-bottom:2rem">
+      <div class="feat-card">
+        <span class="feat-icon">⚡</span>
+        <div class="feat-title">Zero Friction</div>
+        <div class="feat-desc">No sign-up, no download, no npm install, no configuration. Just open one HTML file and start learning. Works offline after the first load.</div>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">🏗️</span>
+        <div class="feat-title">Structured Path</div>
+        <div class="feat-desc">Unlike YouTube playlists or random tutorials, this roadmap gives you 159 topics in the exact right order — from basics to advanced.</div>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">🎯</span>
+        <div class="feat-title">Active Learning</div>
+        <div class="feat-desc">Quizzes and challenges force you to think, not just read. Active recall is scientifically proven to improve retention by up to 50%.</div>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">💰</span>
+        <div class="feat-title">Completely Free</div>
+        <div class="feat-desc">No premium tier, no paywalled content, no upsells. Every single feature is free forever. The full roadmap is available to everyone.</div>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">📊</span>
+        <div class="feat-title">Visual Progress</div>
+        <div class="feat-desc">Watching your progress bar grow and hitting milestones creates momentum. The streak counter keeps you coming back every day.</div>
+      </div>
+      <div class="feat-card">
+        <span class="feat-icon">🔁</span>
+        <div class="feat-title">Review-Friendly</div>
+        <div class="feat-desc">Filter to "Todo" topics when studying fresh. Filter to "Done" topics before an interview to review what you've already learned.</div>
+      </div>
+    </div>
+
+    <div class="card">
+      <div class="card-head"><div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff">📊 Compared to Other Learning Resources</div></div>
+      <div class="card-body" style="overflow-x:auto">
+        <table class="doc-table">
+          <thead><tr><th>Feature</th><th>JS Mastery Roadmap</th><th>YouTube Tutorials</th><th>Paid Courses</th><th>Documentation (MDN)</th></tr></thead>
+          <tbody>
+            <tr><td>Structured path</td><td><span class="badge badge-green">✓ Yes</span></td><td>❌ No</td><td>✓ Yes</td><td>❌ No</td></tr>
+            <tr><td>Interactive quizzes</td><td><span class="badge badge-green">✓ Yes</span></td><td>❌ No</td><td>Sometimes</td><td>❌ No</td></tr>
+            <tr><td>Live code editor</td><td><span class="badge badge-green">✓ Yes</span></td><td>❌ No</td><td>Sometimes</td><td>Sometimes</td></tr>
+            <tr><td>Real-life challenges</td><td><span class="badge badge-green">✓ Yes</span></td><td>❌ No</td><td>Sometimes</td><td>❌ No</td></tr>
+            <tr><td>Works offline</td><td><span class="badge badge-green">✓ Yes</span></td><td>❌ No</td><td>❌ No</td><td>❌ No</td></tr>
+            <tr><td>100% Free</td><td><span class="badge badge-green">✓ Yes</span></td><td>✓ Yes</td><td>❌ $$$</td><td>✓ Yes</td></tr>
+            <tr><td>Progress tracking</td><td><span class="badge badge-green">✓ Yes</span></td><td>❌ No</td><td>✓ Yes</td><td>❌ No</td></tr>
+            <tr><td>No sign-up needed</td><td><span class="badge badge-green">✓ Yes</span></td><td>✓ Yes</td><td>❌ No</td><td>✓ Yes</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ SHARING / FREE ═══════ -->
+<section id="sharing">
+  <div class="container">
+    <div class="section-label">Releasing It Free</div>
+    <h2 class="section-title">How to Share JavaScript Mastery<br>with the World</h2>
+    <p class="section-desc" style="margin-bottom:2.5rem">Whether you're hosting it yourself or sharing the file directly, here's how to make it available to everyone.</p>
+
+    <div class="grid2" style="margin-bottom:2rem">
+      <div class="card">
+        <div class="card-head"><div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff">🌐 Hosting Options</div></div>
+        <div class="card-body">
+          <div class="list-item"><div class="list-dot"></div><div><strong style="color:#fff">GitHub Pages</strong> — Free static hosting. Push your HTML to a GitHub repo, enable Pages, and anyone can access it at your-username.github.io</div></div>
+          <div class="list-item"><div class="list-dot"></div><div><strong style="color:#fff">Netlify</strong> — Drag and drop your HTML file onto netlify.app for instant free hosting with a public URL</div></div>
+          <div class="list-item"><div class="list-dot"></div><div><strong style="color:#fff">Vercel</strong> — Connect a GitHub repo for automatic deployments every time you update the file</div></div>
+          <div class="list-item"><div class="list-dot"></div><div><strong style="color:#fff">Cloudflare Pages</strong> — Fastest CDN, free tier, custom domain support</div></div>
+          <div class="list-item"><div class="list-dot"></div><div><strong style="color:#fff">Direct file share</strong> — Share the .html file directly. Anyone can open it with no server required</div></div>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-head"><div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff">📤 How to Share</div></div>
+        <div class="card-body">
+          <div class="list-item"><div class="list-dot"></div><div>Post the GitHub / Netlify URL on Twitter, LinkedIn, Reddit r/learnjavascript</div></div>
+          <div class="list-item"><div class="list-dot"></div><div>Share in Discord servers: The Odin Project, freeCodeCamp, Reactiflux, JavaScript</div></div>
+          <div class="list-item"><div class="list-dot"></div><div>Submit to Product Hunt — resources like this regularly hit the front page</div></div>
+          <div class="list-item"><div class="list-dot"></div><div>Post on Dev.to or Hashnode with a walkthrough article</div></div>
+          <div class="list-item"><div class="list-dot"></div><div>Share in programming Facebook groups and WhatsApp communities</div></div>
+          <div class="list-item"><div class="list-dot"></div><div>Include it in a GitHub repository README as a learning resource</div></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="highlight-box green">
+      <div style="font-family:'Syne',sans-serif;font-weight:700;color:#fff;font-size:1.05rem;margin-bottom:.6rem">🚀 Suggested GitHub Repository Structure</div>
+      <div class="code-block">JavaScript-Mastery/
+├── index.html          ← Main app (the full roadmap)
+├── README.md           ← Documentation and screenshots
+├── LICENSE             ← MIT License (open source)
+└── docs/
+    └── JS-Mastery-Docs.html  ← This documentation page</div>
+      <p style="color:#86efac;font-size:.83rem;margin-top:.8rem">Add a clear README with screenshots, a demo link, and a "Star ⭐ this repo" call-to-action. Repos with good READMEs get 10x more stars.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FAQ ═══════ -->
+<section id="faq">
+  <div class="container">
+    <div class="section-label">FAQ</div>
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div style="max-width:720px;margin-top:2rem">
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>Do I need an internet connection to use this?</span><span class="faq-chev">▾</span></div>
+        <div class="faq-a"><div class="faq-a-inner">After the first load (which fetches Google Fonts and Tailwind CSS from CDN), the app works completely offline. All learning content, quizzes, challenges, AI tutor responses, and code execution happen locally in your browser.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>Will my progress be saved if I close the browser?</span><span class="faq-chev">▾</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Yes. Your completed topics, personal notes, and daily streak are all saved to your browser's localStorage. They'll be there the next time you open the file — as long as you use the same browser and don't clear browser data.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>Is this suitable for absolute beginners?</span><span class="faq-chev">▾</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Yes! Start from Section 1 (JavaScript Basics) and work your way through in order. Every topic has an ELI5 explanation that uses everyday analogies, not technical jargon. The code examples are small and focused. Beginners are the primary audience.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>How is the AI tutor built without an API?</span><span class="faq-chev">▾</span></div>
+        <div class="faq-a"><div class="faq-a-inner">The AI tutor is a carefully engineered rule-based system built entirely in JavaScript. It uses the current topic's data (explanation, code, real-world example) to generate contextually accurate responses for different intents — explanations, quizzes, analogies, interview prep, and more. It doesn't use any external AI API — it works completely offline.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>Can I use the code editor to build real projects?</span><span class="faq-chev">▾</span></div>
+        <div class="faq-a"><div class="faq-a-inner">The Practice and Challenge code editors use eval() to run JavaScript in the browser, so they're suitable for practicing concepts and logic. They're not designed for building full projects (no HTML/CSS rendering, no module imports). Use VS Code or StackBlitz for building real projects.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>Can I contribute new topics or challenges?</span><span class="faq-chev">▾</span></div>
+        <div class="faq-a"><div class="faq-a-inner">Yes! The data is organized into clear JavaScript objects at the top of the script section. To add a new quiz, add an entry to QUIZ_MAP with the topic title (lowercase) as the key. To add a challenge, add to CHALLENGES_MAP. To add an ELI5, add to the ELI5 object. The structure is straightforward and well-commented.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>How long will it take to complete all 159 topics?</span><span class="faq-chev">▾</span></div>
+        <div class="faq-a"><div class="faq-a-inner">At 1 topic per day (~45 minutes): about 5–6 months. At 3 topics per day (~2 hours): about 2 months. At 5 per day (intensive): about 5 weeks. Most learners recommend 2–3 topics per day to allow time for the concepts to sink in. Don't rush — understanding beats speed.</div></div>
+      </div>
+
+      <div class="faq-item">
+        <div class="faq-q" onclick="toggleFaq(this)"><span>What should I learn after completing this roadmap?</span><span class="faq-chev">▾</span></div>
+        <div class="faq-a"><div class="faq-a-inner">After completing all 159 topics, you have strong JavaScript fundamentals. Next steps: (1) Learn async JavaScript — Promises, async/await, fetch API. (2) Learn a framework — React is the most job-relevant choice. (3) Learn Node.js basics for backend. (4) Build 3–5 real projects for your portfolio. (5) Start applying for jobs or freelancing.</div></div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════ FOOTER ═══════ -->
+<footer class="z1">
+  <div class="container">
+    <div class="footer-logo">
+      <span class="js-badge" style="font-size:.9rem;margin-right:.5rem">JS</span>
+      Mastery Roadmap
+    </div>
+    <p class="footer-sub" style="margin-top:.5rem">159 Topics · 21 Sections · Free Forever</p>
+    <p class="footer-sub" style="margin-top:.3rem;font-size:.75rem;color:#2d3a4a">All data stored locally in your browser. No tracking. No accounts. No servers.</p>
+
+    <div style="display:flex;justify-content:center;gap:1rem;flex-wrap:wrap;margin-top:1.5rem">
+      <span class="badge badge-green">✓ Free Forever</span>
+      <span class="badge badge-blue">✓ No Sign-up</span>
+      <span class="badge badge-purple">✓ Works Offline</span>
+      <span class="badge badge-gold">✓ Open Source</span>
+    </div>
+  </div>
+</footer>
+
+</div><!-- /z1 -->
+
+<script>
+// ─── SCROLL PROGRESS BAR ───
+window.addEventListener('scroll', () => {
+  const scroll = window.scrollY;
+  const total = document.body.scrollHeight - window.innerHeight;
+  document.getElementById('scrollBar').style.width = (scroll / total * 100) + '%';
+});
+
+// ─── PARTICLES ───
+(function(){
+  const canvas = document.getElementById('canvas');
+  const ctx = canvas.getContext('2d');
+  let W, H, particles = [];
+
+  function resize(){ W = canvas.width = window.innerWidth; H = canvas.height = window.innerHeight; }
+  window.addEventListener('resize', resize); resize();
+
+  class P {
+    constructor(){ this.r(); }
+    r(){
+      this.x = Math.random()*W; this.y = Math.random()*H;
+      this.vx = (Math.random()-.5)*.25; this.vy = (Math.random()-.5)*.25;
+      this.rad = Math.random()*1.5+.4;
+      this.a = Math.random()*.35+.05;
+      this.c = Math.random()>.6?'245,158,11':Math.random()>.5?'124,58,237':'59,130,246';
+    }
+    update(){ this.x+=this.vx; this.y+=this.vy; if(this.x<0||this.x>W||this.y<0||this.y>H) this.r(); }
+    draw(){ ctx.beginPath(); ctx.arc(this.x,this.y,this.rad,0,Math.PI*2); ctx.fillStyle=`rgba(${this.c},${this.a})`; ctx.fill(); }
+  }
+  for(let i=0;i<80;i++) particles.push(new P());
+  function loop(){ ctx.clearRect(0,0,W,H); particles.forEach(p=>{p.update();p.draw();}); requestAnimationFrame(loop); }
+  loop();
+})();
+
+// ─── TABS ───
+document.getElementById('tabNav').addEventListener('click', e => {
+  const btn = e.target.closest('.tab-btn');
+  if (!btn) return;
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  btn.classList.add('active');
+  const id = 'tab-' + btn.dataset.tab;
+  document.getElementById(id)?.classList.add('active');
+});
+
+// ─── FAQ ───
+function toggleFaq(el) {
+  const ans = el.nextElementSibling;
+  const chev = el.querySelector('.faq-chev');
+  const isOpen = ans.classList.contains('open');
+  document.querySelectorAll('.faq-a').forEach(a => a.classList.remove('open'));
+  document.querySelectorAll('.faq-chev').forEach(c => c.classList.remove('open'));
+  if (!isOpen) { ans.classList.add('open'); chev.classList.add('open'); }
+}
+
+// ─── SCROLL ANIMATE CARDS ───
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => {
+    if (e.isIntersecting) {
+      e.target.style.opacity = '1';
+      e.target.style.transform = 'none';
+    }
+  });
+}, { threshold: 0.1 });
+
+document.querySelectorAll('.feat-card, .step-card, .rm-card, .faq-item').forEach(el => {
+  el.style.opacity = '0';
+  el.style.transform = 'translateY(16px)';
+  el.style.transition = 'opacity .5s ease, transform .5s ease';
+  observer.observe(el);
+});
+</script>
+</body>
+</html>
