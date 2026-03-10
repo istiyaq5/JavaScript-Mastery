@@ -1,0 +1,4736 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>JS Mastery Roadmap · 159 Topics</title>
+    <link
+      href="https://cdn.jsdelivr.net/npm/daisyui@4.12.10/dist/full.min.css"
+      rel="stylesheet"
+    />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500;600&family=Outfit:wght@300;400;500;600;700;800&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      * {
+        font-family: "Outfit", sans-serif;
+        box-sizing: border-box;
+      }
+      code,
+      pre,
+      .mono,
+      textarea {
+        font-family: "JetBrains Mono", monospace !important;
+      }
+
+      :root {
+        --gold: #f59e0b;
+        --gold2: #f97316;
+        --purple: #7c3aed;
+        --blue: #3b82f6;
+        --bg: #07090f;
+        --bg2: #0d1117;
+        --bg3: #111827;
+        --border: #1e2a3a;
+        --text: #e2e8f0;
+        --muted: #4b5563;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+      body {
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        overflow-x: hidden;
+      }
+
+      /* ── CANVAS PARTICLES ── */
+      #particleCanvas {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        opacity: 0.6;
+      }
+
+      /* ── AMBIENT ORBS ── */
+      .orb {
+        position: fixed;
+        border-radius: 50%;
+        filter: blur(100px);
+        pointer-events: none;
+        z-index: 0;
+      }
+      .orb1 {
+        width: 600px;
+        height: 600px;
+        background: radial-gradient(
+          circle,
+          rgba(124, 58, 237, 0.12),
+          transparent 70%
+        );
+        top: -200px;
+        left: -200px;
+        animation: orbDrift 20s ease-in-out infinite;
+      }
+      .orb2 {
+        width: 500px;
+        height: 500px;
+        background: radial-gradient(
+          circle,
+          rgba(245, 158, 11, 0.08),
+          transparent 70%
+        );
+        bottom: -100px;
+        right: -100px;
+        animation: orbDrift 25s ease-in-out infinite reverse;
+      }
+      .orb3 {
+        width: 400px;
+        height: 400px;
+        background: radial-gradient(
+          circle,
+          rgba(59, 130, 246, 0.06),
+          transparent 70%
+        );
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        animation: orbDrift 18s ease-in-out infinite 5s;
+      }
+      @keyframes orbDrift {
+        0%,
+        100% {
+          transform: translate(0, 0);
+        }
+        33% {
+          transform: translate(40px, -30px);
+        }
+        66% {
+          transform: translate(-20px, 40px);
+        }
+      }
+
+      /* ── GRID OVERLAY ── */
+      .grid-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 0;
+        pointer-events: none;
+        background-image:
+          linear-gradient(rgba(30, 42, 58, 0.4) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(30, 42, 58, 0.4) 1px, transparent 1px);
+        background-size: 60px 60px;
+        mask-image: radial-gradient(
+          ellipse 80% 80% at 50% 50%,
+          black,
+          transparent
+        );
+        animation: gridPulse 8s ease-in-out infinite;
+      }
+      @keyframes gridPulse {
+        0%,
+        100% {
+          opacity: 0.4;
+        }
+        50% {
+          opacity: 0.8;
+        }
+      }
+
+      /* ── Z LAYER ── */
+      .z1 {
+        position: relative;
+        z-index: 1;
+      }
+
+      /* ── HEADER ── */
+      .top-nav {
+        background: rgba(7, 9, 15, 0.85);
+        backdrop-filter: blur(20px);
+        border-bottom: 1px solid rgba(30, 42, 58, 0.8);
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .js-badge {
+        background: #f7df1e;
+        color: #000;
+        font-family: "JetBrains Mono", monospace;
+        font-weight: 700;
+        border-radius: 6px;
+        padding: 3px 8px;
+        font-size: 0.8rem;
+        box-shadow: 0 0 20px rgba(247, 223, 30, 0.3);
+      }
+
+      /* ── HERO TITLE ── */
+      .hero-title {
+        font-size: clamp(2.5rem, 7vw, 5.5rem);
+        font-weight: 800;
+        line-height: 1.05;
+        background: linear-gradient(
+          135deg,
+          #f7df1e 0%,
+          #f59e0b 30%,
+          #f97316 60%,
+          #ef4444 100%
+        );
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        background-size: 300%;
+        animation: titleShimmer 6s linear infinite;
+        text-shadow: none;
+      }
+      @keyframes titleShimmer {
+        0% {
+          background-position: 0%;
+        }
+        50% {
+          background-position: 100%;
+        }
+        100% {
+          background-position: 0%;
+        }
+      }
+
+      /* ── PROGRESS ── */
+      .prog-track {
+        background: var(--border);
+        border-radius: 99px;
+        overflow: hidden;
+        position: relative;
+      }
+      .prog-fill {
+        height: 100%;
+        border-radius: 99px;
+        background: linear-gradient(90deg, #f59e0b, #f97316, #ef4444);
+        transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        position: relative;
+        overflow: hidden;
+      }
+      .prog-fill::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          90deg,
+          transparent,
+          rgba(255, 255, 255, 0.35),
+          transparent
+        );
+        animation: progShimmer 2s linear infinite;
+      }
+      @keyframes progShimmer {
+        0% {
+          transform: translateX(-100%);
+        }
+        100% {
+          transform: translateX(100%);
+        }
+      }
+
+      /* ── STAT CARDS ── */
+      .stat-card {
+        background: linear-gradient(
+          135deg,
+          rgba(13, 17, 23, 0.9),
+          rgba(17, 24, 39, 0.8)
+        );
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+      .stat-card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          135deg,
+          transparent,
+          rgba(255, 255, 255, 0.02)
+        );
+        opacity: 0;
+        transition: opacity 0.3s;
+      }
+      .stat-card:hover {
+        border-color: rgba(245, 158, 11, 0.3);
+        box-shadow: 0 0 30px rgba(245, 158, 11, 0.08);
+      }
+      .stat-card:hover::before {
+        opacity: 1;
+      }
+
+      /* ── SECTION CARDS ── */
+      .section-card {
+        background: rgba(13, 17, 23, 0.95);
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        overflow: hidden;
+        transition:
+          border-color 0.3s,
+          box-shadow 0.3s,
+          transform 0.2s;
+        animation: cardSlideIn 0.5s ease both;
+      }
+      .section-card:hover {
+        border-color: rgba(245, 158, 11, 0.25);
+        box-shadow:
+          0 8px 40px rgba(0, 0, 0, 0.4),
+          0 0 0 1px rgba(245, 158, 11, 0.05);
+      }
+      @keyframes cardSlideIn {
+        from {
+          opacity: 0;
+          transform: translateY(16px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      .section-header {
+        background: rgba(17, 24, 39, 0.8);
+        border-bottom: 1px solid var(--border);
+        padding: 1rem 1.5rem;
+        cursor: pointer;
+        user-select: none;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        transition: background 0.2s;
+      }
+      .section-header:hover {
+        background: rgba(23, 32, 52, 0.9);
+      }
+
+      .section-body {
+        overflow: hidden;
+        max-height: 3000px;
+        transition:
+          max-height 0.45s cubic-bezier(0.4, 0, 0.2, 1),
+          opacity 0.3s;
+        opacity: 1;
+      }
+      .section-body.closed {
+        max-height: 0;
+        opacity: 0;
+      }
+      .chevron {
+        transition: transform 0.35s cubic-bezier(0.4, 0, 0.2, 1);
+        color: var(--muted);
+        font-size: 1.2rem;
+      }
+      .chevron.open {
+        transform: rotate(180deg);
+      }
+
+      /* ── MINI PROG ── */
+      .mini-prog {
+        height: 3px;
+        background: var(--border);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .mini-prog-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #f59e0b, #f97316);
+        border-radius: 99px;
+        transition: width 0.4s ease;
+      }
+
+      /* ── TOPIC CHIPS ── */
+      .topic-chip {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.45rem;
+        background: rgba(17, 24, 39, 0.9);
+        border: 1px solid rgba(30, 42, 58, 0.9);
+        border-radius: 99px;
+        padding: 0.32rem 0.85rem 0.32rem 0.55rem;
+        cursor: pointer;
+        transition: all 0.18s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        font-size: 0.875rem;
+        color: #94a3b8;
+        position: relative;
+        overflow: hidden;
+      }
+      .topic-chip::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: 99px;
+        background: linear-gradient(
+          135deg,
+          rgba(245, 158, 11, 0.15),
+          rgba(249, 115, 22, 0.1)
+        );
+        opacity: 0;
+        transition: opacity 0.2s;
+      }
+      .topic-chip:hover {
+        border-color: rgba(245, 158, 11, 0.5);
+        color: #f5f5f5;
+        transform: translateY(-2px) scale(1.03);
+        box-shadow: 0 4px 16px rgba(245, 158, 11, 0.2);
+      }
+      .topic-chip:hover::before {
+        opacity: 1;
+      }
+      .topic-chip.done {
+        background: rgba(245, 158, 11, 0.08);
+        border-color: rgba(245, 158, 11, 0.4);
+        color: #fbbf24;
+      }
+      .topic-chip.done::before {
+        opacity: 0.5;
+      }
+      .chip-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: rgba(30, 42, 58, 0.9);
+        border: 1.5px solid rgba(75, 85, 99, 0.6);
+        flex-shrink: 0;
+        transition: all 0.2s;
+      }
+      .topic-chip.done .chip-dot {
+        background: #f59e0b;
+        border-color: #fbbf24;
+        box-shadow: 0 0 6px rgba(245, 158, 11, 0.6);
+      }
+
+      /* ── SEARCH ── */
+      .search-wrap {
+        position: relative;
+      }
+      .search-icon {
+        position: absolute;
+        left: 0.9rem;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--muted);
+        pointer-events: none;
+      }
+      .search-input {
+        background: rgba(13, 17, 23, 0.9);
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        padding: 0.65rem 1rem 0.65rem 2.6rem;
+        color: var(--text);
+        font-size: 0.9rem;
+        width: 100%;
+        outline: none;
+        transition: border-color 0.2s;
+      }
+      .search-input:focus {
+        border-color: rgba(245, 158, 11, 0.4);
+      }
+      .search-input::placeholder {
+        color: var(--muted);
+      }
+
+      /* ── FILTER TAGS ── */
+      .ftag {
+        background: rgba(13, 17, 23, 0.9);
+        border: 1px solid var(--border);
+        border-radius: 99px;
+        padding: 0.3rem 0.9rem;
+        font-size: 0.8rem;
+        color: var(--muted);
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .ftag:hover,
+      .ftag.active {
+        background: rgba(245, 158, 11, 0.1);
+        border-color: rgba(245, 158, 11, 0.4);
+        color: #fbbf24;
+      }
+
+      /* ── BUTTONS ── */
+      .btn-gold {
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+        color: #000;
+        border: none;
+        border-radius: 99px;
+        padding: 0.55rem 1.4rem;
+        font-weight: 700;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.875rem;
+      }
+      .btn-gold:hover {
+        transform: scale(1.04);
+        box-shadow: 0 4px 20px rgba(245, 158, 11, 0.35);
+      }
+      .btn-ghost {
+        background: rgba(13, 17, 23, 0.9);
+        border: 1px solid var(--border);
+        border-radius: 99px;
+        padding: 0.5rem 1.1rem;
+        color: #94a3b8;
+        cursor: pointer;
+        transition: all 0.2s;
+        font-size: 0.875rem;
+      }
+      .btn-ghost:hover {
+        border-color: rgba(245, 158, 11, 0.4);
+        color: #f5f5f5;
+      }
+
+      /* ── TOAST ── */
+      .toast {
+        position: fixed;
+        bottom: 1.5rem;
+        left: 50%;
+        transform: translateX(-50%) translateY(60px);
+        background: rgba(17, 24, 39, 0.95);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        border-radius: 12px;
+        padding: 0.7rem 1.5rem;
+        color: #fbbf24;
+        font-size: 0.875rem;
+        font-weight: 500;
+        z-index: 9999;
+        opacity: 0;
+        transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
+        pointer-events: none;
+        backdrop-filter: blur(10px);
+        box-shadow: 0 8px 30px rgba(0, 0, 0, 0.5);
+      }
+      .toast.show {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+      }
+
+      /* ── CONFETTI ── */
+      @keyframes confettiDrop {
+        0% {
+          transform: translateY(-10px) rotate(0deg) scale(1);
+          opacity: 1;
+        }
+        100% {
+          transform: translateY(100vh) rotate(720deg) scale(0.5);
+          opacity: 0;
+        }
+      }
+      .cfeti {
+        position: fixed;
+        width: 8px;
+        height: 8px;
+        z-index: 9999;
+        pointer-events: none;
+        border-radius: 2px;
+        animation: confettiDrop 2.2s ease-in forwards;
+      }
+
+      /* ── MODAL BACKDROP ── */
+      .modal-bg {
+        position: fixed;
+        inset: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.85);
+        backdrop-filter: blur(16px);
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 0.3s;
+      }
+      .modal-bg.open {
+        opacity: 1;
+        pointer-events: all;
+      }
+
+      /* ── MODAL BOX ── */
+      .modal-box {
+        background: rgba(10, 14, 20, 0.98);
+        border: 1px solid rgba(30, 42, 58, 0.9);
+        border-radius: 24px;
+        max-width: 900px;
+        width: 100%;
+        max-height: 90vh;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+        box-shadow:
+          0 40px 100px rgba(0, 0, 0, 0.9),
+          0 0 0 1px rgba(245, 158, 11, 0.08);
+        transform: scale(0.92) translateY(20px);
+        transition:
+          transform 0.35s cubic-bezier(0.34, 1.56, 0.64, 1),
+          box-shadow 0.35s;
+      }
+      .modal-bg.open .modal-box {
+        transform: scale(1) translateY(0);
+        box-shadow:
+          0 60px 120px rgba(0, 0, 0, 0.95),
+          0 0 60px rgba(245, 158, 11, 0.06);
+      }
+
+      .modal-header {
+        padding: 1.5rem 1.8rem 1rem;
+        border-bottom: 1px solid var(--border);
+        flex-shrink: 0;
+      }
+      .modal-tabs-row {
+        display: flex;
+        gap: 0.4rem;
+        flex-wrap: wrap;
+        margin-top: 1rem;
+      }
+      .mtab {
+        background: transparent;
+        border: 1px solid transparent;
+        border-radius: 10px;
+        padding: 0.42rem 1rem;
+        color: var(--muted);
+        font-size: 0.83rem;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .mtab:hover {
+        color: #94a3b8;
+      }
+      .mtab.active {
+        background: rgba(17, 24, 39, 0.9);
+        border-color: var(--border);
+        color: #f5f5f5;
+      }
+
+      .modal-body {
+        overflow-y: auto;
+        flex: 1;
+        padding: 1.5rem 1.8rem;
+      }
+      .modal-body::-webkit-scrollbar {
+        width: 5px;
+      }
+      .modal-body::-webkit-scrollbar-thumb {
+        background: #1e2a3a;
+        border-radius: 99px;
+      }
+
+      .modal-footer {
+        padding: 1rem 1.8rem;
+        border-top: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        flex-shrink: 0;
+      }
+
+      /* ── CODE BLOCKS ── */
+      .code-block {
+        background: #05080e;
+        border: 1px solid rgba(30, 42, 58, 0.8);
+        border-radius: 14px;
+        padding: 1.1rem 1.3rem;
+        overflow-x: auto;
+        position: relative;
+      }
+      .code-block pre {
+        color: #7dd3a8;
+        font-size: 0.84rem;
+        line-height: 1.7;
+        white-space: pre;
+        margin: 0;
+      }
+      .copy-btn {
+        position: absolute;
+        top: 0.6rem;
+        right: 0.7rem;
+        background: rgba(30, 42, 58, 0.9);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 0.25rem 0.6rem;
+        font-size: 0.72rem;
+        color: var(--muted);
+        cursor: pointer;
+        transition: all 0.15s;
+      }
+      .copy-btn:hover {
+        background: #1e2a3a;
+        color: var(--text);
+      }
+      .copy-btn.ok {
+        color: #68d391;
+        border-color: #68d391;
+      }
+
+      /* ── EDITOR ── */
+      .editor {
+        background: #05080e;
+        border: 1px solid rgba(30, 42, 58, 0.8);
+        border-radius: 14px;
+        padding: 1rem;
+        color: #e2e8f0;
+        width: 100%;
+        min-height: 130px;
+        resize: vertical;
+        outline: none;
+        line-height: 1.7;
+        font-size: 0.84rem;
+        transition: border-color 0.2s;
+      }
+      .editor:focus {
+        border-color: rgba(245, 158, 11, 0.35);
+      }
+      .output-pre {
+        background: #04070c;
+        border: 1px solid rgba(30, 42, 58, 0.6);
+        border-radius: 10px;
+        padding: 0.8rem 1rem;
+        font-size: 0.82rem;
+        color: #86efac;
+        white-space: pre-wrap;
+        min-height: 50px;
+        line-height: 1.6;
+      }
+      .output-pre.err {
+        color: #fca5a5;
+      }
+
+      /* ── AI CHAT ── */
+      .ai-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0.75rem;
+        max-height: 340px;
+        overflow-y: auto;
+        padding: 0.5rem 0;
+      }
+      .ai-wrap::-webkit-scrollbar {
+        width: 4px;
+      }
+      .ai-wrap::-webkit-scrollbar-thumb {
+        background: #1e2a3a;
+        border-radius: 99px;
+      }
+      .bubble-user {
+        align-self: flex-end;
+        max-width: 80%;
+        background: rgba(124, 58, 237, 0.15);
+        border: 1px solid rgba(124, 58, 237, 0.3);
+        border-radius: 16px 16px 4px 16px;
+        padding: 0.7rem 1rem;
+        font-size: 0.875rem;
+        color: #d8b4fe;
+        line-height: 1.5;
+      }
+      .bubble-ai {
+        align-self: flex-start;
+        max-width: 85%;
+        background: rgba(13, 17, 23, 0.9);
+        border: 1px solid rgba(30, 42, 58, 0.8);
+        border-radius: 16px 16px 16px 4px;
+        padding: 0.7rem 1rem;
+        font-size: 0.875rem;
+        color: #cbd5e1;
+        line-height: 1.6;
+      }
+      .bubble-ai code {
+        background: rgba(17, 24, 39, 0.9);
+        border: 1px solid #1e2a3a;
+        padding: 0.1rem 0.35rem;
+        border-radius: 4px;
+        color: #a78bfa;
+        font-size: 0.8rem;
+      }
+      .bubble-ai pre.iblock {
+        background: #05080e;
+        border: 1px solid #1e2a3a;
+        border-radius: 10px;
+        padding: 0.7rem;
+        color: #86efac;
+        font-size: 0.78rem;
+        overflow-x: auto;
+        margin: 0.5rem 0;
+        white-space: pre;
+      }
+      .typing-ind {
+        display: flex;
+        align-items: center;
+        gap: 3px;
+        padding: 0.5rem 0;
+      }
+      .tdot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: #7c3aed;
+        animation: tdot 1.2s ease-in-out infinite;
+      }
+      .tdot:nth-child(2) {
+        animation-delay: 0.2s;
+      }
+      .tdot:nth-child(3) {
+        animation-delay: 0.4s;
+      }
+      @keyframes tdot {
+        0%,
+        100% {
+          transform: translateY(0);
+          opacity: 0.4;
+        }
+        50% {
+          transform: translateY(-5px);
+          opacity: 1;
+        }
+      }
+
+      /* ── API KEY MODAL ── */
+      .key-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 200;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        padding: 1rem;
+        background: rgba(0, 0, 0, 0.9);
+        backdrop-filter: blur(20px);
+      }
+      .key-box {
+        background: rgba(10, 14, 20, 0.99);
+        border: 1px solid rgba(124, 58, 237, 0.3);
+        border-radius: 20px;
+        max-width: 480px;
+        width: 100%;
+        padding: 2rem;
+        box-shadow:
+          0 40px 100px rgba(0, 0, 0, 0.9),
+          0 0 60px rgba(124, 58, 237, 0.1);
+        animation: keyBoxIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      @keyframes keyBoxIn {
+        from {
+          opacity: 0;
+          transform: scale(0.85) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: scale(1) translateY(0);
+        }
+      }
+
+      /* ── SCROLLBAR GLOBAL ── */
+      ::-webkit-scrollbar {
+        width: 6px;
+        height: 6px;
+      }
+      ::-webkit-scrollbar-track {
+        background: #07090f;
+      }
+      ::-webkit-scrollbar-thumb {
+        background: #1e2a3a;
+        border-radius: 99px;
+      }
+      ::-webkit-scrollbar-thumb:hover {
+        background: #2d3d52;
+      }
+
+      /* ── AI BADGE ── */
+      .ai-badge {
+        background: linear-gradient(135deg, #6366f1, #8b5cf6);
+        color: #fff;
+        font-size: 0.68rem;
+        font-weight: 700;
+        border-radius: 6px;
+        padding: 2px 7px;
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+      }
+
+      /* ── SECTION COMPLETE BADGE ── */
+      .sec-complete {
+        background: rgba(245, 158, 11, 0.12);
+        border: 1px solid rgba(245, 158, 11, 0.3);
+        border-radius: 99px;
+        padding: 1px 8px;
+        font-size: 0.72rem;
+        color: #fbbf24;
+        font-weight: 600;
+      }
+
+      /* ── MILESTONE BANNER ── */
+      .milestone-banner {
+        background: linear-gradient(
+          135deg,
+          rgba(245, 158, 11, 0.1),
+          rgba(249, 115, 22, 0.07)
+        );
+        border: 1px solid rgba(245, 158, 11, 0.2);
+        border-radius: 14px;
+        padding: 0.85rem 1.2rem;
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        animation: bannerIn 0.5s ease;
+      }
+      @keyframes bannerIn {
+        from {
+          opacity: 0;
+          transform: translateY(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── NOTES ── */
+      .note-area {
+        background: #05080e;
+        border: 1px solid rgba(30, 42, 58, 0.8);
+        border-radius: 14px;
+        padding: 1rem;
+        color: #e2e8f0;
+        width: 100%;
+        min-height: 160px;
+        resize: vertical;
+        outline: none;
+        font-size: 0.875rem;
+        line-height: 1.6;
+        transition: border-color 0.2s;
+      }
+      .note-area:focus {
+        border-color: rgba(245, 158, 11, 0.35);
+      }
+
+      /* ── QUICK PROMPTS ── */
+      .qprompt {
+        background: rgba(13, 17, 23, 0.9);
+        border: 1px solid var(--border);
+        border-radius: 99px;
+        padding: 0.28rem 0.75rem;
+        font-size: 0.78rem;
+        color: #64748b;
+        cursor: pointer;
+        transition: all 0.15s;
+        white-space: nowrap;
+      }
+      .qprompt:hover {
+        border-color: rgba(124, 58, 237, 0.4);
+        color: #a78bfa;
+      }
+
+      /* ── PULSE DOT ── */
+      .pulse-dot {
+        display: inline-block;
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: #22c55e;
+        box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.5);
+        animation: pulseDot 2s infinite;
+      }
+      @keyframes pulseDot {
+        0% {
+          box-shadow: 0 0 0 0 rgba(34, 197, 94, 0.4);
+        }
+        70% {
+          box-shadow: 0 0 0 8px rgba(34, 197, 94, 0);
+        }
+        100% {
+          box-shadow: 0 0 0 0 rgba(34, 197, 94, 0);
+        }
+      }
+
+      /* ── STAGGER SECTION CARDS ── */
+      .section-card:nth-child(1) {
+        animation-delay: 0.02s;
+      }
+      .section-card:nth-child(2) {
+        animation-delay: 0.05s;
+      }
+      .section-card:nth-child(3) {
+        animation-delay: 0.08s;
+      }
+      .section-card:nth-child(4) {
+        animation-delay: 0.11s;
+      }
+      .section-card:nth-child(5) {
+        animation-delay: 0.14s;
+      }
+      .section-card:nth-child(6) {
+        animation-delay: 0.17s;
+      }
+      .section-card:nth-child(7) {
+        animation-delay: 0.2s;
+      }
+      .section-card:nth-child(8) {
+        animation-delay: 0.23s;
+      }
+      .section-card:nth-child(n + 9) {
+        animation-delay: 0.26s;
+      }
+
+      @media (max-width: 640px) {
+        .modal-header {
+          padding: 1.2rem;
+        }
+        .modal-body {
+          padding: 1.2rem;
+        }
+        .modal-footer {
+          padding: 0.8rem 1.2rem;
+        }
+        .section-header {
+          padding: 0.85rem 1rem;
+        }
+      }
+
+      /* ── EXPLAIN HERO ── */
+      .explain-hero {
+        display: flex;
+        gap: 1rem;
+        align-items: flex-start;
+        background: linear-gradient(
+          135deg,
+          rgba(245, 158, 11, 0.05),
+          rgba(124, 58, 237, 0.04)
+        );
+        border: 1px solid rgba(245, 158, 11, 0.15);
+        border-radius: 16px;
+        padding: 1.2rem;
+        animation: explainIn 0.5s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      @keyframes explainIn {
+        from {
+          opacity: 0;
+          transform: translateY(12px) scale(0.97);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .explain-icon-wrap {
+        font-size: 2.2rem;
+        line-height: 1;
+        flex-shrink: 0;
+        animation: iconBounce 1s cubic-bezier(0.34, 1.56, 0.64, 1) 0.2s both;
+      }
+      @keyframes iconBounce {
+        from {
+          transform: scale(0) rotate(-20deg);
+        }
+        to {
+          transform: scale(1) rotate(0);
+        }
+      }
+
+      /* ── ELI5 BOX ── */
+      .eli5-box {
+        background: rgba(59, 130, 246, 0.06);
+        border: 1px solid rgba(59, 130, 246, 0.2);
+        border-radius: 14px;
+        padding: 1rem 1.2rem;
+        animation: explainIn 0.5s ease 0.15s both;
+      }
+      .eli5-label {
+        font-size: 0.75rem;
+        font-weight: 700;
+        color: #60a5fa;
+        letter-spacing: 0.5px;
+        margin-bottom: 0.5rem;
+        text-transform: uppercase;
+      }
+
+      /* ── KEY POINTS ── */
+      .keypoints-wrap {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .keypoint-item {
+        display: flex;
+        align-items: flex-start;
+        gap: 0.7rem;
+        background: rgba(13, 17, 23, 0.8);
+        border: 1px solid rgba(30, 42, 58, 0.8);
+        border-radius: 12px;
+        padding: 0.7rem 1rem;
+        font-size: 0.875rem;
+        color: #94a3b8;
+        animation: kpIn 0.4s ease both;
+        transition:
+          border-color 0.2s,
+          background 0.2s;
+      }
+      .keypoint-item:hover {
+        border-color: rgba(245, 158, 11, 0.2);
+        background: rgba(17, 24, 39, 0.9);
+      }
+      @keyframes kpIn {
+        from {
+          opacity: 0;
+          transform: translateX(-10px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .kp-num {
+        min-width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #f59e0b, #f97316);
+        color: #000;
+        font-size: 0.7rem;
+        font-weight: 800;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      /* ── SCENARIO CARD ── */
+      .scenario-card {
+        background: linear-gradient(
+          135deg,
+          rgba(34, 197, 94, 0.05),
+          rgba(16, 185, 129, 0.04)
+        );
+        border: 1px solid rgba(34, 197, 94, 0.2);
+        border-radius: 14px;
+        padding: 1.2rem;
+      }
+      .scenario-badge {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #4ade80;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
+      }
+      .where-seen {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 0.4rem;
+        padding: 0.5rem 0;
+      }
+      .where-tag {
+        background: rgba(99, 102, 241, 0.1);
+        border: 1px solid rgba(99, 102, 241, 0.3);
+        border-radius: 6px;
+        padding: 0.2rem 0.6rem;
+        font-size: 0.75rem;
+        color: #a5b4fc;
+        font-weight: 500;
+      }
+
+      /* ── CODE ANNOTATIONS ── */
+      .code-annotation {
+        display: flex;
+        gap: 0.6rem;
+        align-items: flex-start;
+        background: rgba(13, 17, 23, 0.7);
+        border-left: 3px solid #f59e0b;
+        border-radius: 0 10px 10px 0;
+        padding: 0.6rem 0.9rem;
+        font-size: 0.82rem;
+        color: #94a3b8;
+        animation: annoIn 0.4s ease both;
+      }
+      @keyframes annoIn {
+        from {
+          opacity: 0;
+          transform: translateX(8px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .anno-line {
+        font-size: 0.7rem;
+        font-weight: 700;
+        color: #f59e0b;
+        background: rgba(245, 158, 11, 0.1);
+        border-radius: 4px;
+        padding: 1px 5px;
+        white-space: nowrap;
+        flex-shrink: 0;
+        margin-top: 1px;
+      }
+
+      /* ── QUIZ ── */
+      .quiz-intro {
+        text-align: center;
+        padding: 2rem 1rem;
+        animation: explainIn 0.5s ease both;
+      }
+      .quiz-intro-icon {
+        font-size: 3.5rem;
+        margin-bottom: 0.75rem;
+        animation: iconBounce 0.6s cubic-bezier(0.34, 1.56, 0.64, 1) 0.1s both;
+      }
+      .quiz-progress-row {
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+        margin-bottom: 1.2rem;
+      }
+      .quiz-prog-track {
+        flex: 1;
+        height: 4px;
+        background: var(--border);
+        border-radius: 99px;
+        overflow: hidden;
+      }
+      .quiz-prog-fill {
+        height: 100%;
+        background: linear-gradient(90deg, #f59e0b, #f97316);
+        border-radius: 99px;
+        transition: width 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+      }
+      .quiz-question-card {
+        background: rgba(13, 17, 23, 0.95);
+        border: 1px solid rgba(30, 42, 58, 0.9);
+        border-radius: 16px;
+        padding: 1.2rem;
+        margin-bottom: 1rem;
+        animation: qIn 0.4s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      @keyframes qIn {
+        from {
+          opacity: 0;
+          transform: translateY(10px) scale(0.98);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .quiz-q-num {
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #f59e0b;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-bottom: 0.4rem;
+      }
+      .quiz-q-text {
+        color: #e2e8f0;
+        font-size: 0.95rem;
+        line-height: 1.5;
+        font-weight: 500;
+      }
+      .quiz-options-grid {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+      }
+      .quiz-option {
+        background: rgba(17, 24, 39, 0.9);
+        border: 1.5px solid rgba(30, 42, 58, 0.9);
+        border-radius: 12px;
+        padding: 0.8rem 1rem;
+        color: #94a3b8;
+        font-size: 0.875rem;
+        cursor: pointer;
+        transition: all 0.18s;
+        text-align: left;
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        animation: optIn 0.3s ease both;
+      }
+      @keyframes optIn {
+        from {
+          opacity: 0;
+          transform: translateX(-8px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .quiz-option:hover:not(:disabled) {
+        border-color: rgba(245, 158, 11, 0.4);
+        color: #f5f5f5;
+        background: rgba(23, 32, 52, 0.9);
+        transform: translateX(3px);
+      }
+      .quiz-option.correct {
+        border-color: #22c55e;
+        background: rgba(34, 197, 94, 0.1);
+        color: #86efac;
+      }
+      .quiz-option.wrong {
+        border-color: #ef4444;
+        background: rgba(239, 68, 68, 0.08);
+        color: #fca5a5;
+      }
+      .quiz-option:disabled {
+        cursor: default;
+      }
+      .quiz-opt-letter {
+        min-width: 24px;
+        height: 24px;
+        border-radius: 50%;
+        background: rgba(30, 42, 58, 0.9);
+        border: 1px solid rgba(75, 85, 99, 0.5);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 0.72rem;
+        font-weight: 700;
+        color: #64748b;
+        flex-shrink: 0;
+        transition: all 0.2s;
+      }
+      .quiz-option.correct .quiz-opt-letter {
+        background: #22c55e;
+        border-color: #22c55e;
+        color: #000;
+      }
+      .quiz-option.wrong .quiz-opt-letter {
+        background: #ef4444;
+        border-color: #ef4444;
+        color: #fff;
+      }
+      .quiz-feedback {
+        border-radius: 12px;
+        padding: 0.9rem 1.1rem;
+        font-size: 0.875rem;
+        line-height: 1.5;
+        animation: feedbackIn 0.35s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      @keyframes feedbackIn {
+        from {
+          opacity: 0;
+          transform: scale(0.95);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .quiz-feedback.correct-fb {
+        background: rgba(34, 197, 94, 0.08);
+        border: 1px solid rgba(34, 197, 94, 0.25);
+        color: #86efac;
+      }
+      .quiz-feedback.wrong-fb {
+        background: rgba(239, 68, 68, 0.08);
+        border: 1px solid rgba(239, 68, 68, 0.25);
+        color: #fca5a5;
+      }
+      .quiz-result-card {
+        text-align: center;
+        padding: 2rem 1rem;
+        animation: explainIn 0.5s ease both;
+      }
+      .quiz-result-icon {
+        font-size: 4rem;
+        margin-bottom: 0.5rem;
+        animation: iconBounce 0.7s cubic-bezier(0.34, 1.56, 0.64, 1) both;
+      }
+      .quiz-result-score {
+        font-size: 3rem;
+        font-weight: 800;
+        color: #f59e0b;
+        line-height: 1;
+      }
+      .quiz-result-msg {
+        color: #94a3b8;
+        font-size: 1rem;
+        margin: 0.5rem 0 1rem;
+      }
+      .quiz-result-details {
+        display: flex;
+        flex-direction: column;
+        gap: 0.4rem;
+        text-align: left;
+        max-width: 340px;
+        margin: 0 auto;
+      }
+      .quiz-detail-row {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.8rem;
+        padding: 0.4rem 0.7rem;
+        border-radius: 8px;
+        background: rgba(13, 17, 23, 0.7);
+        border: 1px solid rgba(30, 42, 58, 0.7);
+      }
+
+      /* ── CHALLENGE TAB ── */
+      .challenge-header {
+        background: linear-gradient(
+          135deg,
+          rgba(249, 115, 22, 0.06),
+          rgba(245, 158, 11, 0.04)
+        );
+        border: 1px solid rgba(249, 115, 22, 0.2);
+        border-radius: 16px;
+        padding: 1.2rem;
+        margin-bottom: 1rem;
+        animation: explainIn 0.5s ease both;
+      }
+      .challenge-badge-row {
+        display: flex;
+        align-items: center;
+        gap: 0.7rem;
+        margin-bottom: 0.4rem;
+      }
+      .challenge-badge {
+        font-size: 0.72rem;
+        font-weight: 700;
+        background: rgba(249, 115, 22, 0.15);
+        border: 1px solid rgba(249, 115, 22, 0.3);
+        border-radius: 99px;
+        padding: 0.2rem 0.7rem;
+        color: #fb923c;
+        letter-spacing: 0.3px;
+      }
+      .challenge-time {
+        font-size: 0.72rem;
+        color: #64748b;
+      }
+      .scenario-context {
+        background: rgba(124, 58, 237, 0.06);
+        border: 1px solid rgba(124, 58, 237, 0.2);
+        border-radius: 12px;
+        padding: 0.9rem 1.1rem;
+        font-size: 0.875rem;
+        color: #c4b5fd;
+        line-height: 1.6;
+      }
+      .expected-output {
+        background: #04070c;
+        border: 1px solid rgba(30, 42, 58, 0.7);
+        border-radius: 10px;
+        padding: 0.7rem 1rem;
+      }
+      .expected-label {
+        font-size: 0.7rem;
+        color: #4b5563;
+        font-weight: 700;
+        letter-spacing: 0.5px;
+        text-transform: uppercase;
+        margin-bottom: 0.3rem;
+      }
+      .expected-val {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.82rem;
+        color: #68d391;
+        white-space: pre;
+      }
+      .hint-box {
+        background: rgba(245, 158, 11, 0.07);
+        border: 1px solid rgba(245, 158, 11, 0.25);
+        border-radius: 12px;
+        padding: 0.9rem 1.1rem;
+        font-size: 0.875rem;
+        color: #fcd34d;
+        line-height: 1.5;
+        animation: explainIn 0.35s ease both;
+      }
+      .solution-box {
+        background: rgba(16, 185, 129, 0.06);
+        border: 1px solid rgba(16, 185, 129, 0.2);
+        border-radius: 12px;
+        padding: 0.9rem 1.1rem;
+        animation: explainIn 0.35s ease both;
+      }
+      .solution-box pre {
+        font-family: "JetBrains Mono", monospace;
+        font-size: 0.82rem;
+        color: #6ee7b7;
+        white-space: pre-wrap;
+        line-height: 1.6;
+      }
+
+      /* ── DAILY CHALLENGE BANNER ── */
+      .daily-banner {
+        background: linear-gradient(
+          135deg,
+          rgba(124, 58, 237, 0.12),
+          rgba(59, 130, 246, 0.08)
+        );
+        border: 1px solid rgba(124, 58, 237, 0.25);
+        border-radius: 16px;
+        padding: 1rem 1.4rem;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 1rem;
+        flex-wrap: wrap;
+        margin-bottom: 1rem;
+        animation: bannerIn 0.5s ease both;
+        cursor: pointer;
+        transition: border-color 0.2s;
+      }
+      .daily-banner:hover {
+        border-color: rgba(124, 58, 237, 0.5);
+      }
+      .streak-counter {
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.85rem;
+        color: #a78bfa;
+        font-weight: 600;
+      }
+      .streak-fire {
+        font-size: 1.4rem;
+        animation: fireFlicker 1.5s ease-in-out infinite;
+      }
+      @keyframes fireFlicker {
+        0%,
+        100% {
+          transform: scale(1) rotate(-3deg);
+        }
+        50% {
+          transform: scale(1.1) rotate(3deg);
+        }
+      }
+
+      /* ── FLOATING ACTION BUTTON ── */
+      .fab-quiz {
+        position: fixed;
+        bottom: 5rem;
+        right: 1.5rem;
+        background: linear-gradient(135deg, #7c3aed, #6366f1);
+        color: #fff;
+        border: none;
+        border-radius: 99px;
+        padding: 0.65rem 1.1rem 0.65rem 0.9rem;
+        display: flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.82rem;
+        font-weight: 700;
+        cursor: pointer;
+        z-index: 40;
+        box-shadow: 0 8px 30px rgba(124, 58, 237, 0.4);
+        transition: all 0.2s;
+        animation: fabIn 1s ease 2s both;
+      }
+      @keyframes fabIn {
+        from {
+          opacity: 0;
+          transform: scale(0.5) translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: none;
+        }
+      }
+      .fab-quiz:hover {
+        transform: scale(1.06) translateY(-2px);
+        box-shadow: 0 12px 40px rgba(124, 58, 237, 0.5);
+      }
+
+      /* ── TOPIC DIFFICULTY DOTS ── */
+      .diff-dot {
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        display: inline-block;
+        flex-shrink: 0;
+      }
+      .diff-easy {
+        background: #22c55e;
+      }
+      .diff-med {
+        background: #f59e0b;
+      }
+      .diff-hard {
+        background: #ef4444;
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Ambient layers -->
+    <canvas id="particleCanvas"></canvas>
+    <div class="grid-bg"></div>
+    <div class="orb orb1"></div>
+    <div class="orb orb2"></div>
+    <div class="orb orb3"></div>
+
+    <!-- Toast -->
+    <div class="toast" id="toastEl"></div>
+
+    <!-- API key modal removed - using built-in AI engine -->
+
+    <!-- ═══════════════ TOP NAV ═══════════════ -->
+    <nav class="top-nav z1">
+      <div
+        class="max-w-6xl mx-auto px-4 py-3 flex items-center justify-between gap-4 flex-wrap"
+      >
+        <div class="flex items-center gap-3">
+          <span class="js-badge">JS</span>
+          <div>
+            <h1
+              class="font-bold text-white text-lg leading-none tracking-tight"
+            >
+              Mastery Roadmap
+            </h1>
+            <p class="text-xs text-slate-600 mt-0.5">
+              159 topics · structured learning path
+            </p>
+          </div>
+        </div>
+        <div class="flex items-center gap-5">
+          <div class="text-center hidden sm:block">
+            <div class="text-xl font-bold text-amber-400" id="hCompleted">
+              0
+            </div>
+            <div class="text-xs text-slate-600">done</div>
+          </div>
+          <div class="text-center hidden sm:block">
+            <div class="text-xl font-bold text-red-400" id="hRemaining">
+              159
+            </div>
+            <div class="text-xs text-slate-600">left</div>
+          </div>
+          <div class="min-w-[110px]">
+            <div class="text-xs text-slate-600 mb-1 text-right" id="hPercent">
+              0%
+            </div>
+            <div class="prog-track h-2 w-28">
+              <div
+                class="prog-fill h-full"
+                id="hProgFill"
+                style="width: 0%"
+              ></div>
+            </div>
+          </div>
+          <button
+            id="aiKeyBtn"
+            class="flex items-center gap-2 btn-ghost text-xs py-2 px-3 rounded-xl"
+            title="AI Tutor Active"
+          >
+            <span class="pulse-dot" id="aiDot"></span>
+            AI Tutor
+          </button>
+        </div>
+      </div>
+    </nav>
+
+    <!-- ═══════════════ HERO ═══════════════ -->
+    <section class="z1 border-b border-slate-900 pb-8 pt-10 px-4">
+      <div class="max-w-6xl mx-auto">
+        <div class="text-center mb-8">
+          <div
+            class="inline-flex items-center gap-2 bg-amber-500/8 border border-amber-500/20 rounded-full px-4 py-1.5 text-amber-300/80 text-xs mb-5"
+          >
+            <span class="pulse-dot"></span>
+            AI-Powered · 159 Topics · Interactive Practice
+          </div>
+          <h1 class="hero-title mb-3">JavaScript Mastery</h1>
+          <p class="text-slate-500 text-lg max-w-md mx-auto">
+            Master every concept from basics to advanced with AI explanations on
+            demand
+          </p>
+        </div>
+
+        <!-- Stat cards -->
+        <div
+          class="grid grid-cols-2 md:grid-cols-4 gap-3 mb-6"
+          id="milestoneArea"
+        >
+          <div class="stat-card p-4 text-center">
+            <div class="text-3xl font-bold text-amber-400" id="sDone">0</div>
+            <div class="text-xs text-slate-600 mt-1">Topics Done</div>
+          </div>
+          <div class="stat-card p-4 text-center">
+            <div class="text-3xl font-bold text-red-400" id="sLeft">159</div>
+            <div class="text-xs text-slate-600 mt-1">Remaining</div>
+          </div>
+          <div class="stat-card p-4 text-center">
+            <div class="text-3xl font-bold text-indigo-400" id="sSecs">0</div>
+            <div class="text-xs text-slate-600 mt-1">Sections Done</div>
+          </div>
+          <div class="stat-card p-4 text-center">
+            <div class="text-3xl font-bold text-emerald-400" id="sPct">0%</div>
+            <div class="text-xs text-slate-600 mt-1">Complete</div>
+          </div>
+        </div>
+
+        <!-- Progress bar -->
+        <div class="prog-track h-3 mb-2">
+          <div class="prog-fill h-full" id="mainFill" style="width: 0%"></div>
+        </div>
+        <div class="flex justify-between text-xs text-slate-700">
+          <span>Beginner</span><span>Intermediate</span><span>Advanced</span
+          ><span>Master 🏆</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- ═══════════════ DAILY CHALLENGE BANNER ═══════════════ -->
+    <div class="z1 max-w-6xl mx-auto px-4 pt-3 pb-1">
+      <div class="daily-banner" id="dailyBanner">
+        <div class="flex items-center gap-3">
+          <span class="streak-fire">🔥</span>
+          <div>
+            <div class="text-white font-bold text-sm">Daily Challenge</div>
+            <div class="text-slate-500 text-xs" id="dailyChallengeHint">
+              Click any topic → Challenge tab to solve real-world problems
+            </div>
+          </div>
+        </div>
+        <div class="streak-counter">
+          <span>Streak:</span>
+          <span class="text-amber-400" id="streakCount">0</span>
+          <span>days 🏆</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ CONTROLS ═══════════════ -->
+    <div class="z1 max-w-6xl mx-auto px-4 py-4">
+      <div class="flex flex-wrap gap-3 items-center justify-between">
+        <div class="search-wrap flex-1 min-w-[200px] max-w-xs">
+          <svg
+            class="search-icon w-4 h-4"
+            fill="none"
+            stroke="currentColor"
+            viewBox="0 0 24 24"
+          >
+            <path
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+            />
+          </svg>
+          <input
+            type="text"
+            class="search-input"
+            id="searchInput"
+            placeholder="Search 159 topics... (press /)"
+          />
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <button class="ftag active" data-filter="all">All</button>
+          <button class="ftag" data-filter="done">✓ Done</button>
+          <button class="ftag" data-filter="todo">○ Todo</button>
+        </div>
+        <div class="flex gap-2 flex-wrap">
+          <button id="expandAll" class="btn-ghost text-xs py-2">
+            📂 Expand
+          </button>
+          <button id="collapseAll" class="btn-ghost text-xs py-2">
+            📁 Collapse
+          </button>
+          <button
+            id="resetBtn"
+            class="btn-ghost text-xs py-2 hover:!border-red-500 hover:!text-red-400"
+          >
+            🔄 Reset
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- ═══════════════ ROADMAP ═══════════════ -->
+    <main
+      class="z1 max-w-6xl mx-auto px-4 pb-20 flex flex-col gap-4"
+      id="roadmapContainer"
+    ></main>
+
+    <!-- ═══════════════ MODAL ═══════════════ -->
+    <div class="modal-bg" id="topicModal">
+      <div class="modal-box">
+        <!-- Modal Header -->
+        <div class="modal-header">
+          <div class="flex items-start justify-between gap-4">
+            <div class="flex-1 min-w-0">
+              <div class="flex items-center gap-2 mb-2 flex-wrap">
+                <span class="text-xs text-slate-500 font-mono" id="mSection"
+                  >—</span
+                >
+                <span class="w-1 h-1 rounded-full bg-slate-700"></span>
+                <span class="ai-badge">AI Tutor</span>
+              </div>
+              <h2 class="text-2xl font-bold text-white truncate" id="mTitle">
+                —
+              </h2>
+            </div>
+            <div class="flex items-center gap-3 flex-shrink-0">
+              <label
+                class="flex items-center gap-2 cursor-pointer bg-slate-900 border border-slate-700 rounded-xl px-3 py-2 hover:border-amber-500/40 transition-all"
+              >
+                <input
+                  type="checkbox"
+                  id="mCheck"
+                  style="accent-color: #f59e0b; width: 1rem; height: 1rem"
+                />
+                <span class="text-sm text-slate-400">Done</span>
+              </label>
+              <button
+                id="closeModal"
+                class="w-9 h-9 rounded-full bg-slate-900 border border-slate-700 flex items-center justify-center text-slate-500 hover:text-red-400 hover:border-red-500/40 transition-all text-lg"
+              >
+                ✕
+              </button>
+            </div>
+          </div>
+          <div class="modal-tabs-row" id="modalTabsRow">
+            <button class="mtab active" data-tab="explain">📖 Learn</button>
+            <button class="mtab" data-tab="code">💻 Code</button>
+            <button class="mtab" data-tab="realworld">🌍 Real World</button>
+            <button class="mtab" data-tab="quiz">🧠 Quiz</button>
+            <button class="mtab" data-tab="challenge">🚀 Challenge</button>
+            <button class="mtab" data-tab="practice">🏋️ Practice</button>
+            <button class="mtab" data-tab="notes">📝 Notes</button>
+            <button class="mtab" data-tab="ai">🤖 Ask AI</button>
+          </div>
+        </div>
+
+        <!-- Modal Body -->
+        <div class="modal-body">
+          <!-- EXPLAIN (enhanced) -->
+          <div id="tab-explain" class="tab-pane">
+            <!-- Animated concept card -->
+            <div class="explain-hero mb-4" id="mExplainHero">
+              <div class="explain-icon-wrap">
+                <span id="mExplainIcon">💡</span>
+              </div>
+              <div class="explain-content">
+                <p
+                  class="text-slate-200 leading-relaxed text-[.97rem]"
+                  id="mExplain"
+                ></p>
+              </div>
+            </div>
+            <!-- ELI5 Box -->
+            <div class="eli5-box mb-4" id="mEli5Box">
+              <div class="eli5-label">🧒 ELI5 — Explain Like I'm 5</div>
+              <p class="text-slate-300 text-sm leading-relaxed" id="mEli5"></p>
+            </div>
+            <!-- Key points -->
+            <div class="keypoints-wrap" id="mKeyPoints"></div>
+            <!-- Tags -->
+            <div class="flex gap-2 flex-wrap mt-4" id="mTags"></div>
+          </div>
+
+          <!-- CODE (enhanced) -->
+          <div id="tab-code" class="tab-pane hidden">
+            <!-- Annotated code with step reveal -->
+            <div
+              class="code-steps-header mb-3 flex items-center justify-between"
+            >
+              <span class="text-xs text-slate-500 font-mono"
+                >Step-by-step breakdown</span
+              >
+              <button
+                id="animateCodeBtn"
+                class="btn-ghost text-xs py-1.5 px-3 rounded-lg text-amber-400 border-amber-500/30"
+              >
+                ▶ Animate
+              </button>
+            </div>
+            <div class="code-block" id="mCodeBlock">
+              <button class="copy-btn" data-target="mCode">Copy</button>
+              <pre id="mCode"></pre>
+            </div>
+            <!-- Code annotations -->
+            <div id="mCodeAnnotations" class="mt-3 flex flex-col gap-2"></div>
+          </div>
+
+          <!-- REAL WORLD (enhanced) -->
+          <div id="tab-realworld" class="tab-pane hidden">
+            <!-- Real-world scenario card -->
+            <div class="scenario-card mb-4" id="mScenarioCard">
+              <div class="scenario-badge">🏢 Real-World Scenario</div>
+              <p
+                class="text-slate-200 leading-relaxed text-[.95rem] mt-2"
+                id="mRealWorld"
+              ></p>
+            </div>
+            <!-- Where you'll see it -->
+            <div class="where-seen mb-4" id="mWhereSeen"></div>
+            <div class="code-block">
+              <button class="copy-btn" data-target="mRealCode">Copy</button>
+              <pre id="mRealCode"></pre>
+            </div>
+          </div>
+
+          <!-- QUIZ (NEW) -->
+          <div id="tab-quiz" class="tab-pane hidden">
+            <div id="quizContainer">
+              <div class="quiz-intro" id="quizIntro">
+                <div class="quiz-intro-icon">🧠</div>
+                <h3 class="text-white font-bold text-lg mb-2">
+                  Test Your Knowledge
+                </h3>
+                <p class="text-slate-400 text-sm mb-4">
+                  4 questions · Multiple choice · Instant feedback
+                </p>
+                <button
+                  id="startQuizBtn"
+                  class="btn-gold px-8 py-3 rounded-xl text-base"
+                >
+                  Start Quiz →
+                </button>
+              </div>
+              <div id="quizActive" class="hidden">
+                <div class="quiz-progress-row">
+                  <div class="quiz-prog-track">
+                    <div class="quiz-prog-fill" id="quizProgFill"></div>
+                  </div>
+                  <span
+                    class="text-xs text-slate-500 font-mono"
+                    id="quizProgLabel"
+                    >1 / 4</span
+                  >
+                </div>
+                <div id="quizQuestion" class="quiz-question-card">
+                  <div class="quiz-q-num" id="quizQNum">Q1</div>
+                  <p class="quiz-q-text" id="quizQText"></p>
+                </div>
+                <div id="quizOptions" class="quiz-options-grid"></div>
+                <div id="quizFeedback" class="quiz-feedback hidden"></div>
+                <button
+                  id="quizNextBtn"
+                  class="btn-gold mt-4 hidden px-6 py-2 rounded-xl"
+                >
+                  Next Question →
+                </button>
+              </div>
+              <div id="quizResult" class="hidden quiz-result-card">
+                <div class="quiz-result-icon" id="quizResultIcon">🏆</div>
+                <div class="quiz-result-score" id="quizResultScore">4/4</div>
+                <div class="quiz-result-msg" id="quizResultMsg">
+                  Perfect score!
+                </div>
+                <div class="quiz-result-details" id="quizResultDetails"></div>
+                <button
+                  id="retryQuizBtn"
+                  class="btn-gold mt-4 px-6 py-2 rounded-xl"
+                >
+                  Try Again 🔄
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <!-- CHALLENGE (NEW) -->
+          <div id="tab-challenge" class="tab-pane hidden">
+            <div class="challenge-header" id="challengeHeader">
+              <div class="challenge-badge-row">
+                <span class="challenge-badge" id="challengeDifficulty"
+                  >⭐ Beginner</span
+                >
+                <span class="challenge-time" id="challengeTime">⏱ ~5 min</span>
+              </div>
+              <h3
+                class="text-white font-bold text-[1.05rem] mt-2 mb-1"
+                id="challengeTitle"
+              >
+                Real-Life Problem
+              </h3>
+              <p
+                class="text-slate-300 text-sm leading-relaxed"
+                id="challengeDesc"
+              ></p>
+            </div>
+            <!-- Scenario context -->
+            <div class="scenario-context mb-4" id="challengeContext"></div>
+            <!-- Expected output -->
+            <div class="expected-output mb-3" id="challengeExpected"></div>
+            <!-- Code editor -->
+            <textarea
+              id="challengeInput"
+              class="editor mb-3 mono"
+              spellcheck="false"
+              placeholder="// Write your solution here..."
+            ></textarea>
+            <div class="flex gap-2 mb-3 flex-wrap">
+              <button
+                id="runChallenge"
+                class="btn-gold text-sm py-2 px-5 rounded-xl"
+              >
+                ▶ Run Solution
+              </button>
+              <button
+                id="clearChallenge"
+                class="btn-ghost text-sm py-2 px-4 rounded-xl"
+              >
+                ✕ Clear
+              </button>
+              <button
+                id="hintBtn"
+                class="btn-ghost text-sm py-2 px-4 rounded-xl text-amber-400 border-amber-500/30"
+              >
+                💡 Hint
+              </button>
+              <button
+                id="solutionBtn"
+                class="btn-ghost text-sm py-2 px-4 rounded-xl text-emerald-400 border-emerald-500/30"
+              >
+                👁 Show Solution
+              </button>
+            </div>
+            <div class="text-xs text-slate-600 font-mono mb-1.5">OUTPUT</div>
+            <pre id="challengeOutput" class="output-pre">
+// run your code to see output</pre
+            >
+            <!-- Hint box -->
+            <div id="hintBox" class="hint-box hidden mt-3"></div>
+            <!-- Solution box -->
+            <div id="solutionBox" class="solution-box hidden mt-3"></div>
+          </div>
+
+          <!-- PRACTICE -->
+          <div id="tab-practice" class="tab-pane hidden">
+            <div
+              class="bg-slate-900/60 border border-slate-800 rounded-xl p-3 mb-4 text-sm text-slate-400"
+              id="mPractice"
+            ></div>
+            <textarea
+              id="practiceInput"
+              class="editor mb-3 mono"
+              spellcheck="false"
+            ></textarea>
+            <div class="flex gap-2 mb-3 flex-wrap">
+              <button
+                id="runCode"
+                class="btn-gold text-sm py-2 px-5 rounded-xl"
+              >
+                ▶ Run Code
+              </button>
+              <button
+                id="clearCode"
+                class="btn-ghost text-sm py-2 px-4 rounded-xl"
+              >
+                ✕ Clear
+              </button>
+              <button
+                id="aiHintBtn"
+                class="btn-ghost text-sm py-2 px-4 rounded-xl text-purple-400 border-purple-500/30 hover:border-purple-400"
+              >
+                🤖 Get AI Hint
+              </button>
+            </div>
+            <div class="text-xs text-slate-600 font-mono mb-1.5">OUTPUT</div>
+            <pre id="codeOutput" class="output-pre">
+// press Run to execute your code</pre
+            >
+          </div>
+
+          <!-- NOTES -->
+          <div id="tab-notes" class="tab-pane hidden">
+            <p class="text-xs text-slate-600 mb-2">
+              Your private notes — saved in your browser
+            </p>
+            <textarea
+              id="noteInput"
+              class="note-area mono"
+              placeholder="Write your notes, questions, key takeaways..."
+            ></textarea>
+            <button
+              id="saveNote"
+              class="btn-gold mt-3 text-sm py-2 px-5 rounded-xl"
+            >
+              💾 Save Note
+            </button>
+          </div>
+
+          <!-- AI CHAT -->
+          <div id="tab-ai" class="tab-pane hidden">
+            <div
+              class="flex items-center gap-2 bg-purple-500/8 border border-purple-500/20 rounded-xl px-3 py-2 mb-4 text-xs text-purple-300"
+            >
+              <span class="pulse-dot"></span>
+              Built-in AI Tutor — no API key needed, works offline
+            </div>
+            <div class="flex flex-wrap gap-2 mb-4" id="quickPrompts">
+              <button class="qprompt" data-p="simple">💡 Simple explain</button>
+              <button class="qprompt" data-p="interview">
+                🎯 Interview prep
+              </button>
+              <button class="qprompt" data-p="mistakes">
+                ⚠️ Common mistakes
+              </button>
+              <button class="qprompt" data-p="quiz">🧠 Quiz me</button>
+              <button class="qprompt" data-p="project">🏗️ Real project</button>
+              <button class="qprompt" data-p="next">🗺️ What's next</button>
+              <button class="qprompt" data-p="tips">✨ Pro tips</button>
+              <button class="qprompt" data-p="analogy">🔮 Analogy</button>
+            </div>
+            <div class="ai-wrap" id="aiMessages"></div>
+            <div id="aiTypingInd" class="typing-ind hidden">
+              <span class="text-xs text-slate-600 mr-1">Thinking</span>
+              <span class="tdot"></span><span class="tdot"></span
+              ><span class="tdot"></span>
+            </div>
+            <div class="flex gap-2 mt-3">
+              <input
+                id="aiInput"
+                type="text"
+                placeholder="Ask anything about this topic..."
+                class="flex-1 bg-slate-950 border border-slate-700 rounded-xl px-4 py-2.5 text-sm text-slate-200 outline-none focus:border-purple-500/60 transition-all placeholder-slate-600 mono"
+              />
+              <button
+                id="aiSendBtn"
+                class="w-10 h-10 rounded-xl bg-purple-700 hover:bg-purple-600 border-0 text-white flex items-center justify-center transition-all"
+              >
+                ➤
+              </button>
+            </div>
+          </div>
+        </div>
+        <!-- /modal-body -->
+
+        <!-- Modal Footer -->
+        <div class="modal-footer">
+          <button id="prevTopic" class="btn-ghost text-sm py-2 px-4 rounded-xl">
+            ← Prev
+          </button>
+          <span class="text-xs text-slate-600 font-mono" id="mIdx"
+            >1 / 159</span
+          >
+          <button id="nextTopic" class="btn-ghost text-sm py-2 px-4 rounded-xl">
+            Next →
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Floating Quiz Button -->
+    <button
+      class="fab-quiz"
+      id="fabQuiz"
+      title="Quick Quiz — test random topic"
+    >
+      🧠 Quick Quiz
+    </button>
+
+    <footer
+      class="z1 text-center text-slate-700 text-xs py-8 border-t border-slate-900/50"
+    >
+      JavaScript Mastery Roadmap · AI-Powered · Press
+      <kbd class="bg-slate-800 px-1 rounded text-slate-500">/</kbd> to search ·
+      <kbd class="bg-slate-800 px-1 rounded text-slate-500">←→</kbd> to navigate
+    </footer>
+
+    <!-- ═══════════════ CONFETTI ═══════════════ -->
+    <div id="cfettiContainer"></div>
+
+    <script>
+      (function () {
+        "use strict";
+
+        // ═══════════════════════════════════════════════════════
+        //  CURRICULUM DATA
+        // ═══════════════════════════════════════════════════════
+        const SECTIONS = [
+          {
+            name: "JavaScript Basics",
+            icon: "🟡",
+            topics: [
+              "What is JavaScript",
+              "History of JavaScript",
+              "How JavaScript Works",
+              "JavaScript Engines",
+              "How to Run JavaScript",
+              "JavaScript Versions",
+              "JS in Browser vs Node",
+              "Console Basics",
+              "Writing First Script",
+              "Comments in JavaScript",
+            ],
+          },
+          {
+            name: "Variables & Scope",
+            icon: "📦",
+            topics: [
+              "var",
+              "let",
+              "const",
+              "Variable naming rules",
+              "Global Scope",
+              "Block Scope",
+              "Function Scope",
+              "Scope Chain",
+              "Hoisting",
+              "Temporal Dead Zone",
+              "Shadowing",
+            ],
+          },
+          {
+            name: "Data Types",
+            icon: "🔢",
+            topics: [
+              "string",
+              "number",
+              "boolean",
+              "null",
+              "undefined",
+              "bigint",
+              "symbol",
+              "object",
+              "array",
+              "function",
+              "typeof",
+              "primitive vs reference",
+            ],
+          },
+          {
+            name: "Type Conversion & Comparison",
+            icon: "🔄",
+            topics: [
+              "Type Casting",
+              "Number()",
+              "String()",
+              "Boolean()",
+              "Truthy values",
+              "Falsy values",
+              "== vs ===",
+              "Implicit type conversion",
+              "Logical Operators",
+            ],
+          },
+          {
+            name: "Operators",
+            icon: "⚡",
+            topics: [
+              "Arithmetic Operators",
+              "Comparison Operators",
+              "Assignment Operators",
+              "Logical Operators",
+              "Bitwise Operators",
+              "Ternary Operator",
+              "Nullish Coalescing",
+            ],
+          },
+          {
+            name: "Control Flow",
+            icon: "🔀",
+            topics: [
+              "if statement",
+              "else statement",
+              "else if",
+              "switch",
+              "ternary operator",
+            ],
+          },
+          {
+            name: "Loops",
+            icon: "🔁",
+            topics: [
+              "for loop",
+              "while loop",
+              "do while",
+              "for of",
+              "for in",
+              "break",
+              "continue",
+            ],
+          },
+          {
+            name: "Functions",
+            icon: "🧩",
+            topics: [
+              "Function Declaration",
+              "Function Expression",
+              "Arrow Function",
+              "Parameters",
+              "Arguments",
+              "Return statement",
+              "Default parameters",
+              "Rest parameters",
+              "Callback function",
+              "Higher Order Function",
+              "Closure",
+              "Lexical Scope",
+              "IIFE",
+            ],
+          },
+          {
+            name: "Arrays",
+            icon: "📋",
+            topics: [
+              "Array literal",
+              "new Array()",
+              "push",
+              "pop",
+              "shift",
+              "unshift",
+              "concat",
+              "slice",
+              "splice",
+              "indexOf",
+              "includes",
+              "join",
+              "reverse",
+              "sort",
+            ],
+          },
+          {
+            name: "Array Iteration Methods",
+            icon: "🗂️",
+            topics: [
+              "forEach",
+              "map",
+              "filter",
+              "find",
+              "reduce",
+              "some",
+              "every",
+              "flat",
+              "flatMap",
+            ],
+          },
+          {
+            name: "Objects",
+            icon: "🏗️",
+            topics: [
+              "Object literal",
+              "Object create",
+              "Dot notation",
+              "Bracket notation",
+              "Nested object",
+              "Object destructuring",
+              "Spread operator",
+              "Object.assign",
+            ],
+          },
+          {
+            name: "Object Methods",
+            icon: "🔧",
+            topics: [
+              "Object.keys",
+              "Object.values",
+              "Object.entries",
+              "Object.freeze",
+              "Object.seal",
+            ],
+          },
+          {
+            name: "DOM Basics",
+            icon: "🌐",
+            topics: [
+              "What is DOM",
+              "DOM Tree",
+              "document object",
+              "window object",
+            ],
+          },
+          {
+            name: "Selecting Elements",
+            icon: "🎯",
+            topics: [
+              "getElementById",
+              "getElementsByClassName",
+              "getElementsByTagName",
+              "querySelector",
+              "querySelectorAll",
+            ],
+          },
+          {
+            name: "DOM Manipulation",
+            icon: "✏️",
+            topics: [
+              "innerText",
+              "innerHTML",
+              "textContent",
+              "style",
+              "classList",
+              "setAttribute",
+              "getAttribute",
+              "removeAttribute",
+            ],
+          },
+          {
+            name: "Creating Elements",
+            icon: "➕",
+            topics: [
+              "createElement",
+              "appendChild",
+              "append",
+              "prepend",
+              "remove",
+              "removeChild",
+              "replaceChild",
+            ],
+          },
+          {
+            name: "Events",
+            icon: "🎪",
+            topics: [
+              "addEventListener",
+              "click event",
+              "input event",
+              "change event",
+              "submit event",
+              "keydown",
+              "keyup",
+              "mouseover",
+              "mouseout",
+            ],
+          },
+          {
+            name: "Event Concepts",
+            icon: "💡",
+            topics: [
+              "event object",
+              "event target",
+              "event bubbling",
+              "event capturing",
+              "stopPropagation",
+              "preventDefault",
+              "event delegation",
+            ],
+          },
+          {
+            name: "Browser Storage",
+            icon: "💾",
+            topics: [
+              "localStorage",
+              "sessionStorage",
+              "JSON.stringify",
+              "JSON.parse",
+            ],
+          },
+          {
+            name: "Timers",
+            icon: "⏱️",
+            topics: [
+              "setTimeout",
+              "setInterval",
+              "clearTimeout",
+              "clearInterval",
+            ],
+          },
+          {
+            name: "Error Handling",
+            icon: "🛡️",
+            topics: ["try / catch / finally / throw"],
+          },
+        ];
+
+        // ═══════════════════════════════════════════════════════
+        //  RICH CONTENT MAP
+        // ═══════════════════════════════════════════════════════
+        const OVERRIDES = {
+          "what is javascript": {
+            explanation:
+              "JavaScript is a high-level, interpreted, multi-paradigm programming language created in 1995 by Brendan Eich. Originally built for browsers, it now runs on servers (Node.js), mobile apps (React Native), and desktop apps (Electron). It's the world's most-used programming language.",
+            code: `console.log('Hello, World!');
+// Check environment
+if (typeof window !== 'undefined') {
+  console.log('Running in browser');
+} else {
+  console.log('Running in Node.js');
+}`,
+            realWorld:
+              "Every interactive website uses JavaScript — from Google Maps real-time updates, to Netflix's UI, to form validation, to animations and dynamic content.",
+            realWorldCode: `// Toggle dark mode
+const btn = document.getElementById('themeBtn');
+btn.addEventListener('click', () => {
+  document.body.classList.toggle('dark');
+  const isDark = document.body.classList.contains('dark');
+  localStorage.setItem('theme', isDark ? 'dark' : 'light');
+});`,
+            practice:
+              "Write a script that logs your name, age, and favorite language using template literals. Then log what environment you're in.",
+            tags: ["Intro", "Browser", "Node.js", "Multi-platform"],
+          },
+          var: {
+            explanation:
+              "var declares a function-scoped (or globally-scoped) variable. It is hoisted to the top of its scope and initialized as undefined before execution. It can be re-declared in the same scope — a source of bugs. Prefer let/const in modern code.",
+            code: `var x = 10;
+var x = 20; // ✓ re-declaration allowed — no error!
+
+function test() {
+  var inner = 'only inside function';
+  console.log(inner); // works
+}
+// console.log(inner); // ReferenceError
+
+// Hoisting example:
+console.log(y); // undefined (hoisted)
+var y = 5;`,
+            realWorld:
+              "Found in legacy codebases. Understanding var is essential for reading jQuery-era code and debugging older applications.",
+            realWorldCode: `// Legacy jQuery pattern still seen in old codebases
+$(document).ready(function() {
+  var data = [];
+  var count = 0;
+  $('.item').each(function() {
+    data.push($(this).text());
+    count++;
+  });
+});`,
+            practice:
+              "Declare a var inside a function, try to log it outside the function. Then demonstrate hoisting by logging a var before it's declared.",
+            tags: ["Variables", "Legacy", "Hoisting", "ES5"],
+          },
+          let: {
+            explanation:
+              "let declares a block-scoped variable that cannot be re-declared in the same scope but can be reassigned. Unlike var, it exists in a 'Temporal Dead Zone' (TDZ) from the start of its block until its declaration — accessing it before declaration throws a ReferenceError.",
+            code: `let count = 0;
+count++; // ✓ reassignment fine
+// let count = 1; // ✗ SyntaxError
+
+if (true) {
+  let blockVar = 'only in this block';
+  console.log(blockVar); // ✓
+}
+// console.log(blockVar); // ✗ ReferenceError
+
+for (let i = 0; i < 3; i++) {
+  setTimeout(() => console.log(i), 100);
+}
+// Prints: 0, 1, 2 (not 3, 3, 3 like var)`,
+            realWorld:
+              "Use let for loop counters, animation frames, values that change over time, or anything that needs block scoping.",
+            realWorldCode: `// Shopping cart counter
+let cartCount = 0;
+const updateBadge = () => {
+  document.getElementById('badge').textContent = cartCount;
+};
+document.querySelectorAll('.add-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    cartCount++;
+    updateBadge();
+  });
+});`,
+            practice:
+              "Build a counter that increments and decrements. Demonstrate block scope by trying to access a let variable outside its if block.",
+            tags: ["Variables", "Block Scope", "ES6", "TDZ"],
+          },
+          const: {
+            explanation:
+              "const declares a block-scoped binding that cannot be reassigned after initialization. However, for objects and arrays, the binding is constant but the value can be mutated. const prevents rebinding, not deep mutation.",
+            code: `const PI = 3.14159;
+// PI = 3; // ✗ TypeError: Assignment to constant
+
+const user = { name: 'Alice', age: 25 };
+user.name = 'Bob';   // ✓ mutation OK
+user.role = 'admin'; // ✓ adding properties OK
+// user = {};        // ✗ TypeError: rebinding fails
+
+// With arrays
+const nums = [1, 2, 3];
+nums.push(4);     // ✓ mutation OK
+// nums = [5, 6]; // ✗ TypeError`,
+            realWorld:
+              "Use const for imports, API URLs, configuration, DOM references — anything that shouldn't be reassigned.",
+            realWorldCode: `const API_URL = 'https://api.example.com';
+const MAX_RETRIES = 3;
+const btn = document.getElementById('submit');
+const config = Object.freeze({ timeout: 5000 });
+
+async function fetchData(endpoint) {
+  const url = \`\${API_URL}\${endpoint}\`;
+  const res = await fetch(url);
+  return res.json();
+}`,
+            practice:
+              "Create a const config object with 3 settings. Mutate one property. Then use Object.freeze() to make it truly immutable and try again.",
+            tags: ["Variables", "Immutable", "ES6", "Best Practice"],
+          },
+          "arrow function": {
+            explanation:
+              "Arrow functions provide concise syntax and lexically bind `this` — they inherit `this` from their surrounding scope instead of creating their own. They cannot be used as constructors, have no `arguments` object, and cannot be used as generator functions.",
+            code: `// Traditional
+function add(a, b) { return a + b; }
+
+// Arrow — single expression (implicit return)
+const add = (a, b) => a + b;
+
+// Arrow — with body
+const greet = name => {
+  const msg = \`Hello, \${name}!\`;
+  return msg;
+};
+
+// this binding
+class Timer {
+  constructor() { this.seconds = 0; }
+  start() {
+    // Arrow inherits 'this' from class
+    setInterval(() => this.seconds++, 1000);
+  }
+}`,
+            realWorld:
+              "Essential for array methods, React components, promise chains, and avoiding 'this' binding issues in class methods and callbacks.",
+            realWorldCode: `// Array transformations
+const prices = [10, 20, 30];
+const withTax = prices.map(p => p * 1.1);
+const expensive = prices.filter(p => p > 15);
+const total = prices.reduce((sum, p) => sum + p, 0);
+
+// React-style event handler
+const handleSubmit = async (e) => {
+  e.preventDefault();
+  const data = new FormData(e.target);
+  const res = await fetch('/api/submit', {
+    method: 'POST',
+    body: data
+  });
+};`,
+            practice:
+              "Convert 3 traditional functions to arrow syntax. Then demonstrate the 'this' difference by comparing a regular vs arrow method in an object.",
+            tags: ["Functions", "ES6", "this", "Callbacks"],
+          },
+          closure: {
+            explanation:
+              "A closure is a function that retains access to variables from its outer (enclosing) scope even after that scope has finished executing. Closures are formed naturally every time a function is created. They enable data privacy, stateful functions, and the module pattern.",
+            code: `function makeCounter(start = 0) {
+  let count = start; // private variable!
+  return {
+    increment: () => ++count,
+    decrement: () => --count,
+    reset: () => (count = start),
+    value: () => count
+  };
+}
+
+const counter = makeCounter(10);
+counter.increment(); // 11
+counter.increment(); // 12
+counter.value();     // 12
+// count is inaccessible from outside!`,
+            realWorld:
+              "React hooks (useState uses closures internally), module pattern, memoization, debounce/throttle, event handler factories — closures are everywhere.",
+            realWorldCode: `// Debounce using closure
+function debounce(fn, delay) {
+  let timer; // closes over timer
+  return (...args) => {
+    clearTimeout(timer);
+    timer = setTimeout(() => fn(...args), delay);
+  };
+}
+
+const search = debounce(async (query) => {
+  const res = await fetch(\`/api/search?q=\${query}\`);
+  renderResults(await res.json());
+}, 300);
+
+searchInput.addEventListener('input', e => {
+  search(e.target.value);
+});`,
+            practice:
+              "Build a createBankAccount(balance) function returning deposit(), withdraw(), and getBalance() — without exposing the balance directly.",
+            tags: ["Functions", "Advanced", "Data Privacy", "Patterns"],
+          },
+          localstorage: {
+            explanation:
+              "localStorage is a Web Storage API that persists key-value string data in the browser with no expiration date. Data survives page refreshes and browser restarts. Limited to ~5MB per origin. Only strings can be stored — use JSON.stringify/parse for objects.",
+            code: `// Store
+localStorage.setItem('theme', 'dark');
+localStorage.setItem('user', JSON.stringify({ id: 1, name: 'Alice' }));
+
+// Retrieve
+const theme = localStorage.getItem('theme'); // 'dark'
+const user = JSON.parse(localStorage.getItem('user'));
+
+// Check if exists
+const lang = localStorage.getItem('lang') ?? 'en'; // default
+
+// Remove
+localStorage.removeItem('theme');
+localStorage.clear(); // removes all`,
+            realWorld:
+              "User preferences, auth tokens (use with caution), shopping cart persistence, draft content, offline-capable features.",
+            realWorldCode: `// Theme system with localStorage
+const THEME_KEY = 'app-theme';
+const root = document.documentElement;
+
+// Load saved theme
+root.dataset.theme = localStorage.getItem(THEME_KEY) || 'light';
+
+document.getElementById('toggleTheme').onclick = () => {
+  const next = root.dataset.theme === 'dark' ? 'light' : 'dark';
+  root.dataset.theme = next;
+  localStorage.setItem(THEME_KEY, next);
+};`,
+            practice:
+              "Build a 'remember me' input: user types their name, it's saved in localStorage. On page reload, the input is pre-filled with the saved name.",
+            tags: ["Browser API", "Persistence", "Storage", "Web APIs"],
+          },
+          "try / catch / finally / throw": {
+            explanation:
+              "try/catch/finally is JavaScript's synchronous error handling mechanism. Code in the try block runs; if an error is thrown, the catch block handles it with the error object. The finally block always runs — perfect for cleanup. throw lets you create and throw custom errors.",
+            code: `function divide(a, b) {
+  if (typeof a !== 'number') throw new TypeError('a must be a number');
+  if (b === 0) throw new RangeError('Division by zero!');
+  return a / b;
+}
+
+try {
+  const result = divide(10, 0);
+  console.log('Result:', result);
+} catch (err) {
+  if (err instanceof RangeError) {
+    console.error('Math error:', err.message);
+  } else {
+    console.error('Unknown error:', err.message);
+  }
+} finally {
+  console.log('Always runs — cleanup code here');
+}`,
+            realWorld:
+              "Every async API call, JSON.parse, user input handler, or file operation should use try/catch to handle failures gracefully.",
+            realWorldCode: `async function fetchUser(id) {
+  let connection = null;
+  try {
+    connection = await openDBConnection();
+    const res = await fetch(\`/api/users/\${id}\`);
+    if (!res.ok) throw new Error(\`HTTP \${res.status}: \${res.statusText}\`);
+    return await res.json();
+  } catch (err) {
+    console.error('fetchUser failed:', err.message);
+    return null; // graceful fallback
+  } finally {
+    connection?.close(); // always cleanup
+  }
+}`,
+            practice:
+              "Write a safeParseJSON(str) function that returns the parsed object or null on failure. Then write safeDiv(a,b) that throws a custom error for division by zero.",
+            tags: ["Error Handling", "Async", "Best Practice", "Defensive"],
+          },
+        };
+
+        function getContent(title) {
+          const key = title.toLowerCase().trim();
+          for (const [k, v] of Object.entries(OVERRIDES)) {
+            if (key.includes(k) || k.includes(key)) return { ...v };
+          }
+          return {
+            explanation: `${title} is a key JavaScript concept. Understanding it deeply will make you a better developer and help you write more robust, maintainable code.`,
+            code: `// ${title} — basic example
+console.log("Learning: ${title}");
+
+// Try it yourself below!`,
+            realWorld: `${title} appears frequently in real JavaScript applications, especially in modern frameworks like React, Vue, and Node.js backends.`,
+            realWorldCode: `// Real-world pattern using ${title}
+// Implementation varies by context and requirements`,
+            practice: `Write at least 2 different examples demonstrating ${title}. Try to think of a practical use case you might encounter in a real project.`,
+            tags: ["JavaScript", "Core Concept"],
+          };
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  BUILD FLAT TOPICS ARRAY
+        // ═══════════════════════════════════════════════════════
+        const topics = [];
+        let tid = 0;
+        for (const sec of SECTIONS) {
+          for (const title of sec.topics) {
+            topics.push({
+              id: tid++,
+              section: sec.name,
+              title,
+              ...getContent(title),
+            });
+          }
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  STATE
+        // ═══════════════════════════════════════════════════════
+        let completed = new Set();
+        let notes = {};
+        let apiKey = "";
+        let filter = "all";
+        let search = "";
+        let activeTopic = null;
+        let aiHistory = [];
+        let milestonePtr = 0;
+
+        function loadState() {
+          try {
+            const s = localStorage.getItem("jsrm_v4");
+            if (s) {
+              const d = JSON.parse(s);
+              completed = new Set(d.done || []);
+              notes = d.notes || {};
+            }
+            apiKey = localStorage.getItem("jsrm_apikey") || "";
+          } catch {
+            completed.clear();
+            notes = {};
+          }
+          updateUI();
+          updateAIStatus();
+        }
+
+        function saveState() {
+          localStorage.setItem(
+            "jsrm_v4",
+            JSON.stringify({ done: [...completed], notes }),
+          );
+          updateUI();
+        }
+
+        function updateUI() {
+          const total = topics.length,
+            done = completed.size;
+          const pct = total ? ((done / total) * 100).toFixed(1) : 0;
+          let secs = 0;
+          for (const s of SECTIONS) {
+            const st = topics.filter((t) => t.section === s.name);
+            if (st.length && st.every((t) => completed.has(t.id))) secs++;
+          }
+          // update stats
+          ["sDone", "hCompleted"].forEach((id) => setEl(id, done));
+          ["sLeft", "hRemaining"].forEach((id) => setEl(id, total - done));
+          setEl("sSecs", secs);
+          setEl("sPct", pct + "%");
+          setEl("hPercent", pct + "%");
+          // progress bars
+          ["mainFill", "hProgFill"].forEach((id) => {
+            const el = document.getElementById(id);
+            if (el) el.style.width = pct + "%";
+          });
+          // chip states
+          document.querySelectorAll(".topic-chip").forEach((chip) => {
+            const id = Number(chip.dataset.id);
+            const isDone = completed.has(id);
+            chip.classList.toggle("done", isDone);
+          });
+          // mini section bars
+          document.querySelectorAll("[data-secname]").forEach((hdr) => {
+            const sn = hdr.dataset.secname;
+            const st = topics.filter((t) => t.section === sn);
+            const sd = st.filter((t) => completed.has(t.id)).length;
+            const sp = st.length ? (sd / st.length) * 100 : 0;
+            const f = hdr.querySelector(".mini-prog-fill");
+            const l = hdr.querySelector(".sec-lbl");
+            if (f) f.style.width = sp + "%";
+            if (l) l.textContent = `${sd}/${st.length}`;
+          });
+        }
+
+        function setEl(id, val) {
+          const e = document.getElementById(id);
+          if (e) e.textContent = val;
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  RENDER ROADMAP
+        // ═══════════════════════════════════════════════════════
+        function renderRoadmap() {
+          const container = document.getElementById("roadmapContainer");
+          container.innerHTML = "";
+
+          for (const sec of SECTIONS) {
+            const visible = topics.filter((t) => {
+              if (t.section !== sec.name) return false;
+              if (filter === "done" && !completed.has(t.id)) return false;
+              if (filter === "todo" && completed.has(t.id)) return false;
+              if (search && !t.title.toLowerCase().includes(search))
+                return false;
+              return true;
+            });
+            if (search && visible.length === 0) continue;
+
+            const secTopics = topics.filter((t) => t.section === sec.name);
+            const secDone = secTopics.filter((t) => completed.has(t.id)).length;
+            const secPct = secTopics.length
+              ? (secDone / secTopics.length) * 100
+              : 0;
+            const isComplete =
+              secDone === secTopics.length && secTopics.length > 0;
+
+            const card = document.createElement("div");
+            card.className = "section-card";
+
+            card.innerHTML = `
+      <div class="section-header" data-secname="${sec.name}">
+        <div class="flex items-center gap-3 flex-1 min-w-0">
+          <span class="text-2xl">${sec.icon}</span>
+          <div class="flex-1 min-w-0">
+            <div class="flex items-center gap-2 mb-1 flex-wrap">
+              <h2 class="font-semibold text-white text-[.95rem]">${sec.name}</h2>
+              ${isComplete ? '<span class="sec-complete">✓ Complete</span>' : ""}
+            </div>
+            <div class="flex items-center gap-2">
+              <div class="mini-prog w-24"><div class="mini-prog-fill" style="width:${secPct}%"></div></div>
+              <span class="sec-lbl text-xs text-slate-600 font-mono">${secDone}/${secTopics.length}</span>
+            </div>
+          </div>
+        </div>
+        <div class="flex items-center gap-3 ml-3">
+          <span class="text-slate-600 text-xs hidden sm:block">${secTopics.length} topics</span>
+          <span class="chevron open">▾</span>
+        </div>
+      </div>
+      <div class="section-body p-4 flex flex-wrap gap-2">
+        ${
+          visible.length === 0
+            ? '<p class="text-slate-600 text-sm py-2 w-full">No topics match the current filter.</p>'
+            : visible
+                .map(
+                  (t) => `
+            <div class="topic-chip${completed.has(t.id) ? " done" : ""}" data-id="${t.id}">
+              <div class="chip-dot"></div>
+              <span>${t.title}</span>
+            </div>
+          `,
+                )
+                .join("")
+        }
+      </div>
+    `;
+
+            // Section toggle
+            card
+              .querySelector(".section-header")
+              .addEventListener("click", () => {
+                const body = card.querySelector(".section-body");
+                const chev = card.querySelector(".chevron");
+                body.classList.toggle("closed");
+                chev.classList.toggle("open");
+              });
+
+            // Chip clicks
+            card.querySelectorAll(".topic-chip").forEach((chip) => {
+              chip.addEventListener("click", () => {
+                const t = topics.find((x) => x.id === Number(chip.dataset.id));
+                if (t) openModal(t);
+              });
+            });
+
+            container.appendChild(card);
+          }
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  MODAL
+        // ═══════════════════════════════════════════════════════
+        const modalBg = document.getElementById("topicModal");
+
+        function openModal(topic) {
+          activeTopic = topic;
+          aiHistory = [];
+          document.getElementById("aiMessages").innerHTML = "";
+          document.getElementById("aiInput").value = "";
+          document.getElementById("codeOutput").textContent =
+            "// press Run to execute your code";
+          document.getElementById("codeOutput").className = "output-pre";
+          document.getElementById("practiceInput").value =
+            `// Practice: ${topic.title}\n\n`;
+
+          setEl("mSection", topic.section);
+          setEl("mTitle", topic.title);
+          document.getElementById("mExplain").textContent = topic.explanation;
+          document.getElementById("mCode").textContent = topic.code;
+          document.getElementById("mRealWorld").textContent = topic.realWorld;
+          document.getElementById("mRealCode").textContent =
+            topic.realWorldCode;
+          document.getElementById("mPractice").textContent = topic.practice;
+          document.getElementById("noteInput").value = notes[topic.id] || "";
+          document.getElementById("mCheck").checked = completed.has(topic.id);
+
+          // Load enhanced tabs
+          loadExplainTab(topic);
+          loadRealWorldTab(topic);
+          loadQuiz(topic);
+          loadChallenge(topic);
+
+          // Tags
+          const tags = topic.tags || [];
+          document.getElementById("mTags").innerHTML = tags
+            .map(
+              (t) =>
+                `<span class="text-xs bg-slate-900 border border-slate-800 text-slate-500 px-2 py-0.5 rounded-full">${t}</span>`,
+            )
+            .join("");
+
+          // Index
+          const nav = getNav();
+          const idx = nav.findIndex((t) => t.id === topic.id);
+          setEl("mIdx", `${idx >= 0 ? idx + 1 : topic.id + 1} / ${nav.length}`);
+
+          // AI key check
+          updateAIKeyUI();
+          switchTab("explain");
+          attachQprompts();
+
+          modalBg.classList.add("open");
+          document.body.style.overflow = "hidden";
+        }
+
+        function closeModal() {
+          modalBg.classList.remove("open");
+          document.body.style.overflow = "";
+          activeTopic = null;
+        }
+
+        function getNav() {
+          return topics.filter((t) => {
+            if (filter === "done" && !completed.has(t.id)) return false;
+            if (filter === "todo" && completed.has(t.id)) return false;
+            if (search && !t.title.toLowerCase().includes(search)) return false;
+            return true;
+          });
+        }
+
+        function navigate(dir) {
+          const nav = getNav();
+          const idx = nav.findIndex((t) => t.id === activeTopic?.id);
+          const nIdx = idx + dir;
+          if (nIdx >= 0 && nIdx < nav.length) openModal(nav[nIdx]);
+        }
+
+        function switchTab(name) {
+          document
+            .querySelectorAll(".tab-pane")
+            .forEach((p) => p.classList.add("hidden"));
+          document
+            .querySelectorAll(".mtab")
+            .forEach((t) => t.classList.remove("active"));
+          document.getElementById(`tab-${name}`)?.classList.remove("hidden");
+          document
+            .querySelector(`.mtab[data-tab="${name}"]`)
+            ?.classList.add("active");
+        }
+
+        // Event listeners — modal
+        document
+          .getElementById("closeModal")
+          .addEventListener("click", closeModal);
+        modalBg.addEventListener("click", (e) => {
+          if (e.target === modalBg) closeModal();
+        });
+        document
+          .querySelectorAll(".mtab")
+          .forEach((t) =>
+            t.addEventListener("click", () => switchTab(t.dataset.tab)),
+          );
+        document
+          .getElementById("prevTopic")
+          .addEventListener("click", () => navigate(-1));
+        document
+          .getElementById("nextTopic")
+          .addEventListener("click", () => navigate(1));
+
+        document.getElementById("mCheck").addEventListener("change", (e) => {
+          if (!activeTopic) return;
+          if (e.target.checked) {
+            completed.add(activeTopic.id);
+            saveState();
+            showToast("✓ Topic completed! Keep going 🔥");
+            confetti();
+            checkMilestone();
+          } else {
+            completed.delete(activeTopic.id);
+            saveState();
+            showToast("Marked as incomplete");
+          }
+        });
+
+        // Run code
+        document.getElementById("runCode").addEventListener("click", () => {
+          const code = document.getElementById("practiceInput").value;
+          const logs = [];
+          const origLog = console.log,
+            origErr = console.error,
+            origWarn = console.warn;
+          console.log = (...a) =>
+            logs.push(
+              a
+                .map((x) =>
+                  typeof x === "object"
+                    ? JSON.stringify(x, null, 2)
+                    : String(x),
+                )
+                .join(" "),
+            );
+          console.error = (...a) => logs.push("⚠ " + a.join(" "));
+          console.warn = (...a) => logs.push("⚡ " + a.join(" "));
+          const out = document.getElementById("codeOutput");
+          try {
+            const r = eval(code);
+            if (r !== undefined) logs.push("→ " + String(r));
+            out.textContent =
+              logs.join("\n") || "// code executed with no output";
+            out.className = "output-pre";
+          } catch (e) {
+            out.textContent = "✗ " + e.message;
+            out.className = "output-pre err";
+          } finally {
+            console.log = origLog;
+            console.error = origErr;
+            console.warn = origWarn;
+          }
+        });
+
+        document.getElementById("clearCode").addEventListener("click", () => {
+          const t = activeTopic;
+          document.getElementById("practiceInput").value = t
+            ? `// Practice: ${t.title}\n\n`
+            : "";
+          const out = document.getElementById("codeOutput");
+          out.textContent = "// press Run to execute your code";
+          out.className = "output-pre";
+        });
+
+        document.getElementById("saveNote").addEventListener("click", () => {
+          if (!activeTopic) return;
+          notes[activeTopic.id] = document.getElementById("noteInput").value;
+          saveState();
+          showToast("📝 Note saved!");
+        });
+
+        // Copy buttons
+        document.querySelectorAll(".copy-btn").forEach((btn) => {
+          btn.addEventListener("click", () => {
+            const el = document.getElementById(btn.dataset.target);
+            if (!el) return;
+            navigator.clipboard.writeText(el.textContent).then(() => {
+              btn.textContent = "✓ Copied!";
+              btn.classList.add("ok");
+              setTimeout(() => {
+                btn.textContent = "Copy";
+                btn.classList.remove("ok");
+              }, 1600);
+            });
+          });
+        });
+
+        // AI hint button in practice tab
+        document.getElementById("aiHintBtn").addEventListener("click", () => {
+          if (!activeTopic) return;
+          switchTab("ai");
+          sendAI(
+            `Give me a hint for this practice exercise without giving away the full answer: ${activeTopic.practice}`,
+          );
+        });
+
+        // ═══════════════════════════════════════════════════════
+        //  BUILT-IN AI TUTOR — works offline, no API key needed
+        // ═══════════════════════════════════════════════════════
+
+        function updateAIStatus() {
+          const dot = document.getElementById("aiDot");
+          if (dot) {
+            dot.style.background = "#22c55e";
+          }
+        }
+
+        function updateAIKeyUI() {} // no-op, AI always available
+
+        // Deep knowledge for specific topics
+        const AI_KB = {
+          "what is javascript": {
+            simple: `**JavaScript** is the language that makes websites interactive.\n\n🏠 **House analogy:**\n- **HTML** = walls & rooms (structure)\n- **CSS** = paint & furniture (style)\n- **JavaScript** = electricity & plumbing (behavior)\n\nWithout JS, websites are static brochures. With JS, buttons click, forms validate, content updates live.\n\n\`\`\`javascript\n// Your first JS program\nconsole.log('Hello, World!');\nalert('I am JavaScript!');\n\`\`\``,
+            interview: `**Top 3 JS Interview Questions:**\n\n**Q1: What is JavaScript?**\n✅ A high-level, interpreted, dynamically-typed scripting language. Runs in browsers natively and on servers via Node.js. The only language that runs natively in every web browser.\n\n**Q2: JS vs Java — what's the difference?**\n✅ Completely different languages. Java is compiled + strongly typed + runs on JVM. JS is interpreted + weakly typed + runs in browsers. The similar name was a 1995 marketing decision.\n\n**Q3: Is JS synchronous or async?**\n✅ Single-threaded and synchronous by default, but handles async work via callbacks, Promises, async/await — all managed by the event loop.`,
+            mistakes: `**3 Common Beginner Mistakes:**\n\n⚠️ **1. Confusing JS with Java** — they share nothing except a name.\n\n⚠️ **2. Thinking JS only works in browsers** — it also runs on servers (Node.js), mobile (React Native), desktop (Electron).\n\n⚠️ **3. Learning jQuery before vanilla JS** — learn the fundamentals first. jQuery becomes trivial afterward.`,
+            quiz: `**Quiz Time! 🧠**\n\nQ: What year was JS created, and how long did it take to build?\n\n> Scroll down for answer...\n\n---\n**Answer:** Created in **1995** by Brendan Eich in just **10 days** at Netscape. Originally called "Mocha", then "LiveScript", then "JavaScript" to ride Java's popularity wave.`,
+            project: `**Real Project: Interactive Counter**\n\n\`\`\`javascript\n// A mini project using core JS concepts\nlet count = 0;\nconst display = document.getElementById('count');\nconst btn = document.getElementById('btn');\n\nbtn.addEventListener('click', () => {\n  count++;\n  display.textContent = count;\n  if (count >= 10) {\n    btn.style.background = 'green';\n    display.textContent = count + ' 🎉';\n  }\n});\n\`\`\`\nThis tiny project uses: variables, events, DOM manipulation, conditionals — core JS!`,
+            tips: `**Pro Tips for Learning JS:**\n\n✨ **Use the browser console** — press F12 → Console. It's a live JS playground.\n\n✨ **Type, don't copy-paste** — muscle memory is real.\n\n✨ **Read error messages** — they tell you exactly what went wrong.\n\n✨ **MDN Web Docs** (developer.mozilla.org) — the best JS reference. Bookmark it.\n\n✨ **Build things** — a calculator, to-do list, quiz app. Projects beat tutorials every time.`,
+            analogy: `**The Restaurant Analogy 🍽️**\n\nBuilding a website is like opening a restaurant:\n\n- **HTML** = the building, tables, menu (structure)\n- **CSS** = interior design, lighting, uniforms (look)\n- **JavaScript** = the waiters, kitchen, POS system (behavior)\n\nA restaurant with no staff (no JS) is just a pretty empty room. The waiters take orders (event listeners), the kitchen processes them (functions), and food arrives at the table (DOM updates).`,
+          },
+          closure: {
+            simple: `**Closures** = functions that remember their home.\n\n🎒 **Backpack analogy:** You pack a backpack before leaving home. Even far away, you still have everything from home in your backpack. A closure IS that backpack — it carries variables from where it was created.\n\n\`\`\`javascript\nfunction makeCounter() {\n  let count = 0; // lives in the "backpack"\n  return () => ++count; // carries count everywhere\n}\n\nconst counter = makeCounter();\ncounter(); // 1\ncounter(); // 2\ncounter(); // 3\n// makeCounter() is gone, but count lives on!\n\`\`\``,
+            interview: `**Closure Interview Questions:**\n\n**Q1: Define closure.**\n✅ A function that retains access to variables from its outer (enclosing) scope even after that scope has closed. Every function in JS is a closure.\n\n**Q2: Practical uses of closures?**\n✅ Data privacy, factory functions, memoization, debounce/throttle, React useState internally.\n\n**Q3: Classic gotcha — what does this print?**\n\`\`\`javascript\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}\n\`\`\`\n✅ Prints **3, 3, 3** because var is function-scoped — all callbacks share one \`i\`. Fix with \`let\` (block-scoped) or an IIFE.`,
+            mistakes: `**Top Closure Mistakes:**\n\n⚠️ **1. The var loop bug**\n\`\`\`javascript\n// Bug: prints 3,3,3\nfor (var i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}\n// Fix: use let (prints 0,1,2)\nfor (let i = 0; i < 3; i++) {\n  setTimeout(() => console.log(i), 100);\n}\n\`\`\`\n\n⚠️ **2. Memory leaks** — closures hold references. Captured objects never get garbage collected while the closure lives.\n\n⚠️ **3. Accidental shared state** — multiple closures referencing the same outer variable all see the SAME current value.`,
+            quiz: `**Quiz: What does this output?**\n\`\`\`javascript\nfunction outer() {\n  let x = 10;\n  function inner() {\n    let x = 20;\n    console.log(x);\n  }\n  inner();\n  console.log(x);\n}\nouter();\n\`\`\`\n\n---\n**Answer:** First \`20\`, then \`10\`.\ninner() has its own \`x = 20\` (shadowing). The outer \`x = 10\` is untouched. This shows closures + variable shadowing together.`,
+            project: `**Real Project: Debounce Function**\n\`\`\`javascript\n// Closures power real performance tools!\nfunction debounce(fn, delay) {\n  let timer; // closure captures this\n  return (...args) => {\n    clearTimeout(timer);\n    timer = setTimeout(() => fn(...args), delay);\n  };\n}\n\n// Usage: don't search on every keystroke\nconst search = debounce(query => {\n  console.log('Searching for:', query);\n}, 300);\n\ndocument.getElementById('searchInput')\n  .addEventListener('input', e => search(e.target.value));\n\`\`\`\nDebounce is used in almost every production app. It's pure closure magic.`,
+            tips: `**Pro Closure Tips:**\n\n✨ **Every function is a closure** — even top-level ones close over global scope.\n\n✨ **React hooks use closures** — useState, useEffect, useCallback all rely on closures. Understanding this makes React click.\n\n✨ **DevTools shows closures** — pause at a breakpoint inside a closure, check the Scope panel → "Closure" section shows captured variables.\n\n✨ **Module pattern** — closures enable the original JavaScript module pattern before ES modules existed.`,
+            analogy: `**The Safe Analogy 🔐**\n\nImagine a bank safe. You put money (variables) inside and lock it. You give someone a key (the inner function). Even after the bank closes (outer function ends), the person with the key can still access the safe.\n\n\`\`\`javascript\nfunction bank() {\n  let balance = 1000; // locked in the safe\n  return {\n    deposit: n => balance += n,\n    withdraw: n => balance -= n,\n    check: () => balance // the key\n  };\n}\nconst account = bank();\naccount.deposit(500); // 1500\naccount.check();      // 1500\n// balance is private — nobody else can touch it!\n\`\`\``,
+          },
+          "arrow function": {
+            simple: `**Arrow Functions** — shorter, smarter functions.\n\n\`\`\`javascript\n// Traditional function\nconst add = function(a, b) {\n  return a + b;\n};\n\n// Arrow function — same result!\nconst add = (a, b) => a + b;\n\n// Single param (no parens needed)\nconst double = n => n * 2;\n\n// No params\nconst hello = () => 'Hello!';\n\n// Returning an object (wrap in parens!)\nconst makeUser = name => ({ name, active: true });\n\`\`\`\n\n🎯 **Key difference from regular functions:** Arrow functions don't have their own \`this\` — they borrow it from the surrounding code.`,
+            interview: `**Arrow Function Interview Questions:**\n\n**Q1: How do arrow functions differ from regular functions?**\n✅ (1) Shorter syntax, (2) no own \`this\` — lexically inherited, (3) no \`arguments\` object, (4) can't be constructors, (5) no \`prototype\`.\n\n**Q2: When should you NOT use arrow functions?**\n✅ As object methods (this is wrong), constructors (can't use new), when you need the \`arguments\` object, as generator functions.\n\n**Q3: What does this log?**\n\`\`\`javascript\nconst obj = {\n  name: 'Alice',\n  greet: () => console.log(this.name)\n};\nobj.greet();\n\`\`\`\n✅ **undefined** — arrow function gets \`this\` from the enclosing scope (module/global), not from \`obj\`.`,
+            mistakes: `**Arrow Function Mistakes:**\n\n⚠️ **1. As object methods**\n\`\`\`javascript\n// Bug:\nconst user = {\n  name: 'Alice',\n  greet: () => console.log(this.name) // undefined!\n};\n// Fix:\nconst user = {\n  name: 'Alice',\n  greet() { console.log(this.name); } // 'Alice' ✅\n};\n\`\`\`\n\n⚠️ **2. Returning object literals**\n\`\`\`javascript\n// Bug: {} treated as block, not object\nconst make = () => { name: 'Alice' }; // undefined!\n// Fix: wrap in parens\nconst make = () => ({ name: 'Alice' }); // ✅\n\`\`\`\n\n⚠️ **3. Event listeners needing \`this\`** — if you need \`this\` = the DOM element, use a regular function.`,
+            quiz: `**Quiz: What does this print?**\n\`\`\`javascript\nfunction Timer() {\n  this.seconds = 0;\n  setInterval(() => {\n    this.seconds++;\n  }, 1000);\n}\nconst t = new Timer();\nsetTimeout(() => console.log(t.seconds), 3100);\n\`\`\`\n\n---\n**Answer:** \`3\`\nThe arrow function inside setInterval inherits \`this\` from the Timer constructor. So \`this.seconds\` correctly increments. If it were a regular function, \`this\` would be undefined or global — the counter would break.`,
+            project: `**Real Project: Array Pipeline**\n\`\`\`javascript\n// Arrow functions shine in data transformation chains\nconst orders = [\n  { id: 1, product: 'Laptop', price: 999, paid: true },\n  { id: 2, product: 'Phone', price: 599, paid: false },\n  { id: 3, product: 'Tablet', price: 449, paid: true },\n  { id: 4, product: 'Watch', price: 299, paid: true },\n];\n\nconst revenue = orders\n  .filter(o => o.paid)           // only paid orders\n  .map(o => o.price * 1.1)       // add 10% tax\n  .reduce((sum, p) => sum + p, 0); // total\n\nconsole.log('Revenue: $' + revenue.toFixed(2));\n// Revenue: $1923.70\n\`\`\``,
+            tips: `**Pro Arrow Function Tips:**\n\n✨ **Implicit return** — single expressions return automatically: \`n => n * 2\`\n\n✨ **Chain them** — \`arr.filter(x => x > 0).map(x => x * 2).reduce((a,b) => a+b)\`\n\n✨ **React components** are arrow functions: \`const Button = ({ text }) => <button>{text}</button>\`\n\n✨ **Event handlers in classes** — use arrow functions to avoid binding: \`handleClick = () => { ... }\``,
+            analogy: `**The Sticky Note Analogy 📝**\n\nRegular functions write their OWN return address on the envelope (their own \`this\`).\n\nArrow functions say "use the sender's address" — they borrow \`this\` from wherever they were written.\n\n\`\`\`javascript\nclass PostOffice {\n  constructor() { this.name = 'Main Post Office'; }\n  \n  regularMethod() {\n    setTimeout(function() {\n      console.log(this.name); // undefined! (own this)\n    }, 100);\n  }\n  \n  arrowMethod() {\n    setTimeout(() => {\n      console.log(this.name); // 'Main Post Office' ✅\n    }, 100);\n  }\n}\n\`\`\``,
+          },
+        };
+
+        // Generate response for any topic + intent
+        function generateResponse(intent, topic) {
+          const title = topic.title;
+          const tl = title.toLowerCase();
+          const deepKey = Object.keys(AI_KB).find(
+            (k) => tl.includes(k) || k.includes(tl),
+          );
+          if (deepKey && AI_KB[deepKey][intent]) return AI_KB[deepKey][intent];
+
+          // Dynamic fallbacks for every topic
+          const expl = topic.explanation;
+          const code = topic.code;
+          const rwc = topic.realWorldCode;
+          const section = topic.section;
+          const practice = topic.practice;
+
+          const intents = {
+            simple: () =>
+              `**${title}** — Simple Explanation 💡\n\n${expl}\n\n**Minimal example:**\n\`\`\`javascript\n${code}\n\`\`\`\n\n💡 This is part of **${section}**. Once this clicks, the next topics will make more sense.`,
+
+            interview: () =>
+              `**Interview Questions: ${title} 🎯**\n\n**Q1: What is ${title} and what does it do?**\n✅ ${expl}\n\n**Q2: Show a real-world use case**\n✅\n\`\`\`javascript\n${rwc}\n\`\`\`\n\n**Q3: What are common mistakes with ${title}?**\n✅ Not understanding how it interacts with scope, misusing it when a simpler approach exists, and skipping edge case testing.\n\n🏆 **Bonus:** Be ready to write ${title} from memory and explain it simply.`,
+
+            mistakes: () =>
+              `**Common ${title} Mistakes ⚠️**\n\n**1. Using it without understanding internals**\nAlways know WHY ${title} works, not just how to use it.\n\n**2. Overcomplicating simple cases**\nReadable code beats clever code. If ${title} makes code harder to read, reconsider.\n\`\`\`javascript\n// Often simpler than you think:\n${code.split("\n").slice(0, 4).join("\n")}\n\`\`\`\n\n**3. Skipping error handling**\nIn production, wrap ${title} usage in try/catch for robustness.\n\n**4. Not practicing enough**\n> ${practice}`,
+
+            quiz: () => {
+              const q =
+                Math.random() > 0.5
+                  ? `**Quiz: ${title} 🧠**\n\nWhat does this code do?\n\`\`\`javascript\n${code}\n\`\`\`\n\n---\n**Answer:** Trace through it step by step. The key thing to notice is how **${title}** behaves — specifically ${expl.split(".")[0].toLowerCase()}.`
+                  : `**Quick Quiz: ${title} 🧠**\n\n1. Explain ${title} in one sentence\n2. When would you use it?\n3. What section does it belong to?\n4. Name one common mistake\n\n---\n**Answers:**\n1. ${expl.split(".")[0]}\n2. ${topic.realWorld.split(".")[0]}\n3. ${section}\n4. Not understanding its scope/context behavior`;
+              return q;
+            },
+
+            project: () =>
+              `**Real Project: ${title} in Action 🏗️**\n\`\`\`javascript\n${rwc}\n\`\`\`\n\n**Where you'll see this in the wild:**\n→ Frontend apps (React, Vue, vanilla JS)\n→ Node.js backend services\n→ Browser extensions and tooling\n\n**Mini challenge:** ${practice}\n\nOpen the **Practice** tab, write it yourself, run it. 20 lines of code you wrote beats 200 lines you read.`,
+
+            next: () => {
+              const idx = topics.findIndex((t) => t.id === topic.id);
+              const upcoming = topics
+                .slice(idx + 1, idx + 5)
+                .map((t) => `→ **${t.title}** *(${t.section})*`)
+                .join("\n");
+              const sIdx = SECTIONS.findIndex((s) => s.name === section);
+              const nextSec = SECTIONS[sIdx + 1];
+              return `**What to Learn Next 🗺️**\n\n**Immediately after ${title}:**\n${upcoming || "→ You are near the end — great job!"}\n\n${nextSec ? `**Next section:** ${nextSec.name}` : "**Almost done!** Review earlier sections."}\n\n**Before moving on, make sure you can:**\n✅ Explain ${title} without notes\n✅ Write a basic example from memory\n✅ Complete the practice exercise in the Practice tab\n✅ Name one real project where you'd use it`;
+            },
+
+            tips: () =>
+              `**Pro Tips: ${title} ✨**\n\n**1. Use browser DevTools**\nOpen F12 → Console → paste the code example and experiment live.\n\`\`\`javascript\n${code.split("\n").slice(0, 3).join("\n")}\n\`\`\`\n\n**2. MDN is your bible**\nSearch "MDN ${title}" for the official spec, syntax, browser support, and edge cases.\n\n**3. Teach it to someone**\nIf you can explain ${title} to a friend in 2 minutes without code, you know it.\n\n**4. Use it in a real project**\nReading = 20% of learning. Building = 80%. Find a mini project that uses ${title}.`,
+
+            analogy: () => {
+              const analogies = {
+                Loops: `**${title} — The Assembly Line 🏭**\nLoops are like an assembly line — a worker (your code block) repeats the same task on each item passing by, until the line ends.`,
+                Functions: `**${title} — The Vending Machine 🍫**\nA function is like a vending machine: you put something in (arguments), a process happens inside (function body), and you get something out (return value). Same machine, different results each time.`,
+                Arrays: `**${title} — The Numbered List 📋**\nAn array is like a numbered grocery list. Item 0 is first, item 1 is second. You can add to the end, remove from the start, or find anything instantly by its number.`,
+                Objects: `**${title} — The Business Card 💼**\nAn object is like a business card — a collection of labeled pieces of information (name: 'Alice', role: 'Dev') that describe one thing.`,
+                Events: `**${title} — The Doorbell 🔔**\nEvents are like a doorbell. You don't stand at the door all day waiting — you set up a listener (addEventListener). When someone rings (event fires), your handler runs.`,
+                "DOM Basics": `**${title} — The Family Tree 🌳**\nThe DOM is a family tree. html is the grandparent, body is a parent, divs and paragraphs are children and siblings. JS climbs this tree to find and change any member.`,
+                "Error Handling": `**${title} — The Safety Net 🕸️**\ntry/catch is a safety net under a tightrope walk. Most of the time you don't need it. But when you slip (error), the net (catch) stops you from crashing, and you continue.`,
+                Timers: `**${title} — The Kitchen Timer ⏱️**\nsetTimeout is a one-shot kitchen timer — set it, walk away, it fires once. setInterval is an alarm clock — it fires repeatedly until you tell it to stop.`,
+              };
+              return (
+                (analogies[section] ||
+                  `**${title} — The Tool Analogy 🔧**\n\n${title} is like a specialized tool in a toolbox. You don't use a hammer for every job, and you don't use ${title} for everything either — but when it's the right tool, nothing else is better.`) +
+                `\n\n**In code:**\n\`\`\`javascript\n${code.split("\n").slice(0, 6).join("\n")}\n\`\`\``
+              );
+            },
+          };
+
+          return intents[intent]
+            ? intents[intent]()
+            : generateSmartReply(intent, topic);
+        }
+
+        function generateSmartReply(question, topic) {
+          const q = question.toLowerCase();
+          const title = topic.title;
+          const code = topic.code;
+          const expl = topic.explanation;
+
+          if (
+            q.includes("differ") ||
+            q.includes(" vs ") ||
+            q.includes("compare")
+          )
+            return `**Comparing: ${title} 🔍**\n\n${expl}\n\n**Code example:**\n\`\`\`javascript\n${code}\n\`\`\`\n\n**Real use:**\n${topic.realWorld}\n\n💡 Ask "interview" or "mistakes" for more structured answers on ${title}.`;
+
+          if (
+            q.includes("when") ||
+            q.includes("why use") ||
+            q.includes("should i")
+          )
+            return `**When to use ${title}:**\n\n${topic.realWorld}\n\n\`\`\`javascript\n${topic.realWorldCode}\n\`\`\`\n\nUse it when you need exactly what it provides — and prefer simpler alternatives when they exist. Readability always wins.`;
+
+          if (
+            q.includes("example") ||
+            q.includes("show") ||
+            q.includes("code") ||
+            q.includes("how to")
+          )
+            return `**${title} — Code Examples 💻**\n\n**Basic:**\n\`\`\`javascript\n${code}\n\`\`\`\n\n**Real world:**\n\`\`\`javascript\n${topic.realWorldCode}\n\`\`\`\n\n**Try it yourself:**\n> ${topic.practice}\n\nOpen the **Practice** tab and write it — typing beats reading every time.`;
+
+          if (
+            q.includes("explain") ||
+            q.includes("what is") ||
+            q.includes("tell me") ||
+            q.includes("help")
+          )
+            return `**${title} — Explained 📖**\n\n${expl}\n\n\`\`\`javascript\n${code}\n\`\`\`\n\n**Real world:** ${topic.realWorld}\n\n**Tags:** ${(topic.tags || [topic.section]).join(" · ")}`;
+
+          if (
+            q.includes("stuck") ||
+            q.includes("confus") ||
+            q.includes("don't get") ||
+            q.includes("hard")
+          )
+            return `**Let me simplify ${title} 🧩**\n\nForget everything. Start fresh:\n\n${expl}\n\n**Tiniest possible example:**\n\`\`\`javascript\n${code.split("\n").slice(0, 4).join("\n")}\n\`\`\`\n\n**3 steps to make it click:**\n1. Read the code above out loud\n2. Type it in the Practice tab (don't copy-paste)\n3. Change ONE thing and see what happens\n\nThe confusion always breaks when your hands start typing. Go do it! 💪`;
+
+          if (
+            q.includes("summary") ||
+            q.includes("tldr") ||
+            q.includes("quick") ||
+            q.includes("cheat")
+          )
+            return `**${title} — Quick Reference 📋**\n\n**What:** ${expl.split(".")[0]}.\n\n**Syntax:**\n\`\`\`javascript\n${code.split("\n").slice(0, 5).join("\n")}\n\`\`\`\n\n**When:** ${topic.realWorld.split(".")[0]}.\n\n**Section:** ${topic.section} · **Tags:** ${(topic.tags || []).join(", ") || "JavaScript Core"}`;
+
+          if (
+            q.includes("debug") ||
+            q.includes("console") ||
+            q.includes("devtools") ||
+            q.includes("test")
+          )
+            return `**Testing ${title} in DevTools 🔧**\n\nPress **F12** in Chrome → **Console** tab, then paste:\n\`\`\`javascript\n${code}\n\`\`\`\n\n**Useful debugging tricks:**\n→ \`console.log(x)\` — print any variable\n→ \`console.table(arr)\` — beautiful array/object display\n→ \`console.dir(obj)\` — explore object structure\n→ \`debugger;\` — pause execution at that line\n→ \`typeof x\` — check a variable's type\n\nYou can't break the browser. Experiment freely!`;
+
+          // Random intelligent fallback
+          const fallbacks = [
+            `**On ${title}:**\n\n${expl}\n\n\`\`\`javascript\n${code}\n\`\`\`\n\n💡 **Try the quick-action buttons above** for structured answers: interview prep, quiz, common mistakes, analogies, real projects, and more!`,
+            `**${title} — Key Insight:**\n\n${expl}\n\n**In the real world:**\n${topic.realWorld}\n\n\`\`\`javascript\n${topic.realWorldCode}\n\`\`\`\n\nWant more? Ask: "common mistakes", "quiz me", "simple analogy", or "interview questions"!`,
+            `**Great question! Here's what you need to know about ${title}:**\n\n${expl}\n\n**Your practice challenge:**\n> ${topic.practice}\n\nOpen the **Practice** tab, write it, run it. That hands-on experience will make everything click faster than any explanation.`,
+          ];
+          return fallbacks[Math.floor(Math.random() * fallbacks.length)];
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  ELI5 + KEY POINTS CONTENT MAP
+        // ═══════════════════════════════════════════════════════
+        const ELI5 = {
+          "what is javascript":
+            "Imagine a website is like a house. HTML is the walls and rooms. CSS is the paint and furniture. JavaScript is the electricity — it makes things MOVE, LIGHT UP, and WORK! Every button you click, every video that plays, that's JavaScript doing its thing.",
+          var: "Imagine a box where you write your name in pencil on the outside. var is like that box — you can erase and rewrite the label (re-declare it), and even before you put anything in it, the box already exists somewhere. That's why it's a bit confusing!",
+          let: "let is a box you name with a permanent marker. You can change what's INSIDE the box, but you can't paste another label on top. It stays exactly where you put it — in its room (block scope).",
+          const:
+            "const is a box that's sealed shut with superglue. Once you put something inside and close it, you can NEVER put something different in. Perfect for things that should never change, like Pi = 3.14!",
+          closure:
+            "Imagine a kid goes away to college, but they keep a key to their parents' house. Even when they're far away (out of scope), they can still get in and use things from home. That key is a closure — a function that 'remembers' where it came from.",
+          "callback function":
+            "A callback is like leaving a note for the pizza delivery person: 'When you arrive, ring the bell.' You don't stand at the door. You give instructions for LATER. The pizza function decides WHEN to call your bell-ringing callback.",
+          promise:
+            "A promise is like ordering food at a restaurant. The waiter gives you a little buzzer and says 'I PROMISE this will be ready.' You can go do other things. When it buzzes (resolves), your food is ready. If the kitchen burns down (rejects), the buzzer alerts you too.",
+          "arrow function":
+            "An arrow function is a shortcut for writing functions — like texting instead of writing a letter. `x => x * 2` means 'take x, and double it.' Short, clean, and perfect for quick tasks.",
+          "for loop":
+            "A for loop is like telling a robot: 'Paint fence post 1, 2, 3... 100. Stop when you're done.' You set the start, end, and step — the robot does the repetitive work!",
+          array:
+            "An array is a numbered list — like a shopping list where item 0 is milk, item 1 is eggs, item 2 is bread. You can add to it, remove from it, and look up anything by number instantly.",
+          object:
+            "An object is like a contact card. It has labeled info: name: 'Alice', age: 30, job: 'Dev'. Instead of numbered slots like arrays, each piece of data gets a descriptive name (key).",
+          dom: "The DOM is a map of your webpage. Every paragraph, button, and image is a room on the map. JavaScript uses this map to find rooms and redecorate them — change text, colors, or even add new furniture!",
+          event:
+            "Events are like doorbells. You don't stand outside all day waiting. You install a doorbell (addEventListener). When someone presses it (clicks, types, scrolls), your code runs automatically.",
+          async:
+            "Async/await is like making breakfast. You put bread in the toaster (async task), then WAIT for it to pop up before you butter it. Without await, you'd try to butter bread that's not toasted yet!",
+          default:
+            "Think of it like a recipe ingredient. You learn what it does, when to use it, and how it makes your code taste better. The best way to understand it? Just try it yourself — open the Practice tab!",
+        };
+
+        const KEY_POINTS_MAP = {
+          var: [
+            "Hoisted to top of function/global scope and initialized as undefined",
+            "Can be re-declared in the same scope (bug-prone)",
+            "Avoid in modern JavaScript — use let or const instead",
+            "Has no block scope: var inside an if-block leaks outside",
+          ],
+          let: [
+            "Block-scoped: only lives inside its { } block",
+            "Cannot be re-declared in the same scope",
+            "Can be reassigned after declaration",
+            "Not initialized until the line runs — accessing before causes ReferenceError (TDZ)",
+          ],
+          const: [
+            "Block-scoped like let",
+            "Must be assigned a value when declared",
+            "Cannot be reassigned (but objects/arrays CAN be mutated)",
+            "Signals intent: this value should never change",
+          ],
+          closure: [
+            "A function that remembers the variables from its parent scope",
+            "Enables data privacy — variables are 'enclosed' and hidden",
+            "Used in counters, factory functions, and event handlers",
+            "Every function in JS forms a closure",
+          ],
+          "arrow function": [
+            "Shorter syntax: (x) => x * 2",
+            "Does NOT have its own 'this' — inherits from surrounding scope",
+            "Cannot be used as constructors",
+            "Ideal for callbacks, array methods, and short expressions",
+          ],
+          "callback function": [
+            "A function passed as argument to another function",
+            "Gets called later — when needed, not immediately",
+            "Foundation of asynchronous JavaScript",
+            "setTimeout, addEventListener, and array methods all use callbacks",
+          ],
+          promise: [
+            "Represents a value that will be available in the future",
+            "Has 3 states: pending, fulfilled, rejected",
+            ".then() handles success, .catch() handles errors",
+            "async/await is built on top of Promises",
+          ],
+          "for loop": [
+            "Classic counted loop: for(init; condition; update)",
+            "Perfect when you know exactly how many times to loop",
+            "Can break out early with break statement",
+            "index usually starts at 0 to match array indexing",
+          ],
+          array: [
+            "Zero-indexed: first item is at index 0",
+            "Dynamic — can grow or shrink anytime",
+            "Use push/pop for end, shift/unshift for beginning",
+            "Iterable — works with for...of, forEach, map, filter",
+          ],
+        };
+
+        const CHALLENGES_MAP = {
+          var: {
+            title: "Fix the Shopping Cart Bug",
+            difficulty: "⭐ Beginner",
+            time: "~3 min",
+            desc: "A junior dev wrote this shopping cart code using var. It has a classic hoisting bug. Fix it to correctly display each item price.",
+            context:
+              "🛒 You're building an e-commerce site. The product prices show wrong in the loop because of var's function scope.",
+            starter: `// BUG: All items show the last price!
+var items = ['Apple', 'Banana', 'Cherry'];
+var prices = [0.99, 0.49, 1.29];
+
+for (var i = 0; i < items.length; i++) {
+  setTimeout(function() {
+    console.log(items[i] + ': $' + prices[i]);
+  }, i * 100);
+}
+// Fix using 'let' instead of 'var'`,
+            hint: "Replace var i with let i in the for loop. var leaks out of the loop, let stays scoped to each iteration.",
+            solution: `// FIXED with let:
+var items = ['Apple', 'Banana', 'Cherry'];
+var prices = [0.99, 0.49, 1.29];
+
+for (let i = 0; i < items.length; i++) {
+  setTimeout(function() {
+    console.log(items[i] + ': $' + prices[i]);
+  }, i * 100);
+}`,
+            expectedOutput: "Apple: $0.99\nBanana: $0.49\nCherry: $1.29",
+          },
+          closure: {
+            title: "Build a Private Counter",
+            difficulty: "⭐⭐ Intermediate",
+            time: "~5 min",
+            desc: "A bank needs a secure counter that can only be changed through approved methods. Use a closure to hide the balance and expose only deposit/withdraw.",
+            context:
+              "🏦 Bank Account: The balance variable must be PRIVATE — nobody should be able to set balance = 1000000 directly!",
+            starter: `// Create a bank account using closure
+function createAccount(startBalance) {
+  // Your code here
+  // Return an object with: deposit(amount), withdraw(amount), getBalance()
+}
+
+const acc = createAccount(100);
+acc.deposit(50);
+acc.withdraw(30);
+console.log(acc.getBalance()); // Should print: 120`,
+            hint: "Declare let balance = startBalance inside the function. The returned methods can 'see' balance even after the outer function returns — that's closure!",
+            solution: `function createAccount(startBalance) {
+  let balance = startBalance; // private!
+  return {
+    deposit: (amount) => { balance += amount; console.log('Deposited $' + amount); },
+    withdraw: (amount) => {
+      if(amount > balance) { console.log('Insufficient funds!'); return; }
+      balance -= amount;
+      console.log('Withdrew $' + amount);
+    },
+    getBalance: () => balance
+  };
+}
+const acc = createAccount(100);
+acc.deposit(50);
+acc.withdraw(30);
+console.log(acc.getBalance());`,
+            expectedOutput: "Deposited $50\nWithdrew $30\n120",
+          },
+          "callback function": {
+            title: "Build a Task Queue",
+            difficulty: "⭐ Beginner",
+            time: "~4 min",
+            desc: "You're building a task manager. Write a processTask function that accepts a task name and a callback to run when the task completes.",
+            context:
+              "📋 Task Manager App: When a user clicks 'Complete Task', the app should mark it done and run a callback to update the UI.",
+            starter: `// Write processTask(taskName, onComplete)
+// It should: log "Processing: [taskName]"
+// Then call onComplete with "✅ [taskName] done!"
+
+function processTask(taskName, onComplete) {
+  // Your code here
+}
+
+processTask('Send Email', function(result) {
+  console.log('Callback received:', result);
+});`,
+            hint: "Inside processTask, call console.log('Processing: ' + taskName), then call onComplete('✅ ' + taskName + ' done!')",
+            solution: `function processTask(taskName, onComplete) {
+  console.log('Processing: ' + taskName);
+  onComplete('✅ ' + taskName + ' done!');
+}
+processTask('Send Email', function(result) {
+  console.log('Callback received:', result);
+});`,
+            expectedOutput:
+              "Processing: Send Email\nCallback received: ✅ Send Email done!",
+          },
+          "for loop": {
+            title: "FizzBuzz Challenge",
+            difficulty: "⭐ Beginner",
+            time: "~5 min",
+            desc: "Classic interview problem! Loop from 1 to 20. Print 'Fizz' for multiples of 3, 'Buzz' for multiples of 5, 'FizzBuzz' for both, otherwise the number.",
+            context:
+              "🎯 Used in real interviews at Google, Amazon, and Meta. Solves in ~6 lines of code.",
+            starter: `// FizzBuzz: 1 to 20
+for (let i = 1; i <= 20; i++) {
+  // Your logic here
+  // Hint: check FizzBuzz FIRST (both 3 and 5), then Fizz, then Buzz
+}`,
+            hint: "Check divisible by 15 (FizzBuzz) FIRST, then 3 (Fizz), then 5 (Buzz), else log i. Use the % (modulo) operator.",
+            solution: `for (let i = 1; i <= 20; i++) {
+  if (i % 15 === 0) console.log('FizzBuzz');
+  else if (i % 3 === 0) console.log('Fizz');
+  else if (i % 5 === 0) console.log('Buzz');
+  else console.log(i);
+}`,
+            expectedOutput:
+              "1\n2\nFizz\n4\nBuzz\nFizz\n7\n8\nFizz\nBuzz\n11\nFizz\n13\n14\nFizzBuzz\n16\n17\nFizz\n19\nBuzz",
+          },
+          "arrow function": {
+            title: "Transform Product Data",
+            difficulty: "⭐ Beginner",
+            time: "~4 min",
+            desc: "You get a product list from an API. Use arrow functions with map to create a display-ready array with formatted prices.",
+            context:
+              "🛍️ E-commerce app: You receive raw product data and need to transform it for the UI. Arrow functions make this clean and readable.",
+            starter: `const products = [
+  { name: 'Laptop', price: 999 },
+  { name: 'Mouse', price: 29 },
+  { name: 'Keyboard', price: 79 }
+];
+
+// Use .map() with an arrow function to create:
+// [{ name: 'Laptop', label: 'Laptop — $999' }, ...]
+const displayProducts = products.map(/* arrow function here */);
+
+displayProducts.forEach(p => console.log(p.label));`,
+            hint: "Arrow function: p => ({ name: p.name, label: p.name + ' — $' + p.price })",
+            solution: `const products = [
+  { name: 'Laptop', price: 999 },
+  { name: 'Mouse', price: 29 },
+  { name: 'Keyboard', price: 79 }
+];
+const displayProducts = products.map(p => ({ name: p.name, label: p.name + ' — $' + p.price }));
+displayProducts.forEach(p => console.log(p.label));`,
+            expectedOutput: "Laptop — $999\nMouse — $29\nKeyboard — $79",
+          },
+          default: {
+            title: "Apply This Concept",
+            difficulty: "⭐ Beginner",
+            time: "~5 min",
+            desc: "Practice what you just learned! Write a complete example using this concept in a real scenario. Check the explanation and code tabs for guidance.",
+            context:
+              "💡 The best way to learn is to type code yourself. Don't copy — type it out!",
+            starter: `// Use what you learned about this topic
+// Write your own example here
+
+`,
+            hint: "Look at the Code tab for the official example. Then try modifying it — change variables, add conditions, experiment!",
+            solution: `// The solution depends on the topic — check the Code tab for the official example.
+// Modify it to make it your own!`,
+            expectedOutput: "(varies by your implementation)",
+          },
+        };
+
+        // ═══════════════════════════════════════════════════════
+        //  QUIZ QUESTIONS MAP
+        // ═══════════════════════════════════════════════════════
+        const QUIZ_MAP = {
+          var: [
+            {
+              q: "What is the scope of a var variable inside a function?",
+              opts: [
+                "Block scope",
+                "Function scope",
+                "Global scope always",
+                "Module scope",
+              ],
+              ans: 1,
+              explain:
+                "var is function-scoped — it's accessible anywhere inside the function it's declared in, but not outside.",
+            },
+            {
+              q: "What does JavaScript do with var declarations before code runs?",
+              opts: [
+                "Ignores them",
+                "Throws an error",
+                "Hoists them (initialized as undefined)",
+                "Deletes them",
+              ],
+              ans: 2,
+              explain:
+                "var declarations are hoisted to the top of their scope and initialized as undefined. You can reference them before the line, but they'll be undefined.",
+            },
+            {
+              q: "Which happens when you re-declare var x twice in the same scope?",
+              opts: [
+                "SyntaxError",
+                "ReferenceError",
+                "Nothing — it's allowed",
+                "The first value is kept",
+              ],
+              ans: 2,
+              explain:
+                "var allows re-declaration in the same scope without error. This is a source of bugs, which is why let and const were introduced.",
+            },
+            {
+              q: "Why should you prefer let/const over var in modern JavaScript?",
+              opts: [
+                "var is slower",
+                "var has no block scope, making it error-prone",
+                "var doesn't work in Node.js",
+                "var can't be used in functions",
+              ],
+              ans: 1,
+              explain:
+                "var leaks out of blocks (if, for, while), causing confusing bugs. let and const are block-scoped, making code more predictable.",
+            },
+          ],
+          let: [
+            {
+              q: "What kind of scope does let have?",
+              opts: [
+                "Function scope",
+                "Global scope",
+                "Block scope",
+                "Module scope only",
+              ],
+              ans: 2,
+              explain:
+                "let is block-scoped — it only exists inside the { } block where it was declared.",
+            },
+            {
+              q: "What happens if you access a let variable before its declaration?",
+              opts: [
+                "Returns undefined",
+                "Throws a ReferenceError (TDZ)",
+                "Returns null",
+                "Works fine",
+              ],
+              ans: 1,
+              explain:
+                "let variables exist in the Temporal Dead Zone (TDZ) before their declaration line. Accessing them throws a ReferenceError.",
+            },
+            {
+              q: "Can you re-declare a let variable in the same scope?",
+              opts: [
+                "Yes",
+                "No — SyntaxError",
+                "Only in strict mode",
+                "Yes with a warning",
+              ],
+              ans: 1,
+              explain:
+                "Unlike var, let cannot be re-declared in the same scope. This prevents accidental overwrites.",
+            },
+            {
+              q: "Which is correct about let vs var in a for loop?",
+              opts: [
+                "They behave identically",
+                "let creates a new binding per iteration; var shares one",
+                "var is block-scoped; let is function-scoped",
+                "let cannot be used in for loops",
+              ],
+              ans: 1,
+              explain:
+                "let creates a fresh binding for each loop iteration — crucial for closures inside loops (like setTimeout callbacks).",
+            },
+          ],
+          closure: [
+            {
+              q: "What is a closure in JavaScript?",
+              opts: [
+                "A function with no return value",
+                "A function that remembers its outer scope even after that scope has ended",
+                "A way to close/end a function",
+                "An arrow function",
+              ],
+              ans: 1,
+              explain:
+                "A closure is a function that 'closes over' its surrounding variables — it remembers and can access them even after the outer function returns.",
+            },
+            {
+              q: "What does a closure enable?",
+              opts: [
+                "Faster execution",
+                "Data privacy by hiding variables in outer scope",
+                "Automatic garbage collection",
+                "Global variable sharing",
+              ],
+              ans: 1,
+              explain:
+                "Closures enable private state — variables in the outer function are inaccessible from outside, only the returned functions can touch them.",
+            },
+            {
+              q: "Which real-world use case best illustrates closures?",
+              opts: [
+                "Sorting an array",
+                "A counter function that keeps its count private",
+                "Fetching data from an API",
+                "Rendering HTML",
+              ],
+              ans: 1,
+              explain:
+                "A counter function returning increment/decrement functions is the classic closure example — count is private but accessible to the methods.",
+            },
+            {
+              q: "When does JavaScript create a new closure?",
+              opts: [
+                "Only with arrow functions",
+                "Every time a function is defined inside another function",
+                "Only inside class methods",
+                "When using async/await",
+              ],
+              ans: 1,
+              explain:
+                "A closure is created every time a function is created inside another function. The inner function captures the outer function's variables.",
+            },
+          ],
+          "for loop": [
+            {
+              q: "In for(let i = 0; i < 5; i++), how many times does the loop body run?",
+              opts: ["4", "5", "6", "Infinite"],
+              ans: 1,
+              explain:
+                "i starts at 0 and the condition is i < 5, so it runs for i = 0, 1, 2, 3, 4 — exactly 5 times.",
+            },
+            {
+              q: "What does the break statement do inside a for loop?",
+              opts: [
+                "Skips to next iteration",
+                "Exits the entire loop immediately",
+                "Throws an error",
+                "Pauses the loop",
+              ],
+              ans: 1,
+              explain:
+                "break immediately exits the loop — no more iterations run after it.",
+            },
+            {
+              q: "What does continue do inside a for loop?",
+              opts: [
+                "Exits the loop",
+                "Skips the current iteration and goes to the next",
+                "Restarts from i=0",
+                "Throws an error",
+              ],
+              ans: 1,
+              explain:
+                "continue skips the remaining code in the current iteration and jumps to the next loop cycle.",
+            },
+            {
+              q: "Which loop type is best when you don't know how many iterations you need?",
+              opts: [
+                "for loop",
+                "while loop",
+                "Both are equivalent",
+                "for...of",
+              ],
+              ans: 1,
+              explain:
+                "A while loop is ideal when the number of iterations is unknown — it keeps running as long as a condition is true.",
+            },
+          ],
+          "arrow function": [
+            {
+              q: "Which is the correct arrow function syntax to double a number?",
+              opts: [
+                "function x => x * 2",
+                "x => x * 2",
+                "x -> x * 2",
+                "arrow x: x * 2",
+              ],
+              ans: 1,
+              explain:
+                "Arrow functions use the => syntax. Single-expression functions don't need braces or return.",
+            },
+            {
+              q: "How does 'this' work inside arrow functions?",
+              opts: [
+                "Arrow functions have their own 'this'",
+                "Arrow functions inherit 'this' from the enclosing scope",
+                "'this' is always undefined in arrow functions",
+                "'this' is always window",
+              ],
+              ans: 1,
+              explain:
+                "Arrow functions don't have their own 'this'. They use lexical 'this' — inherited from where the function was defined.",
+            },
+            {
+              q: "Can arrow functions be used as constructors (with new)?",
+              opts: [
+                "Yes",
+                "No — they throw TypeError",
+                "Only in ES6+",
+                "Yes if no 'this' is used",
+              ],
+              ans: 1,
+              explain:
+                "Arrow functions cannot be used as constructors. Using new with an arrow function throws a TypeError.",
+            },
+            {
+              q: "What's the main benefit of arrow functions?",
+              opts: [
+                "They're faster than regular functions",
+                "Shorter syntax and lexical this binding",
+                "They support more arguments",
+                "They're easier to debug",
+              ],
+              ans: 1,
+              explain:
+                "Arrow functions offer concise syntax and lexical 'this', making them ideal for callbacks, array methods, and short expressions.",
+            },
+          ],
+          default: [
+            {
+              q: "What does JavaScript stand for in relation to Java?",
+              opts: [
+                "It's a simplified version of Java",
+                "It's completely unrelated — just a marketing name",
+                "It compiles to Java bytecode",
+                "It extends Java syntax",
+              ],
+              ans: 1,
+              explain:
+                "JavaScript and Java are completely different languages. The name was chosen for marketing reasons when Java was popular.",
+            },
+            {
+              q: "Where can JavaScript run today?",
+              opts: [
+                "Only in browsers",
+                "Only on servers",
+                "In browsers, servers (Node.js), mobile, and desktop apps",
+                "Only on Windows",
+              ],
+              ans: 2,
+              explain:
+                "JavaScript now runs virtually everywhere — browsers, servers (Node.js), mobile (React Native), desktop (Electron), and more.",
+            },
+            {
+              q: "What is the purpose of console.log()?",
+              opts: [
+                "Displays a popup alert",
+                "Prints output to the browser/terminal console",
+                "Saves data to a file",
+                "Sends data to a server",
+              ],
+              ans: 1,
+              explain:
+                "console.log() prints values to the developer console — the primary debugging tool in JavaScript.",
+            },
+            {
+              q: "Which year was JavaScript created?",
+              opts: ["1989", "1995", "2001", "2009"],
+              ans: 1,
+              explain:
+                "JavaScript was created by Brendan Eich in 1995 in just 10 days while he was at Netscape Communications.",
+            },
+          ],
+        };
+
+        // ═══════════════════════════════════════════════════════
+        //  WHERE SEEN MAP
+        // ═══════════════════════════════════════════════════════
+        const WHERE_SEEN = {
+          var: [
+            "Legacy codebases",
+            "Pre-2015 JS",
+            "WordPress plugins",
+            "Old jQuery code",
+          ],
+          let: [
+            "React components",
+            "Modern JS apps",
+            "Game loops",
+            "Form validation",
+          ],
+          const: [
+            "API keys",
+            "Config objects",
+            "React state refs",
+            "Math constants",
+          ],
+          closure: [
+            "React hooks (useState)",
+            "Module patterns",
+            "Event handlers",
+            "Memoization",
+          ],
+          "callback function": [
+            "setTimeout / setInterval",
+            "Array.forEach",
+            "Event listeners",
+            "Node.js file I/O",
+          ],
+          "arrow function": [
+            "Array.map / filter / reduce",
+            "React components",
+            "Promise chains",
+            "Object methods",
+          ],
+          "for loop": [
+            "Data processing",
+            "Array building",
+            "Grid rendering",
+            "Retry logic",
+          ],
+          array: [
+            "Shopping carts",
+            "Todo lists",
+            "Search results",
+            "Data tables",
+          ],
+          object: [
+            "API responses",
+            "Config objects",
+            "User profiles",
+            "Component props",
+          ],
+          promise: [
+            "API calls (fetch)",
+            "File reading",
+            "Database queries",
+            "Image loading",
+          ],
+          default: [
+            "Virtually every JavaScript codebase",
+            "Frontend & backend apps",
+          ],
+        };
+
+        // ═══════════════════════════════════════════════════════
+        //  QUIZ STATE
+        // ═══════════════════════════════════════════════════════
+        let quizQuestions = [],
+          quizCurrent = 0,
+          quizScore = 0,
+          quizAnswered = false;
+        let quizAnswerLog = [];
+
+        function getQuizQuestions(topic) {
+          const key = topic.title.toLowerCase();
+          const specific = QUIZ_MAP[key];
+          if (specific) return specific;
+          // Check partial match
+          for (const k of Object.keys(QUIZ_MAP)) {
+            if (
+              k !== "default" &&
+              (key.includes(k) || k.includes(key.split(" ")[0]))
+            )
+              return QUIZ_MAP[k];
+          }
+          // Generate from topic data
+          return generateQuizFromTopic(topic);
+        }
+
+        function generateQuizFromTopic(topic) {
+          const title = topic.title;
+          const expl = topic.explanation;
+          const first = expl.split(".")[0];
+          return [
+            {
+              q: `What is ${title}?`,
+              opts: [
+                first,
+                "A type of CSS property",
+                "An HTML element",
+                "A browser API",
+              ],
+              ans: 0,
+              explain: first + ".",
+            },
+            {
+              q: `Which category does ${title} belong to?`,
+              opts: [
+                topic.section,
+                "CSS Styling",
+                "HTML Structure",
+                "Server-side code",
+              ],
+              ans: 0,
+              explain: `${title} is part of the ${topic.section} section of JavaScript.`,
+            },
+            {
+              q: `What's the best way to learn ${title}?`,
+              opts: [
+                "Memorize the definition",
+                "Read about it once",
+                "Practice writing it yourself",
+                "Watch videos only",
+              ],
+              ans: 2,
+              explain:
+                "The best way to learn ANY programming concept is hands-on practice — type it, run it, break it, fix it.",
+            },
+            {
+              q: `In which environment does ${title} work?`,
+              opts: [
+                "Browser",
+                "Node.js",
+                "Both browser and Node.js",
+                "Neither",
+              ],
+              ans: 2,
+              explain: `${title} is standard JavaScript and works in all modern environments.`,
+            },
+          ];
+        }
+
+        function loadQuiz(topic) {
+          quizQuestions = getQuizQuestions(topic);
+          quizCurrent = 0;
+          quizScore = 0;
+          quizAnswered = false;
+          quizAnswerLog = [];
+          document.getElementById("quizIntro").classList.remove("hidden");
+          document.getElementById("quizActive").classList.add("hidden");
+          document.getElementById("quizResult").classList.add("hidden");
+        }
+
+        function startQuiz() {
+          document.getElementById("quizIntro").classList.add("hidden");
+          document.getElementById("quizResult").classList.add("hidden");
+          document.getElementById("quizActive").classList.remove("hidden");
+          renderQuizQuestion();
+        }
+
+        function renderQuizQuestion() {
+          const q = quizQuestions[quizCurrent];
+          quizAnswered = false;
+          const pct = (quizCurrent / quizQuestions.length) * 100;
+          document.getElementById("quizProgFill").style.width = pct + "%";
+          document.getElementById("quizProgLabel").textContent =
+            `${quizCurrent + 1} / ${quizQuestions.length}`;
+          document.getElementById("quizQNum").textContent =
+            `Q${quizCurrent + 1}`;
+          document.getElementById("quizQText").textContent = q.q;
+
+          const letters = ["A", "B", "C", "D"];
+          const optsEl = document.getElementById("quizOptions");
+          optsEl.innerHTML = q.opts
+            .map(
+              (opt, i) => `
+    <button class="quiz-option" data-idx="${i}" style="animation-delay:${i * 0.08}s">
+      <span class="quiz-opt-letter">${letters[i]}</span>
+      <span>${opt}</span>
+    </button>
+  `,
+            )
+            .join("");
+
+          optsEl.querySelectorAll(".quiz-option").forEach((btn) => {
+            btn.addEventListener("click", () => {
+              if (quizAnswered) return;
+              quizAnswered = true;
+              const chosen = parseInt(btn.dataset.idx);
+              const correct = chosen === q.ans;
+              if (correct) quizScore++;
+              quizAnswerLog.push({
+                q: q.q,
+                correct,
+                chosenOpt: q.opts[chosen],
+                correctOpt: q.opts[q.ans],
+              });
+
+              optsEl.querySelectorAll(".quiz-option").forEach((b, i) => {
+                b.disabled = true;
+                if (i === q.ans) b.classList.add("correct");
+                else if (i === chosen && !correct) b.classList.add("wrong");
+              });
+
+              const fb = document.getElementById("quizFeedback");
+              fb.className =
+                "quiz-feedback " + (correct ? "correct-fb" : "wrong-fb");
+              fb.innerHTML =
+                (correct
+                  ? "✅ <strong>Correct!</strong> "
+                  : "❌ <strong>Incorrect.</strong> ") + q.explain;
+              fb.classList.remove("hidden");
+
+              document.getElementById("quizNextBtn").classList.remove("hidden");
+            });
+          });
+
+          document.getElementById("quizFeedback").classList.add("hidden");
+          document.getElementById("quizNextBtn").classList.add("hidden");
+        }
+
+        function quizNext() {
+          quizCurrent++;
+          if (quizCurrent < quizQuestions.length) {
+            renderQuizQuestion();
+          } else {
+            showQuizResult();
+          }
+        }
+
+        function showQuizResult() {
+          document.getElementById("quizActive").classList.add("hidden");
+          const res = document.getElementById("quizResult");
+          res.classList.remove("hidden");
+
+          const total = quizQuestions.length;
+          const pct = Math.round((quizScore / total) * 100);
+          const icons = { 100: "🏆", 75: "🎯", 50: "📈", 0: "📚" };
+          const msgs = {
+            100: "Perfect score! You nailed it!",
+            75: "Great job! Almost there.",
+            50: "Good effort! Review and retry.",
+            0: "Keep studying — you've got this!",
+          };
+
+          const tier = pct === 100 ? 100 : pct >= 75 ? 75 : pct >= 50 ? 50 : 0;
+          document.getElementById("quizResultIcon").textContent = icons[tier];
+          document.getElementById("quizResultScore").textContent =
+            `${quizScore}/${total}`;
+          document.getElementById("quizResultMsg").textContent = msgs[tier];
+
+          const details = document.getElementById("quizResultDetails");
+          details.innerHTML = quizAnswerLog
+            .map(
+              (a) => `
+    <div class="quiz-detail-row">
+      <span>${a.correct ? "✅" : "❌"}</span>
+      <span class="flex-1 text-slate-400" style="font-size:.75rem">${a.q.substring(0, 50)}${a.q.length > 50 ? "..." : ""}</span>
+      ${!a.correct ? `<span style="color:#f87171;font-size:.72rem">${a.correctOpt}</span>` : ""}
+    </div>
+  `,
+            )
+            .join("");
+
+          if (pct === 100) {
+            confetti();
+            showToast("🏆 Perfect quiz score!");
+          }
+          document.getElementById("quizProgFill").style.width = "100%";
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  CHALLENGE TAB LOGIC
+        // ═══════════════════════════════════════════════════════
+        function loadChallenge(topic) {
+          const key = topic.title.toLowerCase();
+          let challenge = CHALLENGES_MAP[key];
+          if (!challenge) {
+            // Try partial match
+            for (const k of Object.keys(CHALLENGES_MAP)) {
+              if (
+                k !== "default" &&
+                (key.includes(k) || k.includes(key.split(" ")[0]))
+              ) {
+                challenge = CHALLENGES_MAP[k];
+                break;
+              }
+            }
+          }
+          if (!challenge) challenge = CHALLENGES_MAP["default"];
+
+          document.getElementById("challengeDifficulty").textContent =
+            challenge.difficulty;
+          document.getElementById("challengeTime").textContent = challenge.time;
+          document.getElementById("challengeTitle").textContent =
+            challenge.title;
+          document.getElementById("challengeDesc").textContent = challenge.desc;
+          document.getElementById("challengeContext").textContent =
+            challenge.context;
+
+          const expectedEl = document.getElementById("challengeExpected");
+          expectedEl.innerHTML = `<div class="expected-label">Expected Output</div><div class="expected-val">${challenge.expectedOutput}</div>`;
+
+          document.getElementById("challengeInput").value = challenge.starter;
+          document.getElementById("challengeOutput").textContent =
+            "// run your code to see output";
+          document.getElementById("challengeOutput").className = "output-pre";
+          document.getElementById("hintBox").classList.add("hidden");
+          document.getElementById("solutionBox").classList.add("hidden");
+
+          // Store challenge data on element
+          document.getElementById("challengeInput")._hint = challenge.hint;
+          document.getElementById("challengeInput")._solution =
+            challenge.solution;
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  ENHANCED EXPLAIN TAB
+        // ═══════════════════════════════════════════════════════
+        function loadExplainTab(topic) {
+          const key = topic.title.toLowerCase();
+
+          // ELI5
+          let eli5 = ELI5[key];
+          if (!eli5) {
+            for (const k of Object.keys(ELI5)) {
+              if (
+                k !== "default" &&
+                (key.includes(k) || k.includes(key.split(" ")[0]))
+              ) {
+                eli5 = ELI5[k];
+                break;
+              }
+            }
+          }
+          if (!eli5) eli5 = ELI5["default"];
+          document.getElementById("mEli5").textContent = eli5;
+
+          // Section icon
+          const secIcons = {
+            "JavaScript Basics": "🟡",
+            "Variables & Scope": "📦",
+            "Data Types": "🔢",
+            Functions: "🧩",
+            Arrays: "📋",
+            Objects: "🏗️",
+            "DOM Basics": "🌐",
+            Events: "🎪",
+            Loops: "🔁",
+            "Control Flow": "🔀",
+            Timers: "⏱️",
+            "Error Handling": "🛡️",
+            "Browser Storage": "💾",
+          };
+          const sec = topic.section;
+          document.getElementById("mExplainIcon").textContent =
+            secIcons[sec] || "💡";
+
+          // Key points
+          const kpWrap = document.getElementById("mKeyPoints");
+          let kps = KEY_POINTS_MAP[key];
+          if (!kps && topic.explanation) {
+            // Auto-generate from sentences
+            kps = topic.explanation
+              .split(/\.\s+/)
+              .filter((s) => s.length > 20)
+              .slice(0, 4)
+              .map((s) => s.trim().replace(/\.$/, "") + ".");
+          }
+          if (kps && kps.length) {
+            kpWrap.innerHTML =
+              '<div class="text-xs text-slate-600 font-semibold tracking-wide uppercase mb-2 mt-1">Key Points</div>' +
+              kps
+                .map(
+                  (kp, i) => `
+        <div class="keypoint-item" style="animation-delay:${i * 0.08 + 0.2}s">
+          <span class="kp-num">${i + 1}</span>
+          <span>${kp}</span>
+        </div>
+      `,
+                )
+                .join("");
+          } else kpWrap.innerHTML = "";
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  ENHANCED REAL WORLD TAB
+        // ═══════════════════════════════════════════════════════
+        function loadRealWorldTab(topic) {
+          const key = topic.title.toLowerCase();
+          let wt = WHERE_SEEN[key];
+          if (!wt) {
+            for (const k of Object.keys(WHERE_SEEN)) {
+              if (
+                k !== "default" &&
+                (key.includes(k) || k.includes(key.split(" ")[0]))
+              ) {
+                wt = WHERE_SEEN[k];
+                break;
+              }
+            }
+          }
+          if (!wt) wt = WHERE_SEEN["default"];
+          const ws = document.getElementById("mWhereSeen");
+          ws.innerHTML =
+            '<div class="text-xs text-slate-600 font-semibold tracking-wide uppercase mb-2">👀 Where you\'ll see this</div>' +
+            '<div class="flex flex-wrap gap-2">' +
+            wt.map((w) => `<span class="where-tag">${w}</span>`).join("") +
+            "</div>";
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  STREAK + STATS
+        // ═══════════════════════════════════════════════════════
+        function updateStreak() {
+          const today = new Date().toDateString();
+          const last = localStorage.getItem("jsrm_lastday") || "";
+          let streak = parseInt(localStorage.getItem("jsrm_streak") || "0");
+          const yesterday = new Date(Date.now() - 86400000).toDateString();
+          if (last === today) {
+            /* same day */
+          } else if (last === yesterday) {
+            streak++;
+            localStorage.setItem("jsrm_streak", streak);
+            localStorage.setItem("jsrm_lastday", today);
+          } else if (last !== today) {
+            streak = 1;
+            localStorage.setItem("jsrm_streak", streak);
+            localStorage.setItem("jsrm_lastday", today);
+          }
+          document.getElementById("streakCount").textContent = streak;
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  FLOATING QUIZ BUTTON
+        // ═══════════════════════════════════════════════════════
+        document.getElementById("fabQuiz").addEventListener("click", () => {
+          const rand = topics[Math.floor(Math.random() * topics.length)];
+          openModal(rand);
+          setTimeout(() => switchTab("quiz"), 100);
+        });
+
+        // ═══════════════════════════════════════════════════════
+        //  CHALLENGE BUTTON LISTENERS
+        // ═══════════════════════════════════════════════════════
+        document
+          .getElementById("runChallenge")
+          .addEventListener("click", () => {
+            const code = document.getElementById("challengeInput").value;
+            const logs = [];
+            const origLog = console.log,
+              origErr = console.error,
+              origWarn = console.warn;
+            console.log = (...a) =>
+              logs.push(
+                a
+                  .map((x) =>
+                    typeof x === "object"
+                      ? JSON.stringify(x, null, 2)
+                      : String(x),
+                  )
+                  .join(" "),
+              );
+            console.error = (...a) => logs.push("⚠ " + a.join(" "));
+            console.warn = (...a) => logs.push("⚡ " + a.join(" "));
+            const out = document.getElementById("challengeOutput");
+            try {
+              const r = eval(code);
+              if (r !== undefined) logs.push("→ " + String(r));
+              out.textContent = logs.join("\n") || "// code ran with no output";
+              out.className = "output-pre";
+              if (logs.length)
+                showToast("▶ Code executed! Compare to expected output 👆");
+            } catch (e) {
+              out.textContent = "✗ " + e.message;
+              out.className = "output-pre err";
+            } finally {
+              console.log = origLog;
+              console.error = origErr;
+              console.warn = origWarn;
+            }
+          });
+
+        document
+          .getElementById("clearChallenge")
+          .addEventListener("click", () => {
+            if (activeTopic) loadChallenge(activeTopic);
+          });
+
+        document.getElementById("hintBtn").addEventListener("click", () => {
+          const hb = document.getElementById("hintBox");
+          const hint =
+            document.getElementById("challengeInput")._hint ||
+            "Think about the core concept you just learned. Check the Explain tab!";
+          if (hb.classList.contains("hidden")) {
+            hb.innerHTML = "💡 <strong>Hint:</strong> " + hint;
+            hb.classList.remove("hidden");
+            showToast("💡 Hint revealed");
+          } else {
+            hb.classList.add("hidden");
+          }
+        });
+
+        document.getElementById("solutionBtn").addEventListener("click", () => {
+          const sb = document.getElementById("solutionBox");
+          const sol =
+            document.getElementById("challengeInput")._solution ||
+            "// No solution available — check the Code tab!";
+          if (sb.classList.contains("hidden")) {
+            sb.innerHTML =
+              '<div class="text-xs text-emerald-400 font-bold mb-2 tracking-wide uppercase">✅ Solution</div><pre>' +
+              sol.replace(/</g, "&lt;").replace(/>/g, "&gt;") +
+              "</pre>";
+            sb.classList.remove("hidden");
+            showToast("👁 Solution revealed — try to understand it!");
+          } else {
+            sb.classList.add("hidden");
+          }
+        });
+
+        // Quiz event listeners
+        document
+          .getElementById("startQuizBtn")
+          .addEventListener("click", startQuiz);
+        document
+          .getElementById("quizNextBtn")
+          .addEventListener("click", quizNext);
+        document
+          .getElementById("retryQuizBtn")
+          .addEventListener("click", () => {
+            if (activeTopic) loadQuiz(activeTopic);
+            startQuiz();
+          });
+
+        updateStreak();
+
+        // ── Main entry point ──
+        function sendAI(msgOrIntent) {
+          if (!msgOrIntent || !msgOrIntent.trim()) return;
+          if (!activeTopic) return;
+
+          const intentLabels = {
+            simple: "💡 Explain this simply",
+            interview: "🎯 Give me interview prep",
+            mistakes: "⚠️ What are common mistakes?",
+            quiz: "🧠 Quiz me on this",
+            project: "🏗️ Show a real project",
+            next: "🗺️ What should I learn next?",
+            tips: "✨ Give me pro tips",
+            analogy: "🔮 Explain with an analogy",
+          };
+
+          const isIntent = intentLabels.hasOwnProperty(msgOrIntent);
+          const displayMsg = isIntent ? intentLabels[msgOrIntent] : msgOrIntent;
+
+          appendBubble(displayMsg, "user");
+          document.getElementById("aiTypingInd").classList.remove("hidden");
+          document.getElementById("aiSendBtn").disabled = true;
+          document.getElementById("aiInput").value = "";
+
+          setTimeout(
+            () => {
+              const reply = isIntent
+                ? generateResponse(msgOrIntent, activeTopic)
+                : generateSmartReply(msgOrIntent, activeTopic);
+              document.getElementById("aiTypingInd").classList.add("hidden");
+              document.getElementById("aiSendBtn").disabled = false;
+              appendBubble(reply, "ai");
+            },
+            500 + Math.random() * 700,
+          );
+        }
+
+        // ── Render a chat bubble ──
+        function appendBubble(text, role) {
+          var wrap = document.getElementById("aiMessages");
+          if (!wrap) return;
+          var div = document.createElement("div");
+          div.className = role === "user" ? "bubble-user" : "bubble-ai";
+          if (role === "ai") {
+            var esc = text
+              .replace(/&/g, "&amp;")
+              .replace(/</g, "&lt;")
+              .replace(/>/g, "&gt;");
+            var html = esc;
+            // code blocks: ```lang\ncode```
+            html = html.replace(
+              /\u0060\u0060\u0060[a-z]*\n?([\s\S]*?)\u0060\u0060\u0060/g,
+              function (_, c) {
+                return '<pre class="iblock">' + c.trim() + "</pre>";
+              },
+            );
+            // inline code: `code`
+            html = html.replace(
+              /\u0060([^\u0060\n]+)\u0060/g,
+              "<code>$1</code>",
+            );
+            // bold: **text**
+            html = html.replace(/\*\*([^*\n]+)\*\*/g, "<strong>$1</strong>");
+            // newlines
+            html = html.replace(/\n/g, "<br>");
+            div.innerHTML =
+              '<span style="font-size:.75rem;color:#a78bfa;font-weight:600;display:block;margin-bottom:.4rem">&#129302; AI Tutor</span>' +
+              html;
+          } else {
+            div.textContent = text;
+          }
+          wrap.appendChild(div);
+          wrap.scrollTop = wrap.scrollHeight;
+        }
+        // ── AI event listeners ──
+        document.addEventListener("DOMContentLoaded", () => {
+          document
+            .getElementById("aiSendBtn")
+            ?.addEventListener("click", () => {
+              sendAI(document.getElementById("aiInput").value);
+            });
+          document
+            .getElementById("aiInput")
+            ?.addEventListener("keydown", (e) => {
+              if (e.key === "Enter") sendAI(e.target.value);
+            });
+          document.getElementById("aiKeyBtn")?.addEventListener("click", () => {
+            showToast("🤖 AI Tutor is built-in — no key needed!");
+          });
+        });
+
+        // Also attach qprompt buttons whenever modal opens (they're dynamic)
+        function attachQprompts() {
+          document.querySelectorAll(".qprompt").forEach((btn) => {
+            btn.onclick = () => sendAI(btn.dataset.p);
+          });
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  CONTROLS
+        // ═══════════════════════════════════════════════════════
+        // (API key modal removed — AI is now built-in)
+
+        // ═══════════════════════════════════════════════════════
+        //  CONTROLS
+        // ═══════════════════════════════════════════════════════
+        document.getElementById("expandAll").addEventListener("click", () => {
+          document
+            .querySelectorAll(".section-body")
+            .forEach((b) => b.classList.remove("closed"));
+          document
+            .querySelectorAll(".chevron")
+            .forEach((c) => c.classList.add("open"));
+        });
+        document.getElementById("collapseAll").addEventListener("click", () => {
+          document
+            .querySelectorAll(".section-body")
+            .forEach((b) => b.classList.add("closed"));
+          document
+            .querySelectorAll(".chevron")
+            .forEach((c) => c.classList.remove("open"));
+        });
+        document.getElementById("resetBtn").addEventListener("click", () => {
+          if (confirm("Reset all progress? This cannot be undone.")) {
+            completed.clear();
+            saveState();
+            renderRoadmap();
+            showToast("🔄 Progress reset");
+          }
+        });
+
+        document
+          .getElementById("searchInput")
+          .addEventListener("input", (e) => {
+            search = e.target.value.trim().toLowerCase();
+            renderRoadmap();
+          });
+        document.querySelectorAll(".ftag").forEach((tag) => {
+          tag.addEventListener("click", () => {
+            document
+              .querySelectorAll(".ftag")
+              .forEach((t) => t.classList.remove("active"));
+            tag.classList.add("active");
+            filter = tag.dataset.filter;
+            renderRoadmap();
+          });
+        });
+
+        // ═══════════════════════════════════════════════════════
+        //  KEYBOARD SHORTCUTS
+        // ═══════════════════════════════════════════════════════
+        document.addEventListener("keydown", (e) => {
+          if (e.key === "Escape") closeModal();
+          if (e.key === "ArrowRight" && activeTopic) navigate(1);
+          if (e.key === "ArrowLeft" && activeTopic) navigate(-1);
+          if (e.key === "/" && !activeTopic) {
+            e.preventDefault();
+            document.getElementById("searchInput").focus();
+          }
+        });
+
+        // ═══════════════════════════════════════════════════════
+        //  TOAST
+        // ═══════════════════════════════════════════════════════
+        function showToast(msg) {
+          const t = document.getElementById("toastEl");
+          t.textContent = msg;
+          t.classList.add("show");
+          setTimeout(() => t.classList.remove("show"), 2400);
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  CONFETTI
+        // ═══════════════════════════════════════════════════════
+        function confetti() {
+          const colors = [
+            "#f59e0b",
+            "#f97316",
+            "#7c3aed",
+            "#3b82f6",
+            "#22c55e",
+            "#ec4899",
+            "#f7df1e",
+          ];
+          const c = document.getElementById("cfettiContainer");
+          for (let i = 0; i < 24; i++) {
+            const p = document.createElement("div");
+            p.className = "cfeti";
+            const sz = Math.random() * 8 + 4;
+            p.style.cssText = `left:${Math.random() * 100}vw;top:-10px;width:${sz}px;height:${sz}px;background:${colors[Math.floor(Math.random() * colors.length)]};border-radius:${Math.random() > 0.5 ? "50%" : "2px"};animation-delay:${Math.random() * 0.6}s;animation-duration:${1.8 + Math.random() * 1}s;`;
+            c.appendChild(p);
+            setTimeout(() => p.remove(), 3000);
+          }
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  MILESTONES
+        // ═══════════════════════════════════════════════════════
+        const MILESTONES = [10, 25, 50, 75, 100, 125, 150, 159];
+        function checkMilestone() {
+          const done = completed.size;
+          for (const m of MILESTONES) {
+            if (done >= m && milestonePtr < m) {
+              milestonePtr = m;
+              const msgs = {
+                10: "⭐ 10 topics — great start!",
+                25: "🌟 25 topics — building momentum!",
+                50: "🔥 50 topics — you're halfway!",
+                75: "💫 75 topics — incredible progress!",
+                100: "🏅 100 topics — almost there!",
+                125: "🎯 125 topics — legendary grind!",
+                150: "🚀 150 topics — so close!",
+                159: "🏆 ALL 159 TOPICS! JavaScript Master!",
+              };
+              showToast(msgs[m] || `✨ ${m} topics done!`);
+              if (m === 159) {
+                setTimeout(() => {
+                  for (let i = 0; i < 3; i++) setTimeout(confetti, i * 400);
+                }, 200);
+              }
+              break;
+            }
+          }
+        }
+
+        // ═══════════════════════════════════════════════════════
+        //  PARTICLE CANVAS ANIMATION
+        // ═══════════════════════════════════════════════════════
+        (function initParticles() {
+          const canvas = document.getElementById("particleCanvas");
+          const ctx = canvas.getContext("2d");
+          let W,
+            H,
+            particles = [];
+
+          function resize() {
+            W = canvas.width = window.innerWidth;
+            H = canvas.height = window.innerHeight;
+          }
+          window.addEventListener("resize", resize);
+          resize();
+
+          class Particle {
+            constructor() {
+              this.reset();
+            }
+            reset() {
+              this.x = Math.random() * W;
+              this.y = Math.random() * H;
+              this.vx = (Math.random() - 0.5) * 0.3;
+              this.vy = (Math.random() - 0.5) * 0.3;
+              this.r = Math.random() * 1.5 + 0.5;
+              this.alpha = Math.random() * 0.4 + 0.1;
+              this.color =
+                Math.random() > 0.6
+                  ? "245,158,11"
+                  : Math.random() > 0.5
+                    ? "124,58,237"
+                    : "59,130,246";
+            }
+            update() {
+              this.x += this.vx;
+              this.y += this.vy;
+              if (this.x < 0 || this.x > W || this.y < 0 || this.y > H)
+                this.reset();
+            }
+            draw() {
+              ctx.beginPath();
+              ctx.arc(this.x, this.y, this.r, 0, Math.PI * 2);
+              ctx.fillStyle = `rgba(${this.color},${this.alpha})`;
+              ctx.fill();
+            }
+          }
+
+          for (let i = 0; i < 120; i++) particles.push(new Particle());
+
+          // Draw connections
+          function drawLines() {
+            for (let i = 0; i < particles.length; i++) {
+              for (let j = i + 1; j < particles.length; j++) {
+                const dx = particles[i].x - particles[j].x;
+                const dy = particles[i].y - particles[j].y;
+                const dist = Math.sqrt(dx * dx + dy * dy);
+                if (dist < 100) {
+                  ctx.beginPath();
+                  ctx.moveTo(particles[i].x, particles[i].y);
+                  ctx.lineTo(particles[j].x, particles[j].y);
+                  ctx.strokeStyle = `rgba(124,58,237,${0.1 * (1 - dist / 100)})`;
+                  ctx.lineWidth = 0.5;
+                  ctx.stroke();
+                }
+              }
+            }
+          }
+
+          function loop() {
+            ctx.clearRect(0, 0, W, H);
+            particles.forEach((p) => {
+              p.update();
+              p.draw();
+            });
+            drawLines();
+            requestAnimationFrame(loop);
+          }
+          loop();
+        })();
+
+        // ═══════════════════════════════════════════════════════
+        //  BOOT
+        // ═══════════════════════════════════════════════════════
+        loadState();
+        renderRoadmap();
+        milestonePtr = Math.max(
+          ...MILESTONES.filter((m) => completed.size >= m),
+          0,
+        );
+
+        // Show key modal on first visit if no key
+        if (!apiKey && !localStorage.getItem("jsrm_skipped")) {
+          document.getElementById("skipKeyBtn").addEventListener(
+            "click",
+            () => {
+              localStorage.setItem("jsrm_skipped", "1");
+            },
+            { once: true },
+          );
+          // small delay for polish
+          setTimeout(() => {
+            /* already visible */
+          }, 100);
+        } else {
+          hideKeyModal();
+        }
+      })();
+    </script>
+  </body>
+</html>
